@@ -1,19 +1,19 @@
 export interface SignupRequest {
-  name: string;
+  nome: string;
   email: string;
-  password: string;
+  senha: string;
   theme?: "LIGHT" | "DARK";
 }
 
 export interface LoginRequest {
   email: string;
-  password: string;
+  senha: string;
 }
 
 export interface AuthResponse {
-  user: {
+  usuario: {
     id: string;
-    name: string;
+    nome: string;
     email: string;
     theme: string;
     createdAt: string;

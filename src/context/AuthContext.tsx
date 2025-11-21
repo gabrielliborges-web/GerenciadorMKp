@@ -23,7 +23,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const storedUser = localStorage.getItem("user");
+        const storedUser = localStorage.getItem("usuario");
         const storedToken = localStorage.getItem("token");
 
         if (storedUser && storedToken) {
@@ -42,8 +42,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const login = async (data: LoginRequest) => {
         try {
             const res = await loginRequest(data);
-            setUser(res.user);
-            localStorage.setItem("user", JSON.stringify(res.user));
+            debugger
+            setUser(res.usuario);
+            localStorage.setItem("usuario", JSON.stringify(res.usuario));
             localStorage.setItem("token", res.token);
             toast.success("Login realizado com sucesso!");
             navigate("/movies");
@@ -56,8 +57,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const signup = async (data: SignupRequest) => {
         try {
             const res = await signupRequest(data);
-            setUser(res.user);
-            localStorage.setItem("user", JSON.stringify(res.user));
+            setUser(res.usuario);
+            localStorage.setItem("usuario", JSON.stringify(res.usuario));
             localStorage.setItem("token", res.token);
             toast.success("Conta criada com sucesso!");
             navigate("/movies");
@@ -69,7 +70,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const logout = () => {
         setUser(null);
-        localStorage.removeItem("user");
+        localStorage.removeItem("usuario");
         localStorage.removeItem("token");
         navigate("/login");
     };

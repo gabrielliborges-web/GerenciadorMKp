@@ -23,7 +23,7 @@ export default function Login() {
             colSpan: 12,
         },
         {
-            internalName: "password",
+            internalName: "Senha",
             label: "Senha",
             type: "password",
             value: "",
@@ -84,14 +84,14 @@ export default function Login() {
 
         try {
             if (step === "login") {
-                if (!formData.email || !formData.password) {
+                if (!formData.email || !formData.Senha) {
                     toast.error("Preencha todos os campos obrigatórios");
                     return;
                 }
 
                 await login({
                     email: formData.email,
-                    password: formData.password,
+                    senha: formData.Senha,
                 });
             }
 
@@ -172,7 +172,7 @@ export default function Login() {
 
                     <Button
                         variant="primary"
-                        className="self-end w-[150] h-[40px]"
+                        className="self-end w-36 h-10"
                         isLoading={loading}
                     >
                         {step === "login"

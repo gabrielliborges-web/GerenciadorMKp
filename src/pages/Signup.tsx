@@ -14,7 +14,7 @@ export default function Signup() {
 
     const fieldsSignup: Field[] = [
         {
-            internalName: "name",
+            internalName: "nome",
             label: "Nome completo",
             type: "text",
             value: "",
@@ -30,7 +30,7 @@ export default function Signup() {
             colSpan: 12,
         },
         {
-            internalName: "password",
+            internalName: "senha",
             label: "Senha",
             type: "password",
             value: "",
@@ -59,13 +59,12 @@ export default function Signup() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
-        if (!signupData.name || !signupData.email || !signupData.password || !signupData.confirmPassword) {
+        if (!signupData.nome || !signupData.email || !signupData.senha || !signupData.confirmPassword) {
             toast.error("Preencha todos os campos obrigatórios");
             return;
         }
 
-        if (signupData.password !== signupData.confirmPassword) {
+        if (signupData.senha !== signupData.confirmPassword) {
             toast.error("As senhas não coincidem");
             return;
         }
@@ -73,9 +72,9 @@ export default function Signup() {
         setLoading(true);
         try {
             await signup({
-                name: signupData.name.trim(),
+                nome: signupData.nome.trim(),
                 email: signupData.email.trim(),
-                password: signupData.password,
+                senha: signupData.senha,
                 theme: signupData.theme || "LIGHT",
             });
         } catch (err: any) {
