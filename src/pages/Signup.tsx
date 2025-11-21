@@ -4,13 +4,14 @@ import FormsFields, {
     type Field,
 } from "../components/common/FormsFields";
 import Button from "../components/common/Button";
-import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
+import { useNavigation } from "../context/NavigationContext";
 
 export default function Signup() {
     const { signup } = useAuth();
     const [loading, setLoading] = useState(false);
+    const { goTo } = useNavigation();
 
     const fieldsSignup: Field[] = [
         {
@@ -98,12 +99,13 @@ export default function Signup() {
                 />
 
                 <div className="flex items-center justify-between gap-3 mt-2">
-                    <Link
-                        to="/login"
+                    <button
+                        type="button"
+                        onClick={() => goTo("login")}
                         className="text-sm text-primary hover:underline"
                     >
                         Já tenho uma conta
-                    </Link>
+                    </button>
 
                     <Button
                         variant="primary"

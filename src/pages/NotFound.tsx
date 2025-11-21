@@ -1,7 +1,9 @@
-import { Link } from "react-router-dom";
 import Button from "../components/common/Button";
+import { useNavigation } from "../context/NavigationContext";
 
 export default function NotFound() {
+    const { goTo } = useNavigation();
+
     return (
         <main className="relative w-full flex items-center justify-center text-center">
 
@@ -15,11 +17,9 @@ export default function NotFound() {
                     movida. Que tal voltar para a página inicial?
                 </p>
 
-                <Link to="/movies">
-                    <Button variant="primary" className="px-6 py-3">
-                        Voltar para Home
-                    </Button>
-                </Link>
+                <Button variant="primary" className="px-6 py-3" onClick={() => goTo("home")}>
+                    Voltar para Home
+                </Button>
             </div>
         </main>
     );

@@ -148,6 +148,7 @@ export default {
     },
   },
   plugins: [
+    require("tailwindcss-scrollbar"),
     function ({ addUtilities }) {
       addUtilities({
         ".bg-modal-overlay": {

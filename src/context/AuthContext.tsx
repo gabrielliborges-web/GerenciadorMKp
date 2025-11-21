@@ -1,9 +1,9 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
-import { useNavigate } from "react-router-dom";
 import type { LoginRequest, SignupRequest } from "../types/auth";
 import { loginRequest, signupRequest } from "../lib/auth";
 import toast from "react-hot-toast";
 import type { User } from "../types/user";
+import { useNavigation } from "./NavigationContext";
 
 interface AuthContextProps {
     user: User | null;
@@ -19,8 +19,7 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<any | null>(null);
     const [loading, setLoading] = useState(true);
-
-    const navigate = useNavigate();
+    const { goTo, currentView } = useNavigation();
 
     useEffect(() => {
         const storedUser = localStorage.getItem("usuario");
@@ -33,10 +32,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }, []);
 
     useEffect(() => {
-        if (!loading && user && (location.pathname === "/login" || location.pathname === "/signup")) {
-            navigate("/movies", { replace: true });
+        if (loading) return;
+
+        if (!user && currentView !== "login" && currentView !== "signup") {
+            //goTo("login");
         }
-    }, [user, loading, location.pathname, navigate]);
+    }, [currentView, goTo, loading, user]);
 
 
     const login = async (data: LoginRequest) => {
@@ -47,7 +48,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             localStorage.setItem("usuario", JSON.stringify(res.usuario));
             localStorage.setItem("token", res.token);
             toast.success("Login realizado com sucesso!");
-            navigate("/movies");
+            goTo("home");
         } catch (err: any) {
             console.error("Erro no login:", err);
             toast.error(err.message);
@@ -61,7 +62,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             localStorage.setItem("usuario", JSON.stringify(res.usuario));
             localStorage.setItem("token", res.token);
             toast.success("Conta criada com sucesso!");
-            navigate("/movies");
+            goTo("home");
         } catch (err: any) {
             console.error("Erro no cadastro:", err);
             toast.error(err.message || "Erro ao cadastrar usuário");
@@ -72,10 +73,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(null);
         localStorage.removeItem("usuario");
         localStorage.removeItem("token");
-        navigate("/login");
+        goTo("login");
     };
 
-    const isAuthenticated = !!user;
+    // const isAuthenticated = !!user;
+    const isAuthenticated = true
+
 
     return (
         <AuthContext.Provider value={{ user, isAuthenticated, login, signup, logout, setUser }}>
