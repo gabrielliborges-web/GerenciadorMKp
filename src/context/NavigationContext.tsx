@@ -3,6 +3,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState, t
 type CoreView =
     | "home"
     | "produtos"
+    | "categorias"
     | "compras"
     | "vendas"
     | "entradasFinanceiras"

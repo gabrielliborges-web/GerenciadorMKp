@@ -12,6 +12,7 @@ import {
     ShoppingCart,
     Sparkles,
     Sun,
+    Tags,
     TrendingUp,
     Wallet2,
     X,
@@ -39,6 +40,13 @@ const NAV_ITEMS: NavItem[] = [
         view: "home",
         icon: PieChart,
     },
+    {
+        label: "Categorias",
+        description: "Gestão de categorias de produtos",
+        view: "categorias",
+        icon: Tags,
+    },
+
     {
         label: "Produtos",
         description: "Portfólio premium e curadoria",
