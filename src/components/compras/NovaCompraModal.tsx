@@ -26,10 +26,8 @@ export default function NovaCompraModal({
     const [data, setData] = useState(new Date().toISOString().split("T")[0]);
     const [observacao, setObservacao] = useState("");
     const [itens, setItens] = useState<ItemForm[]>([]);
-    const [usuarioNome, setUsuarioNome] = useState("João Silva");
-    const [erros, setErros] = useState<string[]>([]);
-
-    const totalCompra = itens.reduce((sum, item) => sum + item.total, 0);
+    const usuarioNome = "João Silva";
+    const [erros, setErros] = useState<string[]>([]); const totalCompra = itens.reduce((sum, item) => sum + item.total, 0);
     const totalItens = itens.reduce((sum, item) => sum + item.quantidade, 0);
 
     const handleAddItem = useCallback(() => {

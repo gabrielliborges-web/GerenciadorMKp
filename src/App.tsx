@@ -10,7 +10,7 @@ import Produtos from "./pages/Produtos";
 import Compras from "./pages/Compras";
 import Vendas from "./pages/Vendas";
 import EntradasFinanceiras from "./pages/EntradasFinanceiras";
-import Financeiro from "./pages/Financeiro";
+import FinanceiroPage from "./pages/Financeiro";
 import Configuracoes from "./pages/Configuracoes";
 import { useAuth } from "./context/AuthContext";
 import { useNavigation, type AppView } from "./context/NavigationContext";
@@ -30,7 +30,7 @@ function renderAuthenticatedView(view: AppView) {
     case "entradasFinanceiras":
       return <EntradasFinanceiras />;
     case "financeiro":
-      return <Financeiro />;
+      return <FinanceiroPage />;
     case "configuracoes":
       return <Configuracoes />;
     default:

@@ -22,6 +22,10 @@
   .animate-soft-bounce {
     animation: softBounce 3.2s ease-in-out infinite;
   }
+
+  .animate-fadeIn {
+    animation: fadeIn 0.3s ease-in;
+  }
 }
 
 @keyframes softPulse {
@@ -82,5 +86,14 @@
   }
   100% {
     transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }

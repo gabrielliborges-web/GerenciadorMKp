@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
 import {
-    Banknote,
     ChevronLeft,
     ChevronRight,
     LogIn,
@@ -46,7 +45,6 @@ const NAV_ITEMS: NavItem[] = [
         view: "categorias",
         icon: Tags,
     },
-
     {
         label: "Produtos",
         description: "Portfólio premium e curadoria",
@@ -55,7 +53,7 @@ const NAV_ITEMS: NavItem[] = [
     },
     {
         label: "Compras",
-        description: "Fluxos e fornecedores",
+        description: "Fornecedores e entrada de estoque",
         view: "compras",
         icon: ShoppingCart,
     },
@@ -66,14 +64,8 @@ const NAV_ITEMS: NavItem[] = [
         icon: TrendingUp,
     },
     {
-        label: "Entradas",
-        description: "Recebíveis e previsões",
-        view: "entradasFinanceiras",
-        icon: Banknote,
-    },
-    {
         label: "Financeiro",
-        description: "Fluxo, DRE e saúde",
+        description: "Entradas, despesas, extrato e resumo",
         view: "financeiro",
         icon: Wallet2,
     },
