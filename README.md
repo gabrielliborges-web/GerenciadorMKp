@@ -835,10 +835,10 @@ Certifique-se de ter instalado:
 
 ```bash
 # 1️⃣ Clone o repositório
-git clone https://github.com/gabrielliborges-web/Desafio-Tech-Front.git
+git clone https://github.com/gabrielliborges-web/mkp-gerencia.git
 
 # 2️⃣ Acesse a pasta do projeto
-cd desafio-tech-front
+cd mkp-gerencia
 
 # 3️⃣ Instale as dependências
 npm install

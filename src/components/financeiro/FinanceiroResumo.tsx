@@ -1,9 +1,23 @@
 import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { TrendingUp, TrendingDown, Wallet, AlertCircle } from "lucide-react";
-import { mockResumoFinanceiro, dadosGraficosReceitasVsDespesas, dadosReceitasPorTipo, dadosDespesasPorTipo } from "../../mocks/financeiroMock";
+import type { Entrada, Despesa, ResumoFinanceiro } from "../../mocks/financeiroMock";
 
-export default function FinanceiroResumo() {
-    const { saldoAtual, receitasMes, despesasMes, lucro } = mockResumoFinanceiro;
+interface FinanceiroResumoProps {
+    entradas: Entrada[];
+    despesas: Despesa[];
+    resumo: ResumoFinanceiro;
+    graficos: {
+        receitasVsDespesas: any[];
+        receitasPorTipo: any[];
+        despesasPorTipo: any[];
+    };
+}
+
+export default function FinanceiroResumo({
+    resumo,
+    graficos,
+}: FinanceiroResumoProps) {
+    const { saldoAtual, receitasMes, despesasMes, lucro } = resumo;
 
     const alertas = [
         despesasMes > receitasMes && {
@@ -109,7 +123,7 @@ export default function FinanceiroResumo() {
                 <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
                     <h3 className="mb-4 text-lg font-semibold text-white">Receitas vs Despesas</h3>
                     <ResponsiveContainer width="100%" height={300}>
-                        <BarChart data={dadosGraficosReceitasVsDespesas}>
+                        <BarChart data={graficos.receitasVsDespesas}>
                             <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
                             <XAxis stroke="rgba(255,255,255,0.5)" />
                             <YAxis stroke="rgba(255,255,255,0.5)" />
@@ -134,7 +148,7 @@ export default function FinanceiroResumo() {
                     <ResponsiveContainer width="100%" height={300}>
                         <PieChart>
                             <Pie
-                                data={dadosReceitasPorTipo}
+                                data={graficos.receitasPorTipo}
                                 cx="50%"
                                 cy="50%"
                                 labelLine={false}
@@ -143,7 +157,7 @@ export default function FinanceiroResumo() {
                                 fill="#8884d8"
                                 dataKey="value"
                             >
-                                {dadosReceitasPorTipo.map((entry, index) => (
+                                {graficos.receitasPorTipo.map((entry: any, index: number) => (
                                     <Cell key={`cell-${index}`} fill={entry.color} />
                                 ))}
                             </Pie>
@@ -165,7 +179,7 @@ export default function FinanceiroResumo() {
                     <ResponsiveContainer width="100%" height={300}>
                         <PieChart>
                             <Pie
-                                data={dadosDespesasPorTipo}
+                                data={graficos.despesasPorTipo}
                                 cx="50%"
                                 cy="50%"
                                 labelLine={false}
@@ -174,7 +188,7 @@ export default function FinanceiroResumo() {
                                 fill="#8884d8"
                                 dataKey="value"
                             >
-                                {dadosDespesasPorTipo.map((entry, index) => (
+                                {graficos.despesasPorTipo.map((entry: any, index: number) => (
                                     <Cell key={`cell-${index}`} fill={entry.color} />
                                 ))}
                             </Pie>

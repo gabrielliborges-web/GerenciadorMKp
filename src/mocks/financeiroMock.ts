@@ -34,6 +34,16 @@ export interface ResumoFinanceiro {
   lucro: number;
 }
 
+export interface AjusteManual {
+  id: number;
+  tipo: "entrada" | "saida";
+  descricao: string;
+  valor: number;
+  data: string;
+  usuarioNome: string;
+  motivo: string;
+}
+
 // Mock Entradas
 export const mockEntradas: Entrada[] = [
   {
@@ -255,4 +265,26 @@ export const tiposDespesa = [
   { id: 4, nome: "Salário" },
   { id: 5, nome: "Marketing" },
   { id: 6, nome: "Outro" },
+];
+
+// Mock para ajustes manuais
+export const mockAjustes: AjusteManual[] = [
+  {
+    id: 1,
+    tipo: "entrada",
+    descricao: "Ajuste de diferença de caixa",
+    valor: 50.0,
+    data: "2025-11-19T16:00:00Z",
+    usuarioNome: "João Silva",
+    motivo: "Conferência de caixa - diferença positiva",
+  },
+  {
+    id: 2,
+    tipo: "saida",
+    descricao: "Crédito do cliente - devolução",
+    valor: 120.0,
+    data: "2025-11-18T14:30:00Z",
+    usuarioNome: "Maria Santos",
+    motivo: "Crédito para compra futura",
+  },
 ];
