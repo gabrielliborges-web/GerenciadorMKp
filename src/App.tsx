@@ -4,6 +4,7 @@ import AppLayout from "./components/layout/AppLayout";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Categorias from "./pages/Categorias";
 import NotFound from "./pages/NotFound";
 import Produtos from "./pages/Produtos";
 import Compras from "./pages/Compras";
@@ -20,6 +21,8 @@ function renderAuthenticatedView(view: AppView) {
       return <Home />;
     case "produtos":
       return <Produtos />;
+    case "categorias":
+      return <Categorias />; // Temporariamente desabilitado
     case "compras":
       return <Compras />;
     case "vendas":
