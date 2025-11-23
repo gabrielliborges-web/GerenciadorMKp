@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import ProdutoFilters from "../components/produtos/ProdutoFilters";
 import ProdutoCard from "../components/produtos/ProdutoCard";
 import ProdutoList from "../components/produtos/ProdutoList";
-import ProdutoFormModal from "../components/produtos/ProdutoFormModal";
+import ProdutoForm from "../components/produtos/ProdutoForm";
 import ProdutoDetailsDrawer from "../components/produtos/ProdutoDetailsDrawer";
 import ProdutoEmpty from "../components/produtos/ProdutoEmpty";
 import ConfirmModal from "../components/common/ConfirmModal";
@@ -20,7 +20,7 @@ export default function ProdutosPage() {
     const [categoriaFilter, setCategoriaFilter] = useState<number | null>(null);
     const [ordenacao, setOrdenacao] = useState<"nome" | "preco" | "estoque">("nome");
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isFormOpen, setIsFormOpen] = useState(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [selectedProdutoId, setSelectedProdutoId] = useState<number | null>(null);
     const [editingProduto, setEditingProduto] = useState<Produto | null>(null);
@@ -102,7 +102,7 @@ export default function ProdutosPage() {
     // Handle create
     const handleCreateProduto = useCallback(() => {
         setEditingProduto(null);
-        setIsModalOpen(true);
+        setIsFormOpen(true);
     }, []);
 
     // Handle edit
@@ -110,7 +110,7 @@ export default function ProdutosPage() {
         const produto = produtos.find((p) => p.id === id);
         if (produto) {
             setEditingProduto(produto);
-            setIsModalOpen(true);
+            setIsFormOpen(true);
         }
     }, [produtos]);
 
@@ -153,7 +153,7 @@ export default function ProdutosPage() {
                     console.log("✅ Produto criado:", newProduto.id);
                 }
 
-                setIsModalOpen(false);
+                setIsFormOpen(false);
                 setEditingProduto(null);
             } catch (error: any) {
                 toast.error(error.message || "Erro ao salvar produto");
@@ -220,6 +220,27 @@ export default function ProdutosPage() {
                     </div>
                     <p className="text-white/60 dark:text-white/60">Carregando produtos...</p>
                 </div>
+            </div>
+        );
+    }
+
+    // Mostrar formulário em tela cheia quando estiver aberto
+    if (isFormOpen) {
+        return (
+            <div className="min-h-screen p-2 lg:p-8">
+                <ProdutoForm
+                    onClose={() => {
+                        setIsFormOpen(false);
+                        setEditingProduto(null);
+                    }}
+                    onSave={handleSaveProduto}
+                    initialData={editingProduto as any}
+                    isLoading={isLoading}
+                    categorias={categorias.map((cat) => ({
+                        id: cat.id,
+                        nome: cat.nome,
+                    }))}
+                />
             </div>
         );
     }
@@ -300,22 +321,6 @@ export default function ProdutosPage() {
                     />
                 </>
             )}
-
-            {/* Modal */}
-            <ProdutoFormModal
-                isOpen={isModalOpen}
-                onClose={() => {
-                    setIsModalOpen(false);
-                    setEditingProduto(null);
-                }}
-                onSave={handleSaveProduto}
-                initialData={editingProduto as any}
-                isLoading={isLoading}
-                categorias={categorias.map((cat) => ({
-                    id: cat.id,
-                    nome: cat.nome,
-                }))}
-            />
 
             {/* Drawer */}
             <ProdutoDetailsDrawer

@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import CategoriaFilters from "../components/categorias/CategoriaFilters";
 import CategoriaCard from "../components/categorias/CategoriaCard";
 import CategoriaTable from "../components/categorias/CategoriaTable";
-import CategoriaModal from "../components/categorias/CategoriaModal";
+import CategoriaForm from "../components/categorias/CategoriaForm";
 import CategoriaDrawer from "../components/categorias/CategoriaDrawer";
 import CategoriaEmptyState from "../components/categorias/CategoriaEmptyState";
 import ConfirmModal from "../components/common/ConfirmModal";
@@ -15,7 +15,7 @@ export default function Categorias() {
     const [categorias, setCategorias] = useState<Categoria[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [statusFilter, setStatusFilter] = useState<"todos" | "ativas" | "inativas">("todos");
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isFormOpen, setIsFormOpen] = useState(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [selectedCategoriaId, setSelectedCategoriaId] = useState<number | null>(null);
     const [editingCategoria, setEditingCategoria] = useState<Categoria | null>(null);
@@ -67,14 +67,14 @@ export default function Categorias() {
 
     const handleCreateCategoria = () => {
         setEditingCategoria(null);
-        setIsModalOpen(true);
+        setIsFormOpen(true);
     };
 
     const handleEditCategoria = (id: number) => {
         const categoria = categorias.find((c) => c.id === id);
         if (categoria) {
             setEditingCategoria(categoria);
-            setIsModalOpen(true);
+            setIsFormOpen(true);
         }
     };
 
@@ -108,7 +108,7 @@ export default function Categorias() {
                 console.log("✅ Categoria criada:", newCategoria.id);
             }
 
-            setIsModalOpen(false);
+            setIsFormOpen(false);
             setEditingCategoria(null);
         } catch (error: any) {
             toast.error(error.message || "Erro ao salvar categoria");
@@ -228,6 +228,26 @@ export default function Categorias() {
         );
     }
 
+    // Mostrar formulário em tela cheia quando estiver aberto
+    if (isFormOpen) {
+        return (
+            <div className="w-full h-auto p-4 sm:p-6 lg:p-8">
+                <CategoriaForm
+                    onClose={() => {
+                        setIsFormOpen(false);
+                        setEditingCategoria(null);
+                    }}
+                    onSave={handleSaveCategoria}
+                    initialData={editingCategoria ? {
+                        ...editingCategoria,
+                        produtosCount: 0
+                    } as any : undefined}
+                    isLoading={isLoading}
+                />
+            </div>
+        );
+    }
+
     return (
         <div className="w-full h-auto p-4 sm:p-6 lg:p-8 space-y-6 lg:space-y-8">
             {/* Header */}
@@ -309,21 +329,6 @@ export default function Categorias() {
                     </div>
                 </>
             )}
-
-            {/* Modal */}
-            <CategoriaModal
-                isOpen={isModalOpen}
-                onClose={() => {
-                    setIsModalOpen(false);
-                    setEditingCategoria(null);
-                }}
-                onSave={handleSaveCategoria}
-                initialData={editingCategoria ? {
-                    ...editingCategoria,
-                    produtosCount: 0
-                } as any : undefined}
-                isLoading={isLoading}
-            />
 
             {/* Drawer */}
             <CategoriaDrawer
