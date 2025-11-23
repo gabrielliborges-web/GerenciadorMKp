@@ -22,7 +22,7 @@ function renderAuthenticatedView(view: AppView) {
     case "produtos":
       return <Produtos />;
     case "categorias":
-      return <Categorias />; // Temporariamente desabilitado
+      return <Categorias />;
     case "compras":
       return <Compras />;
     case "vendas":
@@ -39,18 +39,20 @@ function renderAuthenticatedView(view: AppView) {
 }
 
 function App() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const { currentView, goTo } = useNavigation();
 
   useEffect(() => {
     if (!isAuthenticated && currentView !== "login" && currentView !== "signup") {
       goTo("login");
     }
+  }, [isAuthenticated, currentView, goTo]);
 
-    if (isAuthenticated && (currentView === "login" || currentView === "signup")) {
+  useEffect(() => {
+    if (isAuthenticated && user && (currentView === "login" || currentView === "signup")) {
       goTo("home");
     }
-  }, [currentView, goTo, isAuthenticated]);
+  }, [isAuthenticated, user, currentView, goTo]);
 
   if (!isAuthenticated) {
     return (

@@ -1,361 +1,373 @@
-import { useEffect, useMemo, useState } from "react";
-import { LineChart, LockKeyhole, ShieldCheck, Sparkles } from "lucide-react";
-import FormsFields, {
-    buildInitialValues,
-    type Field,
-} from "../components/common/FormsFields";
-import Button from "../components/common/Button";
+import { useEffect, useState } from "react";
+import { Eye, EyeOff, Lock, Mail, Sparkles, UserPlus } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
+import { useNavigation } from "../context/NavigationContext";
 import toast from "react-hot-toast";
 import { sendResetCode, validateResetCode, resetPassword } from "../lib/passwordReset";
 
-type Step = "login" | "forgot" | "reset";
-
-const stepCopy: Record<Step, { title: string; subtitle: string; helper: string }> = {
-    login: {
-        title: "Acesse sua central",
-        subtitle: "Entre e acompanhe seus resultados, metas e alertas inteligentes em tempo real.",
-        helper: "Credenciais criptografadas com dupla verificação e camadas extras de proteção.",
-    },
-    forgot: {
-        title: "Recupere o acesso",
-        subtitle: "Envie um código seguro para redefinir sua senha com rapidez e tranquilidade.",
-        helper: "Vamos confirmar seu e-mail e garantir que apenas você possa solicitar o código.",
-    },
-    reset: {
-        title: "Defina uma nova senha",
-        subtitle: "Use o código enviado e escolha uma senha forte para voltar ao controle.",
-        helper: "Recomendamos ao menos 8 caracteres, com letras maiúsculas, minúsculas e números.",
-    },
-};
-
 export default function Login() {
     const { login } = useAuth();
+    const { goTo } = useNavigation();
     const [loading, setLoading] = useState(false);
-    const [step, setStep] = useState<Step>("login");
+    const [showPassword, setShowPassword] = useState(false);
+    const [rememberMe, setRememberMe] = useState(false);
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [step, setStep] = useState<"login" | "forgot" | "reset">("login");
+    const [resetEmail, setResetEmail] = useState("");
+    const [resetCode, setResetCode] = useState("");
+    const [newPassword, setNewPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
 
-    const fieldsLogin = useMemo<Field[]>(
-        () => [
-            {
-                internalName: "email",
-                label: "Nome/E-mail",
-                type: "text",
-                value: "",
-                required: true,
-                colSpan: 12,
-            },
-            {
-                internalName: "Senha",
-                label: "Senha",
-                type: "password",
-                value: "",
-                required: true,
-                colSpan: 12,
-            },
-        ],
-        []
-    );
-
-    const fieldsForgot = useMemo<Field[]>(
-        () => [
-            {
-                internalName: "email",
-                label: "E-mail",
-                type: "text",
-                required: true,
-                colSpan: 12,
-            },
-        ],
-        []
-    );
-
-    const fieldsReset = useMemo<Field[]>(
-        () => [
-            {
-                internalName: "email",
-                label: "E-mail",
-                type: "text",
-                required: true,
-                colSpan: 12,
-            },
-            {
-                internalName: "code",
-                label: "Código de Recuperação",
-                type: "text",
-                required: true,
-                colSpan: 12,
-            },
-            {
-                internalName: "newPassword",
-                label: "Nova Senha",
-                type: "password",
-                required: true,
-                colSpan: 12,
-            },
-            {
-                internalName: "confirmPassword",
-                label: "Confirmar Senha",
-                type: "password",
-                required: true,
-                colSpan: 12,
-            },
-        ],
-        []
-    );
-
-    const activeFields = useMemo(() => {
-        if (step === "login") return fieldsLogin;
-        if (step === "forgot") return fieldsForgot;
-        return fieldsReset;
-    }, [fieldsForgot, fieldsLogin, fieldsReset, step]);
-
-    const [formData, setFormData] = useState(() => buildInitialValues(fieldsLogin));
-
+    // Restaurar credenciais ao carregar se "Lembre de mim" estava ativado
     useEffect(() => {
-        const baseValues = buildInitialValues(activeFields);
-        setFormData((prev) => ({ ...baseValues, ...prev }));
-    }, [activeFields]);
+        const savedEmail = localStorage.getItem("mkp:rememberedEmail");
+        if (savedEmail) {
+            setEmail(savedEmail);
+            setRememberMe(true);
+        }
+    }, []);
 
-    const clearSensitiveFields = () => {
-        setFormData((prev) => ({
-            ...prev,
-            Senha: "",
-            newPassword: "",
-            confirmPassword: "",
-            code: "",
-        }));
-    };
-
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleLoginSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
 
         try {
-            if (step === "login") {
-                if (!formData.email || !formData.Senha) {
-                    toast.error("Preencha todos os campos obrigatórios");
-                    return;
-                }
-
-                await login({
-                    email: formData.email,
-                    senha: formData.Senha,
-                });
+            if (!email || !password) {
+                toast.error("Preencha todos os campos");
+                return;
             }
 
-            if (step === "forgot") {
-                if (!formData.email) {
-                    toast.error("Informe o e-mail para enviar o código");
-                    return;
-                }
+            await login({
+                email,
+                senha: password,
+            });
 
-                await sendResetCode(formData.email);
-                toast.success("Código enviado para o seu e-mail!");
-                setStep("reset");
-            }
-
-            if (step === "reset") {
-                const { email, code, newPassword, confirmPassword } = formData;
-
-                if (!email || !code || !newPassword || !confirmPassword) {
-                    toast.error("Preencha todos os campos obrigatórios");
-                    return;
-                }
-
-                if (newPassword !== confirmPassword) {
-                    toast.error("As senhas não coincidem");
-                    return;
-                }
-
-                await validateResetCode(email, code);
-                await resetPassword(email, code, newPassword);
-                toast.success("Senha redefinida com sucesso!");
-
-                clearSensitiveFields();
-                setStep("login");
+            // Salvar email se "Lembre de mim" estiver ativado
+            if (rememberMe) {
+                localStorage.setItem("mkp:rememberedEmail", email);
+            } else {
+                localStorage.removeItem("mkp:rememberedEmail");
             }
         } catch (error: any) {
             console.error(error);
-            toast.error(error?.message || "Erro ao processar solicitação");
+            toast.error(error?.message || "Erro ao fazer login");
         } finally {
             setLoading(false);
         }
     };
 
-    const heroHighlights = [
-        {
-            label: "Carteiras guiadas",
-            value: "124",
-            detail: "+18% neste trimestre",
-        },
-        {
-            label: "Fluxo monitorado",
-            value: "R$ 540k",
-            detail: "Alertas diários ativos",
-        },
-        {
-            label: "Metas concluídas",
-            value: "92%",
-            detail: "Planos com progresso contínuo",
-        },
-    ];
+    const handleForgotSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
 
-    const actionLabel =
-        step === "login"
-            ? "Entrar"
-            : step === "forgot"
-                ? "Enviar código"
-                : "Redefinir senha";
+        try {
+            if (!resetEmail) {
+                toast.error("Informe seu e-mail");
+                return;
+            }
+            await sendResetCode(resetEmail);
+            toast.success("Código enviado para seu e-mail!");
+            setStep("reset");
+        } catch (error: any) {
+            console.error(error);
+            toast.error(error?.message || "Erro ao enviar código");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleResetSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+
+        try {
+            if (!resetCode || !newPassword || !confirmPassword) {
+                toast.error("Preencha todos os campos");
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                toast.error("As senhas não coincidem");
+                return;
+            }
+
+            await validateResetCode(resetEmail, resetCode);
+            await resetPassword(resetEmail, resetCode, newPassword);
+            toast.success("Senha redefinida com sucesso!");
+            setStep("login");
+            setResetEmail("");
+            setResetCode("");
+            setNewPassword("");
+            setConfirmPassword("");
+        } catch (error: any) {
+            console.error(error);
+            toast.error(error?.message || "Erro ao redefinir senha");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
-        <div className="relative min-h-screen w-full overflow-hidden bg-[#08050c]">
+        <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-[#08050c] via-[#0f0615] to-[#08050c] dark:from-[#08050c] dark:via-[#0f0615] dark:to-[#08050c] from-white via-[#f9ecff] to-[#f6ddff]">
+            {/* Efeitos de fundo animados */}
             <div className="pointer-events-none absolute inset-0">
-                <div className="absolute -top-32 right-0 h-[420px] w-[420px] rounded-full bg-gradient-to-br from-[#ffe1f6]/40 via-[#d6c6ff]/35 to-transparent blur-[120px] opacity-80 animate-soft-pulse" />
-                <div className="absolute -bottom-10 left-0 h-[360px] w-[360px] rounded-full bg-gradient-to-br from-[#f7d4ff]/50 via-[#f9b9d0]/40 to-transparent blur-[120px] opacity-70 animate-soft-orbit" />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#1a1430_0%,#08050c_55%)]" />
+                {/* Dark mode blobs */}
+                <div className="dark:absolute hidden dark:block -top-40 -right-40 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-[#ffa8d5]/30 via-[#c77dff]/20 to-transparent blur-[150px] opacity-70 animate-blob" />
+                <div className="dark:absolute hidden dark:block -bottom-40 -left-40 h-[500px] w-[500px] rounded-full bg-gradient-to-tr from-[#7209b7]/25 via-[#3c096c]/15 to-transparent blur-[150px] opacity-60 animate-blob animation-delay-2000" />
+                <div className="dark:absolute hidden dark:block top-1/2 left-1/2 h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-br from-white/5 via-[#f0cfff]/10 to-transparent blur-[120px]" />
+
+                {/* Light mode blobs */}
+                <div className="absolute -top-40 -right-40 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-[#d8b6ef]/40 via-[#f0b5d8]/30 to-transparent blur-[150px] opacity-60 animate-blob dark:hidden" />
+                <div className="absolute -bottom-40 -left-40 h-[500px] w-[500px] rounded-full bg-gradient-to-tr from-[#c77dff]/30 via-[#e5b8ff]/20 to-transparent blur-[150px] opacity-50 animate-blob animation-delay-2000 dark:hidden" />
+                <div className="absolute top-1/2 left-1/2 h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-br from-[#f0cfff]/30 via-white/40 to-transparent blur-[120px] dark:hidden" />
             </div>
 
-            <div className="relative z-10 flex min-h-screen items-center px-4 py-12 sm:px-8">
-                <div className="grid w-full max-w-6xl gap-8 lg:grid-cols-[1.05fr_0.95fr] xl:gap-12">
-                    <section className="rounded-[32px] border border-white/10 bg-white/5 p-8 text-white shadow-[0_30px_120px_-50px_rgba(255,192,203,0.8)] backdrop-blur-3xl animate-fade-slide">
-                        <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs tracking-[0.3em] uppercase text-white/70">
-                            <Sparkles className="h-4 w-4 text-[#ffd9f7]" />
-                            Equilíbrio & Luxo
+            {/* Conteúdo */}
+            <div className="relative z-10 flex min-h-screen items-center justify-center px-4 py-8">
+                <div className="w-full max-w-md">
+                    {/* Logo e Título */}
+                    <div className="mb-8 text-center">
+                        <div className="mb-4 flex justify-center">
+                            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#f0b5d8] via-[#d4a9ff] to-[#c77dff] shadow-lg shadow-[#c77dff]/50 dark:from-[#f0b5d8] dark:via-[#d4a9ff] dark:to-[#c77dff]">
+                                <Sparkles className="h-6 w-6 text-white" />
+                            </div>
                         </div>
+                        <h1 className="text-3xl font-bold text-white dark:text-white from-[#2a143c] dark:from-white">MKP Finanças</h1>
+                        <p className="mt-2 text-sm text-white/60 dark:text-white/60 text-[#7c547b]">Controle elegante de suas finanças</p>
+                    </div>
 
-                        <h1 className="mt-6 text-3xl font-semibold leading-tight text-white sm:text-4xl">
-                            Controle financeiro com delicadeza e potência feminina.
-                        </h1>
-                        <p className="mt-4 text-base text-white/80">
-                            Visualize ativos, acompanhe metas e receba alertas inteligentes em um ambiente acolhedor, sofisticado e pensado para quem lidera suas finanças com sensibilidade e estratégia.
-                        </p>
+                    {/* Card Principal */}
+                    <div className="relative rounded-[28px] border border-white/15 dark:border-white/15 bg-white/10 dark:bg-white/10 p-8 shadow-2xl backdrop-blur-xl dark:bg-[#0f0615]/95 dark:border-white/5 bg-white/95 border-white/20">
+                        <div className="absolute inset-0 rounded-[28px] bg-gradient-to-br from-white/5 dark:from-white/5 to-transparent opacity-50" />
 
-                        <div className="mt-10 grid gap-4 lg:gap-6">
-                            <div className="rounded-[24px] border border-white/20 bg-white/10 p-6 backdrop-blur-xl transition duration-500 hover:-translate-y-1">
-                                <div className="flex items-center justify-between text-sm text-white/80">
-                                    <span>Performance consolidada</span>
-                                    <LineChart className="h-5 w-5 text-[#f6d4ff]" />
-                                </div>
-                                <div className="mt-6 flex items-end gap-4">
+                        <div className="relative z-10">
+                            {step === "login" && (
+                                <form onSubmit={handleLoginSubmit} className="space-y-5">
                                     <div>
-                                        <p className="text-4xl font-semibold text-white">+32,4%</p>
-                                        <p className="text-sm text-white/80">rendimentos nos últimos 12 meses</p>
-                                    </div>
-                                    <div className="flex-1">
-                                        <div className="h-20 w-full rounded-2xl bg-gradient-to-tr from-[#ffd6ec]/50 via-[#f0cfff]/60 to-white/15 p-3">
-                                            <div className="h-full w-full rounded-xl bg-white/10">
-                                                <div className="h-full w-full animate-soft-graph rounded-xl bg-gradient-to-r from-[#f0b5d8] via-[#d4a9ff] to-[#fce1ff]/80" />
-                                            </div>
+                                        <label className="block text-sm font-medium text-white/80 dark:text-white/80 text-[#2a143c] mb-2">
+                                            E-mail
+                                        </label>
+                                        <div className="relative">
+                                            <Mail className="absolute left-3 top-3.5 h-5 w-5 text-white/40 dark:text-white/40 text-[#a260c4]" />
+                                            <input
+                                                type="email"
+                                                value={email}
+                                                onChange={(e) => setEmail(e.target.value)}
+                                                placeholder="seu@email.com"
+                                                className="w-full rounded-xl border border-white/20 dark:border-white/20 bg-white/10 dark:bg-white/10 py-2.5 pl-10 pr-4 text-white dark:text-white placeholder-white/40 dark:placeholder-white/40 transition focus:border-[#f0b5d8] dark:focus:border-[#f0b5d8] focus:outline-none focus:ring-1 focus:ring-[#f0b5d8] dark:focus:ring-[#f0b5d8] border-white/30 dark:border-white/20 bg-white/60 dark:bg-white/10 text-[#1a0f2b] dark:text-white placeholder-[#8e7fa3]"
+                                            />
                                         </div>
                                     </div>
-                                </div>
-                            </div>
 
-                            <div className="grid gap-3 sm:grid-cols-3">
-                                {heroHighlights.map((card) => (
-                                    <div
-                                        key={card.label}
-                                        className="rounded-2xl border border-white/15 bg-white/5 p-4 text-white/80 backdrop-blur-xl transition duration-500 hover:-translate-y-1"
+                                    <div>
+                                        <label className="block text-sm font-medium text-white/80 dark:text-white/80 text-[#2a143c] mb-2">
+                                            Senha
+                                        </label>
+                                        <div className="relative">
+                                            <Lock className="absolute left-3 top-3.5 h-5 w-5 text-white/40 dark:text-white/40 text-[#a260c4]" />
+                                            <input
+                                                type={showPassword ? "text" : "password"}
+                                                value={password}
+                                                onChange={(e) => setPassword(e.target.value)}
+                                                placeholder="••••••••"
+                                                className="w-full rounded-xl border border-white/20 dark:border-white/20 bg-white/10 dark:bg-white/10 py-2.5 pl-10 pr-10 text-white dark:text-white placeholder-white/40 dark:placeholder-white/40 transition focus:border-[#f0b5d8] dark:focus:border-[#f0b5d8] focus:outline-none focus:ring-1 focus:ring-[#f0b5d8] dark:focus:ring-[#f0b5d8] border-white/30 dark:border-white/20 bg-white/60 dark:bg-white/10 text-[#1a0f2b] dark:text-white placeholder-[#8e7fa3]"
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => setShowPassword(!showPassword)}
+                                                className="absolute right-3 top-3.5 text-white/40 dark:text-white/40 hover:text-white/60 dark:hover:text-white/60 transition text-[#a260c4] dark:text-[#a260c4] hover:text-[#c77dff] dark:hover:text-[#c77dff]"
+                                            >
+                                                {showPassword ? (
+                                                    <EyeOff className="h-5 w-5" />
+                                                ) : (
+                                                    <Eye className="h-5 w-5" />
+                                                )}
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-center justify-between">
+                                        <label className="flex items-center gap-2 cursor-pointer">
+                                            <input
+                                                type="checkbox"
+                                                checked={rememberMe}
+                                                onChange={(e) => setRememberMe(e.target.checked)}
+                                                className="h-4 w-4 rounded border-white/30 dark:border-white/30 bg-white/10 dark:bg-white/10 text-[#f0b5d8] dark:text-[#f0b5d8] focus:ring-[#f0b5d8] dark:focus:ring-[#f0b5d8] border-[#d8b6ef] dark:border-white/20 bg-white/60 dark:bg-white/10 text-[#c77dff] dark:text-[#c77dff]"
+                                            />
+                                            <span className="text-sm text-white/70 dark:text-white/70 text-[#7c547b]">Lembre de mim</span>
+                                        </label>
+                                        <button
+                                            type="button"
+                                            onClick={() => setStep("forgot")}
+                                            className="text-sm text-[#f0b5d8] dark:text-[#f0b5d8] hover:text-[#ffc0e0] dark:hover:text-[#ffc0e0] transition text-[#c77dff] dark:text-[#f0b5d8] hover:text-[#9d4d9b]"
+                                        >
+                                            Esqueci a senha
+                                        </button>
+                                    </div>
+
+                                    <button
+                                        type="submit"
+                                        disabled={loading}
+                                        className="w-full h-11 mt-6 rounded-xl font-semibold text-white bg-gradient-to-r from-[#f0b5d8] via-[#d4a9ff] to-[#c77dff] dark:from-[#f0b5d8] dark:via-[#d4a9ff] dark:to-[#c77dff] shadow-lg shadow-[#f0b5d8]/50 dark:shadow-[#f0b5d8]/50 hover:shadow-[#f0b5d8]/70 dark:hover:shadow-[#f0b5d8]/70 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed from-[#c77dff] dark:from-[#f0b5d8] to-[#b567e0] dark:to-[#c77dff]"
                                     >
-                                        <p className="text-xs uppercase tracking-wide text-white/70">{card.label}</p>
-                                        <p className="mt-2 text-2xl font-semibold text-white">{card.value}</p>
-                                        <p className="text-sm">{card.detail}</p>
+                                        {loading ? "Entrando..." : "Entrar"}
+                                    </button>
+
+                                    <div className="relative mt-6">
+                                        <div className="absolute inset-0 flex items-center">
+                                            <div className="w-full border-t border-white/10 dark:border-white/10 border-[#e8d9f1]" />
+                                        </div>
+                                        <div className="relative flex justify-center text-sm">
+                                            <span className="bg-white/10 dark:bg-white/10 px-2 text-white/60 dark:text-white/60 bg-white/80 dark:bg-[#0f0615] text-[#7c547b] dark:text-white/60">Novo por aqui?</span>
+                                        </div>
                                     </div>
-                                ))}
-                            </div>
-                        </div>
 
-                        <div className="mt-10 flex flex-wrap gap-3 text-sm text-white/80">
-                            <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2">
-                                <ShieldCheck className="h-4 w-4 text-[#ffd9f7]" />
-                                Proteção multicamada
-                            </span>
-                            <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2">
-                                <Sparkles className="h-4 w-4 text-[#ffd9f7]" />
-                                Insights em tempo real
-                            </span>
-                            <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2">
-                                <LineChart className="h-4 w-4 text-[#ffd9f7]" />
-                                Crescimento progressivo
-                            </span>
-                        </div>
-                    </section>
+                                    <button
+                                        type="button"
+                                        onClick={() => goTo("signup")}
+                                        className="w-full h-11 mt-4 rounded-xl border border-white/20 dark:border-white/20 bg-white/5 dark:bg-white/5 font-semibold text-white dark:text-white hover:bg-white/10 dark:hover:bg-white/10 hover:border-white/30 dark:hover:border-white/30 transition flex items-center justify-center gap-2 border-[#d8b6ef] dark:border-white/20 bg-white/20 dark:bg-white/5 text-[#2a143c] dark:text-white hover:bg-white/30 dark:hover:bg-white/10"
+                                    >
+                                        <UserPlus className="h-5 w-5" />
+                                        Criar conta
+                                    </button>
+                                </form>
+                            )}
 
-                    <section className="relative rounded-[32px] border border-white/15 bg-white/95 text-[#1f1328] shadow-[0_35px_90px_-45px_rgba(84,52,107,0.8)] backdrop-blur-xl dark:border-white/10 dark:bg-[#1b1324]/90 dark:text-white">
-                        <div className="absolute inset-0 rounded-[32px] bg-gradient-to-br from-white/80 via-transparent to-[#f8e5ff]/60 opacity-90 dark:from-white/5 dark:via-transparent dark:to-[#2d1a3a]" />
-                        <div className="absolute inset-0 rounded-[32px] border border-white/50 dark:border-white/10" />
-                        <div className="relative z-10 flex h-full flex-col px-6 py-8 sm:px-10">
-                            <div className="flex items-start justify-between gap-4">
-                                <div>
-                                    <p className="text-xs font-semibold uppercase tracking-[0.4em] text-[#b58cd6]">
-                                        {step === "login" ? "Sessão segura" : "Assistente de acesso"}
-                                    </p>
-                                    <h2 className="mt-3 text-3xl font-semibold text-[#2a183b] dark:text-white">
-                                        {stepCopy[step].title}
-                                    </h2>
-                                    <p className="mt-2 text-sm text-[#72507a] dark:text-white/80">
-                                        {stepCopy[step].subtitle}
-                                    </p>
-                                </div>
-                                <div className="rounded-2xl border border-white/60 bg-white/80 p-3 text-[#a260c4] shadow-lg animate-soft-bounce">
-                                    <LockKeyhole className="h-6 w-6" />
-                                </div>
-                            </div>
-
-                            <div className="mt-6 rounded-2xl border border-[#f2dcff] bg-white/70 p-4 text-sm text-[#6f4d7e] shadow-inner dark:border-white/10 dark:bg-white/5 dark:text-white/75">
-                                {stepCopy[step].helper}
-                            </div>
-
-                            <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-5">
-                                <FormsFields fields={activeFields} values={formData} setValues={setFormData} />
-
-                                <div className="flex flex-wrap items-center justify-between gap-3 text-sm">
-                                    {step === "login" ? (
-                                        <button
-                                            type="button"
-                                            onClick={() => {
-                                                clearSensitiveFields();
-                                                setStep("forgot");
-                                            }}
-                                            className="text-primary-dark-7 transition hover:text-primary-dark-9 hover:underline dark:text-primary-dark-9"
-                                        >
-                                            Esqueci minha senha
-                                        </button>
-                                    ) : (
-                                        <button
-                                            type="button"
-                                            onClick={() => {
-                                                clearSensitiveFields();
-                                                setStep("login");
-                                            }}
-                                            className="text-primary-dark-7 transition hover:text-primary-dark-9 hover:underline dark:text-primary-dark-9"
-                                        >
-                                            Voltar ao login
-                                        </button>
-                                    )}
-
-                                    <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-[#b884c9] dark:text-[#d8b1f1]">
-                                        <ShieldCheck className="h-4 w-4" />
-                                        Protegido
+                            {step === "forgot" && (
+                                <form onSubmit={handleForgotSubmit} className="space-y-5">
+                                    <div className="mb-6">
+                                        <h2 className="text-xl font-semibold text-white dark:text-white text-[#2a143c]">Recuperar acesso</h2>
+                                        <p className="text-sm text-white/60 dark:text-white/60 mt-1 text-[#7c547b]">Enviaremos um código para seu e-mail</p>
                                     </div>
-                                </div>
 
-                                <Button
-                                    variant="primary"
-                                    className="mt-2 h-12 w-full rounded-2xl text-base font-semibold tracking-wide shadow-[0_25px_45px_-25px_rgba(142,78,198,0.9)] transition-all duration-300 hover:-translate-y-0.5"
-                                    isLoading={loading}
-                                >
-                                    {actionLabel}
-                                </Button>
+                                    <div>
+                                        <label className="block text-sm font-medium text-white/80 dark:text-white/80 mb-2 text-[#2a143c]">
+                                            E-mail
+                                        </label>
+                                        <div className="relative">
+                                            <Mail className="absolute left-3 top-3.5 h-5 w-5 text-white/40 dark:text-white/40 text-[#a260c4]" />
+                                            <input
+                                                type="email"
+                                                value={resetEmail}
+                                                onChange={(e) => setResetEmail(e.target.value)}
+                                                placeholder="seu@email.com"
+                                                className="w-full rounded-xl border border-white/20 dark:border-white/20 bg-white/10 dark:bg-white/10 py-2.5 pl-10 pr-4 text-white dark:text-white placeholder-white/40 dark:placeholder-white/40 transition focus:border-[#f0b5d8] dark:focus:border-[#f0b5d8] focus:outline-none focus:ring-1 focus:ring-[#f0b5d8] dark:focus:ring-[#f0b5d8] border-white/30 dark:border-white/20 bg-white/60 dark:bg-white/10 text-[#1a0f2b] dark:text-white placeholder-[#8e7fa3]"
+                                            />
+                                        </div>
+                                    </div>
 
-                                <p className="text-center text-xs text-[#82618c] dark:text-white/70">
-                                    Ao continuar, você concorda em manter seus dados atualizados e seguros. Transparência e autonomia guiando cada decisão.
-                                </p>
-                            </form>
+                                    <button
+                                        type="submit"
+                                        disabled={loading}
+                                        className="w-full h-11 rounded-xl font-semibold text-white bg-gradient-to-r from-[#f0b5d8] via-[#d4a9ff] to-[#c77dff] dark:from-[#f0b5d8] dark:via-[#d4a9ff] dark:to-[#c77dff] shadow-lg shadow-[#f0b5d8]/50 dark:shadow-[#f0b5d8]/50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed from-[#c77dff] dark:from-[#f0b5d8] to-[#b567e0] dark:to-[#c77dff]"
+                                    >
+                                        {loading ? "Enviando..." : "Enviar código"}
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        onClick={() => setStep("login")}
+                                        className="w-full text-sm text-white/60 dark:text-white/60 hover:text-white/80 dark:hover:text-white/80 transition py-2 text-[#7c547b] dark:text-white/60 hover:text-[#5a3d68]"
+                                    >
+                                        Voltar ao login
+                                    </button>
+                                </form>
+                            )}
+
+                            {step === "reset" && (
+                                <form onSubmit={handleResetSubmit} className="space-y-4">
+                                    <div className="mb-6">
+                                        <h2 className="text-xl font-semibold text-white dark:text-white text-[#2a143c]">Redefinir senha</h2>
+                                        <p className="text-sm text-white/60 dark:text-white/60 mt-1 text-[#7c547b]">Insira o código e a nova senha</p>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-white/80 dark:text-white/80 mb-2 text-[#2a143c]">
+                                            Código de recuperação
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={resetCode}
+                                            onChange={(e) => setResetCode(e.target.value)}
+                                            placeholder="Código de 6 dígitos"
+                                            className="w-full rounded-xl border border-white/20 dark:border-white/20 bg-white/10 dark:bg-white/10 py-2.5 px-4 text-white dark:text-white placeholder-white/40 dark:placeholder-white/40 transition focus:border-[#f0b5d8] dark:focus:border-[#f0b5d8] focus:outline-none focus:ring-1 focus:ring-[#f0b5d8] dark:focus:ring-[#f0b5d8] border-white/30 dark:border-white/20 bg-white/60 dark:bg-white/10 text-[#1a0f2b] dark:text-white placeholder-[#8e7fa3]"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-white/80 dark:text-white/80 mb-2 text-[#2a143c]">
+                                            Nova senha
+                                        </label>
+                                        <div className="relative">
+                                            <Lock className="absolute left-3 top-3.5 h-5 w-5 text-white/40 dark:text-white/40 text-[#a260c4]" />
+                                            <input
+                                                type="password"
+                                                value={newPassword}
+                                                onChange={(e) => setNewPassword(e.target.value)}
+                                                placeholder="••••••••"
+                                                className="w-full rounded-xl border border-white/20 dark:border-white/20 bg-white/10 dark:bg-white/10 py-2.5 pl-10 pr-4 text-white dark:text-white placeholder-white/40 dark:placeholder-white/40 transition focus:border-[#f0b5d8] dark:focus:border-[#f0b5d8] focus:outline-none focus:ring-1 focus:ring-[#f0b5d8] dark:focus:ring-[#f0b5d8] border-white/30 dark:border-white/20 bg-white/60 dark:bg-white/10 text-[#1a0f2b] dark:text-white placeholder-[#8e7fa3]"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-white/80 dark:text-white/80 mb-2 text-[#2a143c]">
+                                            Confirmar senha
+                                        </label>
+                                        <div className="relative">
+                                            <Lock className="absolute left-3 top-3.5 h-5 w-5 text-white/40 dark:text-white/40 text-[#a260c4]" />
+                                            <input
+                                                type="password"
+                                                value={confirmPassword}
+                                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                                placeholder="••••••••"
+                                                className="w-full rounded-xl border border-white/20 dark:border-white/20 bg-white/10 dark:bg-white/10 py-2.5 pl-10 pr-4 text-white dark:text-white placeholder-white/40 dark:placeholder-white/40 transition focus:border-[#f0b5d8] dark:focus:border-[#f0b5d8] focus:outline-none focus:ring-1 focus:ring-[#f0b5d8] dark:focus:ring-[#f0b5d8] border-white/30 dark:border-white/20 bg-white/60 dark:bg-white/10 text-[#1a0f2b] dark:text-white placeholder-[#8e7fa3]"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <button
+                                        type="submit"
+                                        disabled={loading}
+                                        className="w-full h-11 rounded-xl font-semibold text-white bg-gradient-to-r from-[#f0b5d8] via-[#d4a9ff] to-[#c77dff] dark:from-[#f0b5d8] dark:via-[#d4a9ff] dark:to-[#c77dff] shadow-lg shadow-[#f0b5d8]/50 dark:shadow-[#f0b5d8]/50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed mt-6 from-[#c77dff] dark:from-[#f0b5d8] to-[#b567e0] dark:to-[#c77dff]"
+                                    >
+                                        {loading ? "Redefinindo..." : "Redefinir senha"}
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        onClick={() => setStep("login")}
+                                        className="w-full text-sm text-white/60 dark:text-white/60 hover:text-white/80 dark:hover:text-white/80 transition py-2 text-[#7c547b] dark:text-white/60 hover:text-[#5a3d68]"
+                                    >
+                                        Voltar ao login
+                                    </button>
+                                </form>
+                            )}
                         </div>
-                    </section>
+                    </div>
+
+                    {/* Footer */}
+                    <div className="mt-6 text-center text-xs text-white/50 dark:text-white/50 text-[#8e7fa3]">
+                        <p>Seus dados estão protegidos com criptografia de ponta a ponta</p>
+                    </div>
                 </div>
             </div>
+
+            {/* Estilo de animação customizada */}
+            <style>{`
+                @keyframes blob {
+                    0%, 100% { transform: translate(0, 0) scale(1); }
+                    33% { transform: translate(30px, -30px) scale(1.1); }
+                    66% { transform: translate(-20px, 20px) scale(0.9); }
+                }
+                .animate-blob {
+                    animation: blob 7s infinite;
+                }
+                .animation-delay-2000 {
+                    animation-delay: 2s;
+                }
+            `}</style>
         </div>
     );
 }

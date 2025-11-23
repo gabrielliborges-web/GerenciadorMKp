@@ -76,8 +76,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         goTo("login");
     };
 
-    // const isAuthenticated = !!user;
-    const isAuthenticated = true
+    const isAuthenticated = !!user;
 
 
     return (

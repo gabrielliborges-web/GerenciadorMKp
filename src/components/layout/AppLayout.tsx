@@ -181,6 +181,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
                             <button
                                 type="button"
                                 onClick={toggleTheme}
+                                disabled
                                 className="flex-1 flex items-center justify-center rounded-2xl bg-white/10 p-2.5 text-white transition-all duration-300 hover:bg-white/15"
                             >
                                 {isDark ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}

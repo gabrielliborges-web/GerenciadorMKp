@@ -6,11 +6,13 @@ export function useTheme() {
   const { user, setUser } = useAuth();
 
   const [isDark, setIsDark] = useState<boolean>(() => {
+    // Prioridade: 1) Tema do usuário, 2) LocalStorage, 3) Dark como padrão
     if (user?.theme) return user?.theme === "DARK";
 
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme) return savedTheme === "dark";
 
+    // Dark é o tema padrão
     return true;
   });
 
@@ -25,6 +27,20 @@ export function useTheme() {
       localStorage.setItem("theme", "light");
     }
   }, [isDark]);
+
+  // Garante que dark seja aplicado na inicialização
+  useEffect(() => {
+    const root = document.documentElement;
+    const savedTheme = localStorage.getItem("theme");
+    const theme = savedTheme === "light" ? "light" : "dark";
+
+    if (theme === "dark") {
+      root.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      root.classList.remove("dark");
+    }
+  }, []);
 
   useEffect(() => {
     if (user?.theme) setIsDark(user?.theme === "DARK");
