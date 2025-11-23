@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback, useEffect } from "react";
-import { Plus, RefreshCw, ShoppingCart, Loader } from "lucide-react";
+import { Plus, RefreshCw, ShoppingCart, Loader, Package } from "lucide-react";
 import toast from "react-hot-toast";
 import ComprasFilters from "../components/compras/ComprasFilters";
 import ComprasTable from "../components/compras/ComprasTable";
@@ -206,6 +206,10 @@ export default function Compras() {
         setDataFim("");
     }, []);
 
+    // Calculate KPIs
+    const totalComprasCount = filteredCompras.length;
+    const totalValor = filteredCompras.reduce((sum, c) => sum + c.total, 0);
+
     return (
         <div className="min-h-screen p-2 lg:p-8">
             {/* Loading Spinner */}
@@ -221,29 +225,48 @@ export default function Compras() {
             {/* Header */}
             <div className="mb-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
                 <div>
-                    <h1 className="text-3xl font-bold text-white lg:text-4xl">Compras</h1>
-                    <p className="mt-2 text-white/60">
-                        {filteredCompras.length} compra{filteredCompras.length !== 1 ? "s" : ""}{" "}
-                        encontrada{filteredCompras.length !== 1 ? "s" : ""}
-                    </p>
+                    <div className="mb-2 flex items-center gap-3">
+                        <div className="rounded-xl bg-gradient-to-br from-primary-500/30 to-primary-600/20 p-2.5">
+                            <Package className="h-6 w-6 text-primary-400" />
+                        </div>
+                        <h1 className="text-3xl font-bold text-white lg:text-4xl">Compras</h1>
+                    </div>
+                    <p className="mt-2 text-white/60">Gerencie suas compras e estoque</p>
                 </div>
                 <div className="flex w-full gap-3 sm:w-auto">
                     <button
                         onClick={handleRefresh}
                         disabled={isLoading}
-                        className="flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 font-semibold text-white/70 transition-all duration-300 hover:bg-white/5 hover:text-white disabled:opacity-50"
+                        className="flex items-center gap-2 rounded-xl border border-white/20 bg-white/5 px-4 py-2.5 font-medium text-white transition-all hover:bg-white/10 disabled:opacity-50"
                     >
                         <RefreshCw className="h-4 w-4" />
-                        <span className="hidden sm:inline">Recarregar</span>
+                        <span className="hidden sm:inline">Atualizar</span>
                     </button>
                     <button
                         onClick={handleNovaCompra}
                         disabled={isLoading}
-                        className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-primary-600 to-primary-700 px-4 py-2 font-semibold text-white transition-all duration-300 hover:shadow-lg hover:shadow-primary-500/50 disabled:opacity-50"
+                        className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-primary-600 to-primary-700 px-4 py-2.5 font-medium text-white shadow-lg transition-all hover:shadow-xl hover:scale-[1.01] active:scale-95 disabled:opacity-50"
                     >
                         <Plus className="h-4 w-4" />
                         <span className="hidden sm:inline">Nova Compra</span>
                     </button>
+                </div>
+            </div>
+
+            {/* KPI Cards */}
+            <div className="mb-8 grid gap-4 sm:grid-cols-2">
+                <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-white/[0.02] p-4 backdrop-blur-sm">
+                    <p className="text-sm font-medium text-white/70">Total de Compras</p>
+                    <p className="text-3xl font-bold text-white">{totalComprasCount}</p>
+                    <p className="mt-2 text-xs text-white/50">neste período</p>
+                </div>
+
+                <div className="rounded-2xl border border-primary-600/30 bg-gradient-to-br from-primary-600/10 to-primary-700/5 p-4 backdrop-blur-sm">
+                    <p className="text-sm font-medium text-white/70">Total Investido</p>
+                    <p className="text-3xl font-bold text-primary-400">
+                        R$ {totalValor.toFixed(2)}
+                    </p>
+                    <p className="mt-2 text-xs text-white/50">período selecionado</p>
                 </div>
             </div>
 
