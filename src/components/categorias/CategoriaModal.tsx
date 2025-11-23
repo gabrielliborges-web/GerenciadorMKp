@@ -1,14 +1,13 @@
 import { X } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Input from "../common/Input";
 import Textarea from "../common/Textarea";
-import type { Categoria } from "../../mocks/categoriasMock";
 
 interface CategoriaModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onSave: (data: Omit<Categoria, "id" | "dataCriacao" | "dataAtualizacao">) => void;
-    initialData?: Categoria;
+    onSave: (data: { nome: string; descricao?: string; ativo?: boolean }) => void;
+    initialData?: { nome: string; descricao?: string; ativo: boolean; id?: number };
     isLoading?: boolean;
 }
 
@@ -20,11 +19,27 @@ export default function CategoriaModal({
     isLoading = false,
 }: CategoriaModalProps) {
     const [formData, setFormData] = useState({
-        nome: initialData?.nome || "",
-        descricao: initialData?.descricao || "",
-        produtosCount: initialData?.produtosCount || 0,
-        ativo: initialData?.ativo ?? true,
-    }); const [errors, setErrors] = useState<{ [key: string]: string }>({});
+        nome: "",
+        descricao: "",
+        ativo: true,
+    });
+    const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+    useEffect(() => {
+        if (initialData) {
+            setFormData({
+                nome: initialData.nome,
+                descricao: initialData.descricao || "",
+                ativo: initialData.ativo,
+            });
+        } else {
+            setFormData({
+                nome: "",
+                descricao: "",
+                ativo: true,
+            });
+        }
+    }, [initialData, isOpen]);
 
     const validateForm = () => {
         const newErrors: { [key: string]: string } = {};
@@ -45,14 +60,12 @@ export default function CategoriaModal({
         onSave({
             nome: formData.nome,
             descricao: formData.descricao,
-            produtosCount: formData.produtosCount,
             ativo: formData.ativo,
         });
 
         setFormData({
             nome: "",
             descricao: "",
-            produtosCount: 0,
             ativo: true,
         });
         setErrors({});
@@ -62,7 +75,6 @@ export default function CategoriaModal({
         setFormData({
             nome: "",
             descricao: "",
-            produtosCount: 0,
             ativo: true,
         });
         setErrors({});
@@ -122,7 +134,7 @@ export default function CategoriaModal({
                                     setFormData({ ...formData, nome: e.target.value });
                                     if (errors.nome) setErrors({ ...errors, nome: "" });
                                 }}
-                                placeholder="Ex: Bebidas"
+                                placeholder="Ex: Roupas"
                                 disabled={isLoading}
                                 className={errors.nome ? "border-red-500" : ""}
                             />

@@ -1,4 +1,3 @@
-import type { Response } from "../types/api";
 import { api } from "./api";
 
 // Types
@@ -14,18 +13,20 @@ export interface Categoria {
 export interface CreateCategoriaRequest {
   nome: string;
   descricao?: string;
+  ativo?: boolean;
 }
 
 export interface UpdateCategoriaRequest {
   nome?: string;
   descricao?: string;
+  ativo?: boolean;
 }
 
 // API Calls
 export const listCategorias = async (): Promise<Categoria[]> => {
   try {
     const response = await api.get("/categorias");
-    return response.data;
+    return response.data.data || response.data;
   } catch (error: any) {
     const apiError = error.response?.data;
     const message = apiError?.message || "Erro ao listar categorias.";
@@ -36,7 +37,7 @@ export const listCategorias = async (): Promise<Categoria[]> => {
 export const getCategoriaById = async (id: number): Promise<Categoria> => {
   try {
     const response = await api.get(`/categorias/${id}`);
-    return response.data;
+    return response.data.data || response.data;
   } catch (error: any) {
     const apiError = error.response?.data;
     if (apiError?.errors) {
@@ -52,7 +53,7 @@ export const createCategoria = async (
 ): Promise<Categoria> => {
   try {
     const response = await api.post("/categorias", data);
-    return response.data;
+    return response.data.data || response.data;
   } catch (error: any) {
     const apiError = error.response?.data;
     if (apiError?.errors) {
@@ -69,7 +70,7 @@ export const updateCategoria = async (
 ): Promise<Categoria> => {
   try {
     const response = await api.put(`/categorias/${id}`, data);
-    return response.data;
+    return response.data.data || response.data;
   } catch (error: any) {
     const apiError = error.response?.data;
     if (apiError?.errors) {
