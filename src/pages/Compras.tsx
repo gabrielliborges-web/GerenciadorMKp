@@ -7,10 +7,7 @@ import CompraDetailsDrawer from "../components/compras/CompraDetailsDrawer";
 import NovaCompraModal from "../components/compras/NovaCompraModal";
 import ConfirmModal from "../components/common/ConfirmModal";
 import { listCompras, deleteCompra, createCompra } from "../lib/compra";
-import {
-    mockProdutosCompra,
-    type CompraMock,
-} from "../mocks/comprasMock";
+import type { CompraMock } from "../mocks/comprasMock";
 
 interface CompraAPI {
     id: number;
@@ -345,7 +342,6 @@ export default function Compras() {
                 isOpen={isNovaCompraOpen}
                 onClose={() => setIsNovaCompraOpen(false)}
                 onSave={handleSalvarCompra}
-                produtos={mockProdutosCompra}
                 isLoading={isSaving}
             />
 

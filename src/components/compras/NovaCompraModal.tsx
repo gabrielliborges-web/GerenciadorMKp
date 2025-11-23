@@ -9,7 +9,6 @@ interface NovaCompraModalProps {
     isOpen: boolean;
     onClose: () => void;
     onSave: (compra: Omit<CompraMock, "id">) => void;
-    produtos?: ProdutoResumo[];
     isLoading?: boolean;
 }
 
@@ -21,14 +20,13 @@ export default function NovaCompraModal({
     isOpen,
     onClose,
     onSave,
-    produtos: produtosProp = [],
     isLoading = false,
 }: NovaCompraModalProps) {
     const [fornecedor, setFornecedor] = useState("");
     const [data, setData] = useState(new Date().toISOString().split("T")[0]);
     const [descricao, setDescricao] = useState("");
     const [itens, setItens] = useState<ItemForm[]>([]);
-    const [produtos, setProdutos] = useState<ProdutoResumo[]>(produtosProp);
+    const [produtos, setProdutos] = useState<ProdutoResumo[]>([]);
     const usuarioNome = "João Silva";
     const [erros, setErros] = useState<string[]>([]);
 
@@ -42,18 +40,23 @@ export default function NovaCompraModal({
     const loadProdutos = async () => {
         try {
             const data = await listProdutos();
-            const produtosTransformados = (data as any[]).map((p) => ({
-                id: p.id,
-                nome: p.nome,
-                precoVenda: p.preco || 0,
-                estoque: p.estoque || 0,
-                ativo: p.ativo !== false,
-            }));
+            const produtosTransformados = (data as any[])
+                .filter(p => p.ativo !== false)
+                .map((p) => ({
+                    id: p.id,
+                    nome: p.nome,
+                    precoVenda: p.preco || 0,
+                    estoque: p.estoque || 0,
+                    ativo: p.ativo !== false,
+                }));
             setProdutos(produtosTransformados);
         } catch (error: any) {
             toast.error("Erro ao carregar produtos");
+            console.error(error);
         }
-    }; const totalCompra = itens.reduce((sum, item) => sum + item.total, 0);
+    };
+
+    const totalCompra = itens.reduce((sum, item) => sum + item.total, 0);
     const totalItens = itens.reduce((sum, item) => sum + item.quantidade, 0);
 
     const handleAddItem = useCallback(() => {
@@ -68,13 +71,6 @@ export default function NovaCompraModal({
         };
         setItens((prev) => [...prev, novoItem]);
     }, []);
-
-    // Update produtos when props change
-    useEffect(() => {
-        if (produtosProp.length > 0 && produtos.length === 0) {
-            setProdutos(produtosProp as ProdutoResumo[]);
-        }
-    }, [produtosProp, produtos.length]);
 
     const handleRemoveItem = useCallback((itemId: number) => {
         setItens((prev) => prev.filter((item) => item.id !== itemId));
@@ -292,7 +288,6 @@ export default function NovaCompraModal({
                         </div>
                     </div>
 
-                    {/* Seção 2 - Itens da Compra */}
                     <div className="space-y-4 rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
                         <div className="flex items-center justify-between">
                             <h3 className="text-sm font-semibold uppercase tracking-wider text-white/60">

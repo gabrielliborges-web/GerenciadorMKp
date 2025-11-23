@@ -111,7 +111,6 @@ export default function CompraDetailsDrawer({
                             </div>
                         </div>
 
-                        {/* Itens da Compra */}
                         <div className="space-y-3 rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
                             <div className="flex items-center gap-2">
                                 <Package className="h-5 w-5 text-primary-400/60" />
