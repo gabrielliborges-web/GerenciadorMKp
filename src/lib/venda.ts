@@ -97,7 +97,7 @@ export const createVenda = async (data: CreateVendaRequest): Promise<Venda> => {
 
 export const cancelVenda = async (id: number): Promise<any> => {
   try {
-    const response = await api.delete(`/vendas/${id}`);
+    const response = await api.post(`/vendas/${id}/cancelar`);
     return response.data;
   } catch (error: any) {
     const apiError = error.response?.data;
