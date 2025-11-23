@@ -9,7 +9,6 @@ import ConfirmModal from "../components/common/ConfirmModal";
 import { listCompras, deleteCompra, createCompra } from "../lib/compra";
 import {
     mockProdutosCompra,
-    mockUsuarios,
     type CompraMock,
 } from "../mocks/comprasMock";
 
@@ -63,7 +62,6 @@ export default function Compras() {
     const [filtroFornecedor, setFiltroFornecedor] = useState("");
     const [dataInicio, setDataInicio] = useState("");
     const [dataFim, setDataFim] = useState("");
-    const [usuarioId, setUsuarioId] = useState("");
     const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
 
@@ -123,13 +121,9 @@ export default function Compras() {
                 }
             }
 
-            // Filtro usuário
-            const matchesUsuario =
-                !usuarioId || compra.usuarioNome === mockUsuarios.find((u) => u.id === Number(usuarioId))?.nome;
-
-            return matchesFornecedor && matchesData && matchesUsuario;
+            return matchesFornecedor && matchesData;
         });
-    }, [compras, filtroFornecedor, dataInicio, dataFim, usuarioId]);
+    }, [compras, filtroFornecedor, dataInicio, dataFim]);
 
     // Selected compra for drawer
     const selectedCompra = useMemo(
@@ -204,7 +198,6 @@ export default function Compras() {
         setFiltroFornecedor("");
         setDataInicio("");
         setDataFim("");
-        setUsuarioId("");
         await loadCompras();
         toast.success("Compras recarregadas!");
     }, [loadCompras]);
@@ -214,7 +207,6 @@ export default function Compras() {
         setFiltroFornecedor("");
         setDataInicio("");
         setDataFim("");
-        setUsuarioId("");
     }, []);
 
     return (
@@ -267,9 +259,6 @@ export default function Compras() {
                     onDataInicioChange={setDataInicio}
                     dataFim={dataFim}
                     onDataFimChange={setDataFim}
-                    usuarioId={usuarioId}
-                    onUsuarioChange={setUsuarioId}
-                    usuarios={mockUsuarios}
                     onLimparFiltros={handleLimparFiltros}
                 />
             </div>
