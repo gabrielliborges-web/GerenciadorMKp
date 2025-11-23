@@ -2,6 +2,8 @@ import { useState, useMemo, useCallback, useEffect } from "react";
 import { TrendingUp, Plus, RefreshCw, Calendar, Loader } from "lucide-react";
 import toast from "react-hot-toast";
 import { listVendas, createVenda, cancelVenda } from "../lib/venda";
+import NovaVendaModal from "../components/vendas/NovaVendaModal";
+import VendaDetailsDrawer from "../components/vendas/VendaDetailsDrawer";
 import type { Venda as VendaAPI } from "../lib/venda";
 
 type PeriodoFiltro = "hoje" | "semana" | "mes" | "todos";
@@ -138,6 +140,36 @@ export default function Vendas() {
                 await loadVendas();
             } catch (error: any) {
                 toast.error(error.message || "Erro ao cancelar venda");
+            } finally {
+                setIsSaving(false);
+            }
+        },
+        [loadVendas]
+    );
+
+    const handleNovaVenda = useCallback(
+        async (data: {
+            formaPagamento: string;
+            descricao: string;
+            itens: Array<{
+                produtoId: number;
+                quantidade: number;
+                precoUnit: number;
+            }>;
+        }) => {
+            setIsSaving(true);
+            try {
+                await createVenda({
+                    formaPagamento: data.formaPagamento,
+                    descricao: data.descricao || null,
+                    data: new Date().toISOString(),
+                    itens: data.itens,
+                });
+                toast.success("Venda criada com sucesso!");
+                setIsNovaVendaOpen(false);
+                await loadVendas();
+            } catch (error: any) {
+                toast.error(error.message || "Erro ao criar venda");
             } finally {
                 setIsSaving(false);
             }
@@ -371,37 +403,20 @@ export default function Vendas() {
                 </>
             )}
 
-            {/* Placeholder para modal - será implementado */}
-            {isNovaVendaOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-                    <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-[#050107] to-[#0a0510] p-8 max-w-md">
-                        <h2 className="text-xl font-bold text-white mb-4">Nova Venda</h2>
-                        <p className="text-white/60 mb-6">Em desenvolvimento...</p>
-                        <button
-                            onClick={() => setIsNovaVendaOpen(false)}
-                            className="w-full rounded-lg bg-green-600 px-4 py-2 font-semibold text-white hover:bg-green-700"
-                        >
-                            Fechar
-                        </button>
-                    </div>
-                </div>
-            )}
+            {/* Modal Nova Venda */}
+            <NovaVendaModal
+                isOpen={isNovaVendaOpen}
+                onClose={() => setIsNovaVendaOpen(false)}
+                onSave={handleNovaVenda}
+                isLoading={isSaving}
+            />
 
-            {/* Placeholder para drawer - será implementado */}
-            {isDrawerOpen && selectedVendaId && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-                    <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-[#050107] to-[#0a0510] p-8 max-w-md">
-                        <h2 className="text-xl font-bold text-white mb-4">Detalhes da Venda #{selectedVendaId}</h2>
-                        <p className="text-white/60 mb-6">Em desenvolvimento...</p>
-                        <button
-                            onClick={() => setIsDrawerOpen(false)}
-                            className="w-full rounded-lg bg-green-600 px-4 py-2 font-semibold text-white hover:bg-green-700"
-                        >
-                            Fechar
-                        </button>
-                    </div>
-                </div>
-            )}
+            {/* Drawer Detalhes */}
+            <VendaDetailsDrawer
+                isOpen={isDrawerOpen}
+                onClose={() => setIsDrawerOpen(false)}
+                vendaId={selectedVendaId}
+            />
         </div>
     );
 }
