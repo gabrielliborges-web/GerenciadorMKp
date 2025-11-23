@@ -1,28 +1,75 @@
-import { useState, useMemo, useCallback } from "react";
-import { Plus, RefreshCw, ShoppingCart } from "lucide-react";
+import { useState, useMemo, useCallback, useEffect } from "react";
+import { Plus, RefreshCw, ShoppingCart, Loader } from "lucide-react";
+import toast from "react-hot-toast";
 import ComprasFilters from "../components/compras/ComprasFilters";
 import ComprasTable from "../components/compras/ComprasTable";
 import CompraDetailsDrawer from "../components/compras/CompraDetailsDrawer";
 import NovaCompraModal from "../components/compras/NovaCompraModal";
 import ConfirmModal from "../components/common/ConfirmModal";
+import { listCompras, deleteCompra, createCompra } from "../lib/compra";
 import {
-    mockCompras,
     mockProdutosCompra,
     mockUsuarios,
     type CompraMock,
 } from "../mocks/comprasMock";
 
+interface CompraAPI {
+    id: number;
+    fornecedor: string | null;
+    data: string;
+    total: number;
+    observacao: string | null;
+    usuarioId: number;
+    usuario: {
+        id: number;
+        nome: string;
+        email: string;
+    };
+    itens: Array<{
+        id: number;
+        quantidade: number;
+        custoUnit: number;
+        produtoId: number;
+        produto: {
+            id: number;
+            nome: string;
+            descricao: string;
+        };
+    }>;
+    criadoEm: string;
+}
+
+function transformCompraAPIToMock(compra: CompraAPI): CompraMock {
+    return {
+        id: compra.id,
+        fornecedor: compra.fornecedor || "-",
+        data: compra.data,
+        total: compra.total,
+        descricao: compra.observacao || undefined,
+        usuarioNome: compra.usuario?.nome || "Desconhecido",
+        itens: compra.itens.map((item) => ({
+            id: item.id,
+            produtoId: item.produtoId,
+            produtoNome: item.produto.nome,
+            quantidade: item.quantidade,
+            custoUnit: item.custoUnit,
+            total: item.quantidade * item.custoUnit,
+        })),
+    };
+}
+
 export default function Compras() {
-    const [compras, setCompras] = useState<CompraMock[]>(mockCompras);
+    const [compras, setCompras] = useState<CompraMock[]>([]);
     const [filtroFornecedor, setFiltroFornecedor] = useState("");
     const [dataInicio, setDataInicio] = useState("");
     const [dataFim, setDataFim] = useState("");
     const [usuarioId, setUsuarioId] = useState("");
+    const [isLoading, setIsLoading] = useState(true);
+    const [isSaving, setIsSaving] = useState(false);
 
     const [isNovaCompraOpen, setIsNovaCompraOpen] = useState(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [selectedCompraId, setSelectedCompraId] = useState<number | null>(null);
-    const [isLoading, setIsLoading] = useState(false);
     const [confirmDelete, setConfirmDelete] = useState<{
         isOpen: boolean;
         compraId: number | null;
@@ -30,6 +77,26 @@ export default function Compras() {
         isOpen: false,
         compraId: null,
     });
+
+    // Load compras on mount
+    useEffect(() => {
+        loadCompras();
+    }, []);
+
+    // Load compras from API
+    const loadCompras = useCallback(async () => {
+        setIsLoading(true);
+        try {
+            const data = await listCompras();
+            const comprasTransformadas = (data as any as CompraAPI[]).map(transformCompraAPIToMock);
+            setCompras(comprasTransformadas);
+        } catch (error: any) {
+            toast.error(error.message || "Erro ao carregar compras");
+            setCompras([]);
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
 
     // Filtered compras
     const filteredCompras = useMemo(() => {
@@ -78,26 +145,30 @@ export default function Compras() {
     // Handle salvar nova compra
     const handleSalvarCompra = useCallback(
         async (novaCompra: Omit<CompraMock, "id">) => {
-            setIsLoading(true);
+            setIsSaving(true);
             try {
-                // Simulate API call
-                await new Promise((resolve) => setTimeout(resolve, 500));
-
-                const compraComId: CompraMock = {
-                    id: Math.max(...compras.map((c) => c.id), 0) + 1,
-                    ...novaCompra,
+                const payload = {
+                    fornecedor: novaCompra.fornecedor === "-" ? null : novaCompra.fornecedor,
+                    data: novaCompra.data,
+                    descricao: novaCompra.descricao || null,
+                    itens: novaCompra.itens.map((item) => ({
+                        produtoId: item.produtoId,
+                        quantidade: item.quantidade,
+                        custoUnit: item.custoUnit,
+                    })),
                 };
 
-                setCompras((prev) => [...prev, compraComId]);
+                await createCompra(payload as any);
+                toast.success("Compra criada com sucesso!");
                 setIsNovaCompraOpen(false);
-                console.log("✅ Compra criada:", compraComId.id);
-            } catch (error) {
-                console.error("❌ Erro ao salvar compra:", error);
+                await loadCompras();
+            } catch (error: any) {
+                toast.error(error.message || "Erro ao criar compra");
             } finally {
-                setIsLoading(false);
+                setIsSaving(false);
             }
         },
-        [compras]
+        [loadCompras]
     );
 
     // Handle detalhes
@@ -112,27 +183,31 @@ export default function Compras() {
     }, []);
 
     // Handle confirm delete
-    const handleConfirmDelete = useCallback(() => {
+    const handleConfirmDelete = useCallback(async () => {
         if (confirmDelete.compraId !== null) {
-            setIsLoading(true);
-            setTimeout(() => {
-                setCompras((prev) => prev.filter((c) => c.id !== confirmDelete.compraId));
-                console.log("✅ Compra excluída:", confirmDelete.compraId);
+            setIsSaving(true);
+            try {
+                await deleteCompra(confirmDelete.compraId);
+                toast.success("Compra excluída com sucesso!");
                 setConfirmDelete({ isOpen: false, compraId: null });
-                setIsLoading(false);
-            }, 500);
+                await loadCompras();
+            } catch (error: any) {
+                toast.error(error.message || "Erro ao excluir compra");
+            } finally {
+                setIsSaving(false);
+            }
         }
-    }, [confirmDelete.compraId]);
+    }, [confirmDelete.compraId, loadCompras]);
 
     // Handle refresh
-    const handleRefresh = useCallback(() => {
-        setCompras(mockCompras);
+    const handleRefresh = useCallback(async () => {
         setFiltroFornecedor("");
         setDataInicio("");
         setDataFim("");
         setUsuarioId("");
-        console.log("🔄 Compras recarregadas");
-    }, []);
+        await loadCompras();
+        toast.success("Compras recarregadas!");
+    }, [loadCompras]);
 
     // Handle limpar filtros
     const handleLimparFiltros = useCallback(() => {
@@ -144,6 +219,16 @@ export default function Compras() {
 
     return (
         <div className="min-h-screen p-2 lg:p-8">
+            {/* Loading Spinner */}
+            {isLoading && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50">
+                    <div className="text-center">
+                        <Loader className="h-12 w-12 animate-spin text-primary-400 mx-auto mb-4" />
+                        <p className="text-white font-semibold">Carregando compras...</p>
+                    </div>
+                </div>
+            )}
+
             {/* Header */}
             <div className="mb-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
                 <div>
@@ -156,14 +241,16 @@ export default function Compras() {
                 <div className="flex w-full gap-3 sm:w-auto">
                     <button
                         onClick={handleRefresh}
-                        className="flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 font-semibold text-white/70 transition-all duration-300 hover:bg-white/5 hover:text-white"
+                        disabled={isLoading}
+                        className="flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 font-semibold text-white/70 transition-all duration-300 hover:bg-white/5 hover:text-white disabled:opacity-50"
                     >
                         <RefreshCw className="h-4 w-4" />
                         <span className="hidden sm:inline">Recarregar</span>
                     </button>
                     <button
                         onClick={handleNovaCompra}
-                        className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-primary-600 to-primary-700 px-4 py-2 font-semibold text-white transition-all duration-300 hover:shadow-lg hover:shadow-primary-500/50"
+                        disabled={isLoading}
+                        className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-primary-600 to-primary-700 px-4 py-2 font-semibold text-white transition-all duration-300 hover:shadow-lg hover:shadow-primary-500/50 disabled:opacity-50"
                     >
                         <Plus className="h-4 w-4" />
                         <span className="hidden sm:inline">Nova Compra</span>
@@ -270,7 +357,7 @@ export default function Compras() {
                 onClose={() => setIsNovaCompraOpen(false)}
                 onSave={handleSalvarCompra}
                 produtos={mockProdutosCompra}
-                isLoading={isLoading}
+                isLoading={isSaving}
             />
 
             {/* Drawer Detalhes */}
@@ -288,7 +375,7 @@ export default function Compras() {
                 confirmText="Excluir"
                 cancelText="Cancelar"
                 isDangerous={true}
-                isLoading={isLoading}
+                isLoading={isSaving}
                 onConfirm={handleConfirmDelete}
                 onCancel={() => setConfirmDelete({ isOpen: false, compraId: null })}
             />

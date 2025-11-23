@@ -70,7 +70,7 @@ export default function Vendas() {
         async (venda: {
             formaPagamento: string;
             itens: any[];
-            observacao: string;
+            descricao: string;
         }) => {
             setIsLoading(true);
 
@@ -82,7 +82,7 @@ export default function Vendas() {
                 data: new Date().toISOString().split("T")[0],
                 formaPagamento: venda.formaPagamento as Venda["formaPagamento"],
                 itens: venda.itens,
-                observacao: venda.observacao,
+                descricao: venda.observacao,
                 total: venda.itens.reduce((sum: number, item: any) => sum + item.subtotal, 0),
             };
 

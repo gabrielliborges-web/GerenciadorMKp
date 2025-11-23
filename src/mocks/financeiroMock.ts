@@ -51,7 +51,7 @@ export const mockEntradas: Entrada[] = [
     tipo: "Venda",
     valor: 350.5,
     data: "2025-11-20T14:30:00Z",
-    observacao: "Venda de bebidas - Evento",
+    descricao: "Venda de bebidas - Evento",
     usuarioNome: "João Silva",
   },
   {
@@ -59,7 +59,7 @@ export const mockEntradas: Entrada[] = [
     tipo: "Devolução",
     valor: 89.9,
     data: "2025-11-19T10:15:00Z",
-    observacao: "Devolução - Produto danificado",
+    descricao: "Devolução - Produto danificado",
     usuarioNome: "Maria Santos",
   },
   {
@@ -67,7 +67,7 @@ export const mockEntradas: Entrada[] = [
     tipo: "Reembolso",
     valor: 125.0,
     data: "2025-11-18T09:45:00Z",
-    observacao: "Reembolso de despesa corporativa",
+    descricao: "Reembolso de despesa corporativa",
     usuarioNome: "Carlos Oliveira",
   },
   {
@@ -75,7 +75,7 @@ export const mockEntradas: Entrada[] = [
     tipo: "Venda",
     valor: 892.3,
     data: "2025-11-17T15:20:00Z",
-    observacao: "Venda grande - Restaurante",
+    descricao: "Venda grande - Restaurante",
     usuarioNome: "João Silva",
   },
   {
@@ -83,7 +83,7 @@ export const mockEntradas: Entrada[] = [
     tipo: "Aluguel",
     valor: 500.0,
     data: "2025-11-16T08:00:00Z",
-    observacao: "Receita de aluguel - Sala",
+    descricao: "Receita de aluguel - Sala",
     usuarioNome: "Ana Costa",
   },
 ];
@@ -96,7 +96,7 @@ export const mockDespesas: Despesa[] = [
     descricao: "Compra de bebidas premium",
     valor: 2350.0,
     data: "2025-11-20T11:00:00Z",
-    observacao: "Fornecedor Premium Ltda",
+    descricao: "Fornecedor Premium Ltda",
     usuarioNome: "João Silva",
   },
   {
@@ -105,7 +105,7 @@ export const mockDespesas: Despesa[] = [
     descricao: "Conta de água e energia",
     valor: 450.5,
     data: "2025-11-18T09:30:00Z",
-    observacao: "Mês de outubro",
+    descricao: "Mês de outubro",
     usuarioNome: "Maria Santos",
   },
   {
@@ -114,7 +114,7 @@ export const mockDespesas: Despesa[] = [
     descricao: "Geladeira nova para estoque",
     valor: 2800.0,
     data: "2025-11-15T14:00:00Z",
-    observacao: "Marca X - Premium",
+    descricao: "Marca X - Premium",
     usuarioNome: "Carlos Oliveira",
   },
   {
@@ -123,7 +123,7 @@ export const mockDespesas: Despesa[] = [
     descricao: "Folha de pagamento",
     valor: 5000.0,
     data: "2025-11-10T16:45:00Z",
-    observacao: "Mês de outubro - 2 funcionários",
+    descricao: "Mês de outubro - 2 funcionários",
     usuarioNome: "Ana Costa",
   },
   {
@@ -132,7 +132,7 @@ export const mockDespesas: Despesa[] = [
     descricao: "Publicidade digital",
     valor: 350.0,
     data: "2025-11-08T10:30:00Z",
-    observacao: "Google Ads - Campanha outubro",
+    descricao: "Google Ads - Campanha outubro",
     usuarioNome: "João Silva",
   },
 ];

@@ -1,5 +1,6 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import { Plus, RefreshCw } from "lucide-react";
+import toast from "react-hot-toast";
 
 import ProdutoFilters from "../components/produtos/ProdutoFilters";
 import ProdutoCard from "../components/produtos/ProdutoCard";
@@ -8,10 +9,12 @@ import ProdutoFormModal from "../components/produtos/ProdutoFormModal";
 import ProdutoDetailsDrawer from "../components/produtos/ProdutoDetailsDrawer";
 import ProdutoEmpty from "../components/produtos/ProdutoEmpty";
 import ConfirmModal from "../components/common/ConfirmModal";
-import { produtosMock, categoriasMockProdutos, type Produto } from "../mocks/produtosMock";
+import { listProdutos, createProduto, updateProduto, deleteProduto, type Produto } from "../lib/produto";
+import { listCategorias, type Categoria } from "../lib/categoria";
 
 export default function ProdutosPage() {
-    const [produtos, setProdutos] = useState<Produto[]>(produtosMock);
+    const [produtos, setProdutos] = useState<Produto[]>([]);
+    const [categorias, setCategorias] = useState<Categoria[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [statusFilter, setStatusFilter] = useState<"todos" | "ativos" | "inativos">("todos");
     const [categoriaFilter, setCategoriaFilter] = useState<number | null>(null);
@@ -22,11 +25,35 @@ export default function ProdutosPage() {
     const [selectedProdutoId, setSelectedProdutoId] = useState<number | null>(null);
     const [editingProduto, setEditingProduto] = useState<Produto | null>(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [isInitialLoading, setIsInitialLoading] = useState(true);
 
     const [confirmDelete, setConfirmDelete] = useState<{ isOpen: boolean; produtoId: number | null }>({
         isOpen: false,
         produtoId: null,
     });
+
+    // Load produtos and categorias on mount
+    useEffect(() => {
+        loadData();
+    }, []);
+
+    // Load dados from API
+    const loadData = async () => {
+        try {
+            setIsInitialLoading(true);
+            const [produtosData, categoriasData] = await Promise.all([
+                listProdutos(),
+                listCategorias(),
+            ]);
+            setProdutos(produtosData);
+            setCategorias(categoriasData);
+        } catch (error: any) {
+            toast.error(error.message || "Erro ao carregar dados");
+            console.error("Erro ao carregar dados:", error);
+        } finally {
+            setIsInitialLoading(false);
+        }
+    };
 
     // Filtered and sorted produtos
     const filteredProdutos = useMemo(() => {
@@ -55,7 +82,7 @@ export default function ProdutosPage() {
                 case "nome":
                     return a.nome.localeCompare(b.nome);
                 case "preco":
-                    return a.precoVenda - b.precoVenda;
+                    return a.preco - b.preco;
                 case "estoque":
                     return b.estoque - a.estoque;
                 default:
@@ -89,47 +116,53 @@ export default function ProdutosPage() {
 
     // Handle save (create/update)
     const handleSaveProduto = useCallback(
-        async (data: Omit<Produto, "id" | "criadoEm" | "atualizadoEm">) => {
+        async (data: any) => {
             setIsLoading(true);
             try {
-                // Simulate API call
-                await new Promise((resolve) => setTimeout(resolve, 500));
-
                 if (editingProduto) {
                     // Update existing
+                    const updatedProduto = await updateProduto(editingProduto.id, {
+                        nome: data.nome,
+                        descricao: data.descricao,
+                        preco: data.preco,
+                        estoque: data.estoque,
+                        categoriaId: data.categoriaId,
+                    });
+
                     setProdutos((prev) =>
-                        prev.map((p) =>
-                            p.id === editingProduto.id
-                                ? {
-                                    ...p,
-                                    ...data,
-                                    atualizadoEm: new Date().toISOString(),
-                                }
-                                : p
-                        )
+                        prev.map((p) => (p.id === editingProduto.id ? updatedProduto : p))
                     );
+
+                    toast.success("✅ Produto atualizado com sucesso!");
                     console.log("✅ Produto atualizado:", editingProduto.id);
                 } else {
                     // Create new
-                    const newProduto: Produto = {
-                        id: Math.max(...produtos.map((p) => p.id), 0) + 1,
-                        ...data,
-                        criadoEm: new Date().toISOString(),
-                        atualizadoEm: new Date().toISOString(),
-                    };
+                    const newProduto = await createProduto(
+                        {
+                            nome: data.nome,
+                            descricao: data.descricao,
+                            preco: data.preco,
+                            estoque: data.estoque,
+                            categoriaId: data.categoriaId,
+                        },
+                        data.file
+                    );
+
                     setProdutos((prev) => [...prev, newProduto]);
+                    toast.success("✅ Produto criado com sucesso!");
                     console.log("✅ Produto criado:", newProduto.id);
                 }
 
                 setIsModalOpen(false);
                 setEditingProduto(null);
-            } catch (error) {
+            } catch (error: any) {
+                toast.error(error.message || "Erro ao salvar produto");
                 console.error("❌ Erro ao salvar produto:", error);
             } finally {
                 setIsLoading(false);
             }
         },
-        [editingProduto, produtos]
+        [editingProduto]
     );
 
     // Handle delete
@@ -138,16 +171,22 @@ export default function ProdutosPage() {
     }, []);
 
     // Handle confirm delete
-    const handleConfirmDelete = useCallback(() => {
+    const handleConfirmDelete = useCallback(async () => {
         if (confirmDelete.produtoId !== null) {
             setIsLoading(true);
-            // Simulate API call
-            setTimeout(() => {
+            try {
+                await deleteProduto(confirmDelete.produtoId);
                 setProdutos((prev) => prev.filter((p) => p.id !== confirmDelete.produtoId));
+                toast.success("✅ Produto excluído com sucesso!");
                 console.log("✅ Produto excluído:", confirmDelete.produtoId);
                 setConfirmDelete({ isOpen: false, produtoId: null });
+            } catch (error: any) {
+                toast.error(error.message || "Erro ao excluir produto");
+                console.error("❌ Erro ao excluir produto:", error);
+                setConfirmDelete({ isOpen: false, produtoId: null });
+            } finally {
                 setIsLoading(false);
-            }, 500);
+            }
         }
     }, [confirmDelete.produtoId]);
 
@@ -158,14 +197,32 @@ export default function ProdutosPage() {
     }, []);
 
     // Handle refresh
-    const handleRefresh = useCallback(() => {
-        setProdutos(produtosMock);
+    const handleRefresh = async () => {
+        await loadData();
         setSearchTerm("");
         setStatusFilter("todos");
         setCategoriaFilter(null);
         setOrdenacao("nome");
-        console.log("🔄 Produtos recarregados");
-    }, []);
+        toast.success("✅ Produtos recarregados!");
+    };
+
+    // Loading state
+    if (isInitialLoading) {
+        return (
+            <div className="flex h-full items-center justify-center">
+                <div className="text-center space-y-4">
+                    <div className="flex justify-center">
+                        <div className="relative w-16 h-16">
+                            <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full animate-spin opacity-20"></div>
+                            <div className="absolute inset-2 bg-gradient-to-r from-blue-400 to-blue-500 rounded-full animate-pulse opacity-40"></div>
+                            <div className="absolute inset-4 dark:bg-[#13081a] bg-white rounded-full"></div>
+                        </div>
+                    </div>
+                    <p className="text-white/60 dark:text-white/60">Carregando produtos...</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen p-2 lg:p-8">
@@ -181,14 +238,16 @@ export default function ProdutosPage() {
                 <div className="flex w-full gap-3 sm:w-auto">
                     <button
                         onClick={handleRefresh}
-                        className="flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 font-semibold text-white/70 transition-all duration-300 hover:bg-white/5 hover:text-white"
+                        disabled={isLoading}
+                        className="flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 font-semibold text-white/70 transition-all duration-300 hover:bg-white/5 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         <RefreshCw className="h-4 w-4" />
                         <span className="hidden sm:inline">Recarregar</span>
                     </button>
                     <button
                         onClick={handleCreateProduto}
-                        className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-primary-600 to-primary-700 px-4 py-2 font-semibold text-white transition-all duration-300 hover:shadow-lg hover:shadow-primary-500/50"
+                        disabled={isLoading}
+                        className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 px-4 py-2 font-semibold text-white transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/50 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         <Plus className="h-4 w-4" />
                         <span className="hidden sm:inline">Novo Produto</span>
@@ -207,7 +266,10 @@ export default function ProdutosPage() {
                     onCategoriaChange={setCategoriaFilter}
                     ordenacao={ordenacao}
                     onOrdenacaoChange={setOrdenacao}
-                    categorias={categoriasMockProdutos}
+                    categorias={categorias.map((cat) => ({
+                        id: cat.id,
+                        nome: cat.nome,
+                    }))}
                 />
             </div>
 
@@ -221,7 +283,7 @@ export default function ProdutosPage() {
                         {filteredProdutos.map((produto) => (
                             <ProdutoCard
                                 key={produto.id}
-                                produto={produto}
+                                produto={produto as any}
                                 onEdit={() => handleEditProduto(produto.id)}
                                 onDelete={() => handleDeleteProduto(produto.id)}
                                 onDetails={() => handleDetailsProduto(produto.id)}
@@ -231,7 +293,7 @@ export default function ProdutosPage() {
 
                     {/* Table (Desktop) */}
                     <ProdutoList
-                        produtos={filteredProdutos}
+                        produtos={filteredProdutos as any}
                         onEdit={handleEditProduto}
                         onDelete={handleDeleteProduto}
                         onDetails={handleDetailsProduto}
@@ -247,16 +309,19 @@ export default function ProdutosPage() {
                     setEditingProduto(null);
                 }}
                 onSave={handleSaveProduto}
-                initialData={editingProduto || undefined}
+                initialData={editingProduto as any}
                 isLoading={isLoading}
-                categorias={categoriasMockProdutos}
+                categorias={categorias.map((cat) => ({
+                    id: cat.id,
+                    nome: cat.nome,
+                }))}
             />
 
             {/* Drawer */}
             <ProdutoDetailsDrawer
                 isOpen={isDrawerOpen}
                 onClose={() => setIsDrawerOpen(false)}
-                produto={selectedProduto}
+                produto={selectedProduto as any}
             />
 
             {/* Confirm Delete Modal */}

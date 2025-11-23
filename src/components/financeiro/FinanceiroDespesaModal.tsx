@@ -20,7 +20,7 @@ export default function FinanceiroDespesaModal({
         descricao: "",
         valor: "",
         data: new Date().toISOString().split("T")[0],
-        observacao: "",
+        descricao: "",
     });
     const [erros, setErros] = useState<string[]>([]);
 
@@ -49,7 +49,7 @@ export default function FinanceiroDespesaModal({
             descricao: formData.descricao,
             valor: Number(formData.valor),
             data: new Date(formData.data).toISOString(),
-            observacao: formData.observacao,
+            descricao: formData.observacao,
         });
 
         setFormData({
@@ -57,7 +57,7 @@ export default function FinanceiroDespesaModal({
             descricao: "",
             valor: "",
             data: new Date().toISOString().split("T")[0],
-            observacao: "",
+            descricao: "",
         });
         setErros([]);
     };
@@ -68,7 +68,7 @@ export default function FinanceiroDespesaModal({
             descricao: "",
             valor: "",
             data: new Date().toISOString().split("T")[0],
-            observacao: "",
+            descricao: "",
         });
         setErros([]);
         onClose();
@@ -187,7 +187,7 @@ export default function FinanceiroDespesaModal({
                         </label>
                         <textarea
                             value={formData.observacao}
-                            onChange={(e) => setFormData({ ...formData, observacao: e.target.value })}
+                            onChange={(e) => setFormData({ ...formData, descricao: e.target.value })}
                             placeholder="Adicione uma observação (opcional)"
                             rows={3}
                             disabled={isLoading}

@@ -19,7 +19,7 @@ export default function FinanceiroEntradaModal({
         tipo: "",
         valor: "",
         data: new Date().toISOString().split("T")[0],
-        observacao: "",
+        descricao: "",
     });
     const [erros, setErros] = useState<string[]>([]);
 
@@ -47,14 +47,14 @@ export default function FinanceiroEntradaModal({
             tipo: formData.tipo,
             valor: Number(formData.valor),
             data: new Date(formData.data).toISOString(),
-            observacao: formData.observacao,
+            descricao: formData.observacao,
         });
 
         setFormData({
             tipo: "",
             valor: "",
             data: new Date().toISOString().split("T")[0],
-            observacao: "",
+            descricao: "",
         });
         setErros([]);
     };
@@ -64,7 +64,7 @@ export default function FinanceiroEntradaModal({
             tipo: "",
             valor: "",
             data: new Date().toISOString().split("T")[0],
-            observacao: "",
+            descricao: "",
         });
         setErros([]);
         onClose();
@@ -168,7 +168,7 @@ export default function FinanceiroEntradaModal({
                         </label>
                         <textarea
                             value={formData.observacao}
-                            onChange={(e) => setFormData({ ...formData, observacao: e.target.value })}
+                            onChange={(e) => setFormData({ ...formData, descricao: e.target.value })}
                             placeholder="Adicione uma observação (opcional)"
                             rows={3}
                             disabled={isLoading}

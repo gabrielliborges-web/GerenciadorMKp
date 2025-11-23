@@ -48,7 +48,7 @@ export const vendasMock: Venda[] = [
     data: "2025-01-12",
     formaPagamento: "pix",
     total: 249.8,
-    observacao: "Cliente satisfeito",
+    descricao: "Cliente satisfeito",
     itens: [
       { produtoId: 1, quantidade: 2, precoUnit: 89.9, subtotal: 179.8 },
       { produtoId: 3, quantidade: 10, precoUnit: 6.99, subtotal: 69.9 },
@@ -59,7 +59,7 @@ export const vendasMock: Venda[] = [
     data: "2025-01-11",
     formaPagamento: "dinheiro",
     total: 329.7,
-    observacao: "Entrega no fim de semana",
+    descricao: "Entrega no fim de semana",
     itens: [
       { produtoId: 2, quantidade: 2, precoUnit: 129.9, subtotal: 259.8 },
       { produtoId: 5, quantidade: 1, precoUnit: 65.0, subtotal: 65.0 },
@@ -70,7 +70,7 @@ export const vendasMock: Venda[] = [
     data: "2025-01-10",
     formaPagamento: "crédito",
     total: 515.7,
-    observacao: "Promocão de bebidas premium",
+    descricao: "Promocão de bebidas premium",
     itens: [
       { produtoId: 2, quantidade: 1, precoUnit: 129.9, subtotal: 129.9 },
       { produtoId: 1, quantidade: 3, precoUnit: 89.9, subtotal: 269.7 },
@@ -82,7 +82,7 @@ export const vendasMock: Venda[] = [
     data: "2025-01-09",
     formaPagamento: "débito",
     total: 159.8,
-    observacao: "",
+    descricao: "",
     itens: [{ produtoId: 6, quantidade: 2, precoUnit: 79.9, subtotal: 159.8 }],
   },
   {
@@ -90,7 +90,7 @@ export const vendasMock: Venda[] = [
     data: "2025-01-08",
     formaPagamento: "fiado",
     total: 65.0,
-    observacao: "Cliente recorrente - pagar próxima venda",
+    descricao: "Cliente recorrente - pagar próxima venda",
     itens: [{ produtoId: 5, quantidade: 1, precoUnit: 65.0, subtotal: 65.0 }],
   },
   {
@@ -98,7 +98,7 @@ export const vendasMock: Venda[] = [
     data: "2025-01-07",
     formaPagamento: "pix",
     total: 319.7,
-    observacao: "",
+    descricao: "",
     itens: [
       { produtoId: 3, quantidade: 20, precoUnit: 6.99, subtotal: 139.8 },
       { produtoId: 7, quantidade: 3, precoUnit: 59.9, subtotal: 179.7 },

@@ -96,14 +96,14 @@ export default function CompraDetailsDrawer({
                                     </div>
                                 </div>
 
-                                {/* Observação */}
-                                {compra.observacao && (
+                                {/* Descrição */}
+                                {compra.descricao && (
                                     <div className="flex items-start gap-3">
                                         <FileText className="mt-1 h-5 w-5 text-primary-400/60" />
                                         <div>
-                                            <p className="text-xs text-white/60">Observação</p>
+                                            <p className="text-xs text-white/60">Descrição</p>
                                             <p className="text-sm font-semibold text-white">
-                                                {compra.observacao}
+                                                {compra.descricao}
                                             </p>
                                         </div>
                                     </div>

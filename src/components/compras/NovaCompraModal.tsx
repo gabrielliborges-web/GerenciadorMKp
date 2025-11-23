@@ -1,13 +1,15 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Plus, X } from "lucide-react";
+import toast from "react-hot-toast";
 import ItemCompraRow from "./ItemCompraRow";
+import { listProdutos } from "../../lib/produto";
 import type { ProdutoResumo, ItemCompraMock, CompraMock } from "../../mocks/comprasMock";
 
 interface NovaCompraModalProps {
     isOpen: boolean;
     onClose: () => void;
     onSave: (compra: Omit<CompraMock, "id">) => void;
-    produtos: ProdutoResumo[];
+    produtos?: ProdutoResumo[];
     isLoading?: boolean;
 }
 
@@ -19,15 +21,39 @@ export default function NovaCompraModal({
     isOpen,
     onClose,
     onSave,
-    produtos,
+    produtos: produtosProp = [],
     isLoading = false,
 }: NovaCompraModalProps) {
     const [fornecedor, setFornecedor] = useState("");
     const [data, setData] = useState(new Date().toISOString().split("T")[0]);
-    const [observacao, setObservacao] = useState("");
+    const [descricao, setDescricao] = useState("");
     const [itens, setItens] = useState<ItemForm[]>([]);
+    const [produtos, setProdutos] = useState<ProdutoResumo[]>(produtosProp);
     const usuarioNome = "João Silva";
-    const [erros, setErros] = useState<string[]>([]); const totalCompra = itens.reduce((sum, item) => sum + item.total, 0);
+    const [erros, setErros] = useState<string[]>([]);
+
+    // Load produtos from API when modal opens
+    useEffect(() => {
+        if (isOpen && produtos.length === 0) {
+            loadProdutos();
+        }
+    }, [isOpen]);
+
+    const loadProdutos = async () => {
+        try {
+            const data = await listProdutos();
+            const produtosTransformados = (data as any[]).map((p) => ({
+                id: p.id,
+                nome: p.nome,
+                precoVenda: p.preco || 0,
+                estoque: p.estoque || 0,
+                ativo: p.ativo !== false,
+            }));
+            setProdutos(produtosTransformados);
+        } catch (error: any) {
+            toast.error("Erro ao carregar produtos");
+        }
+    }; const totalCompra = itens.reduce((sum, item) => sum + item.total, 0);
     const totalItens = itens.reduce((sum, item) => sum + item.quantidade, 0);
 
     const handleAddItem = useCallback(() => {
@@ -42,6 +68,13 @@ export default function NovaCompraModal({
         };
         setItens((prev) => [...prev, novoItem]);
     }, []);
+
+    // Update produtos when props change
+    useEffect(() => {
+        if (produtosProp.length > 0 && produtos.length === 0) {
+            setProdutos(produtosProp as ProdutoResumo[]);
+        }
+    }, [produtosProp, produtos.length]);
 
     const handleRemoveItem = useCallback((itemId: number) => {
         setItens((prev) => prev.filter((item) => item.id !== itemId));
@@ -129,7 +162,7 @@ export default function NovaCompraModal({
         const novaCompra: Omit<CompraMock, "id"> = {
             fornecedor,
             data: new Date(data).toISOString(),
-            observacao: observacao || undefined,
+            descricao: descricao || undefined,
             total: totalCompra,
             usuarioNome,
             itens: itens.map(({ _tempId, ...item }) => item),
@@ -137,12 +170,12 @@ export default function NovaCompraModal({
 
         onSave(novaCompra);
         resetarForm();
-    }, [fornecedor, data, observacao, totalCompra, usuarioNome, itens, onSave]);
+    }, [fornecedor, data, descricao, totalCompra, usuarioNome, itens, onSave]);
 
     const resetarForm = () => {
         setFornecedor("");
         setData(new Date().toISOString().split("T")[0]);
-        setObservacao("");
+        setDescricao("");
         setItens([]);
         setErros([]);
     };
@@ -243,15 +276,15 @@ export default function NovaCompraModal({
                             </div>
                         </div>
 
-                        {/* Observação */}
+                        {/* Descrição */}
                         <div>
                             <label className="mb-2 block text-sm font-semibold text-white/80">
-                                Observação
+                                Descrição
                             </label>
                             <textarea
-                                value={observacao}
-                                onChange={(e) => setObservacao(e.target.value)}
-                                placeholder="Adicione uma observação (opcional)"
+                                value={descricao}
+                                onChange={(e) => setDescricao(e.target.value)}
+                                placeholder="Adicione uma descrição (opcional)"
                                 disabled={isLoading}
                                 rows={3}
                                 className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-white placeholder:text-white/40 transition-all duration-300 hover:border-white/20 focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/10 disabled:opacity-50 resize-none"

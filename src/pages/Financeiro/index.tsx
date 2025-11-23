@@ -92,7 +92,7 @@ export default function FinanceiroPage() {
             tipo: string;
             valor: number;
             data: string;
-            observacao: string;
+            descricao: string;
         }) => {
             setIsLoading(true);
             await new Promise((resolve) => setTimeout(resolve, 500));
@@ -102,7 +102,7 @@ export default function FinanceiroPage() {
                 tipo: data.tipo,
                 valor: data.valor,
                 data: data.data,
-                observacao: data.observacao,
+                descricao: data.observacao,
                 usuarioNome: "João Silva",
             }; setEntradas([novaEntrada, ...entradas]);
             setIsEntradaModalOpen(false);
@@ -118,7 +118,7 @@ export default function FinanceiroPage() {
             descricao: string;
             valor: number;
             data: string;
-            observacao: string;
+            descricao: string;
         }) => {
             setIsLoading(true);
             await new Promise((resolve) => setTimeout(resolve, 500));
@@ -129,7 +129,7 @@ export default function FinanceiroPage() {
                 descricao: data.descricao,
                 valor: data.valor,
                 data: data.data,
-                observacao: data.observacao,
+                descricao: data.observacao,
                 usuarioNome: "João Silva",
             }; setDespesas([novaDespesa, ...despesas]);
             setIsDespesaModalOpen(false);

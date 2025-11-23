@@ -10,7 +10,7 @@ interface VendaModalProps {
     onRegistrar: (venda: {
         formaPagamento: string;
         itens: ItemVenda[];
-        observacao: string;
+        descricao: string;
     }) => void;
     isLoading?: boolean;
 }

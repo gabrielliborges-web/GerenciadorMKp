@@ -22,7 +22,7 @@ export interface CompraMock {
   fornecedor?: string;
   data: string;
   total: number;
-  observacao?: string;
+  descricao?: string;
   usuarioNome: string;
   itens: ItemCompraMock[];
 }
@@ -108,7 +108,7 @@ export const mockCompras: CompraMock[] = [
     fornecedor: "Distribuidora Bebidas Brasil",
     data: "2025-11-15T14:30:00Z",
     total: 1850.5,
-    observacao: "Compra regular mensal",
+    descricao: "Compra regular mensal",
     usuarioNome: "João Silva",
     itens: [
       {
@@ -142,7 +142,7 @@ export const mockCompras: CompraMock[] = [
     fornecedor: "Fornecedor Premium Ltda",
     data: "2025-11-10T10:15:00Z",
     total: 2340.0,
-    observacao: "Bebidas importadas especiais",
+    descricao: "Bebidas importadas especiais",
     usuarioNome: "Maria Santos",
     itens: [
       {
@@ -184,7 +184,7 @@ export const mockCompras: CompraMock[] = [
     fornecedor: "Distribuição Rápida",
     data: "2025-11-05T09:45:00Z",
     total: 1245.75,
-    observacao: "Reposição emergencial",
+    descricao: "Reposição emergencial",
     usuarioNome: "Carlos Oliveira",
     itens: [
       {
@@ -259,7 +259,7 @@ export const mockCompras: CompraMock[] = [
     fornecedor: "Imports Bebidas Gourmet",
     data: "2025-10-20T11:00:00Z",
     total: 3120.0,
-    observacao: "Compra especial para evento",
+    descricao: "Compra especial para evento",
     usuarioNome: "João Silva",
     itens: [
       {
