@@ -5,30 +5,39 @@ export interface VendaItem {
   id: number;
   produtoId: number;
   quantidade: number;
-  preco: number;
+  precoUnit: number;
+  produto: {
+    id: number;
+    nome: string;
+    descricao: string;
+    estoque?: number;
+  };
 }
 
 export interface Venda {
   id: number;
-  cliente?: string;
-  dataVenda: string;
   formaPagamento: string;
-  total: number;
-  itens: VendaItem[];
+  data: string;
+  total: number | string;
+  descricao?: string | null;
   usuarioId: number;
-  status: string;
+  usuario: {
+    id: number;
+    nome: string;
+    email: string;
+  };
+  itens?: VendaItem[];
   criadoEm: string;
-  atualizadoEm: string;
 }
 
 export interface CreateVendaRequest {
-  cliente?: string;
-  dataVenda: string;
   formaPagamento: string;
+  descricao?: string | null;
+  data?: string | null;
   itens: {
     produtoId: number;
     quantidade: number;
-    preco: number;
+    precoUnit: number;
   }[];
 }
 

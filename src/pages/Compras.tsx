@@ -73,16 +73,16 @@ export default function Compras() {
         compraId: null,
     });
 
-    // Load compras on mount
-    useEffect(() => {
-        loadCompras();
-    }, []);
-
     // Load compras from API
     const loadCompras = useCallback(async () => {
         setIsLoading(true);
         try {
-            const data = await listCompras();
+            const filtros = {
+                ...(dataInicio && { dataInicio: new Date(dataInicio).toISOString() }),
+                ...(dataFim && { dataFim: new Date(dataFim).toISOString() }),
+                ...(filtroFornecedor && { fornecedor: filtroFornecedor }),
+            };
+            const data = await listCompras(filtros);
             const comprasTransformadas = (data as any as CompraAPI[]).map(transformCompraAPIToMock);
             setCompras(comprasTransformadas);
         } catch (error: any) {
@@ -91,36 +91,15 @@ export default function Compras() {
         } finally {
             setIsLoading(false);
         }
-    }, []);
+    }, [dataInicio, dataFim, filtroFornecedor]);
 
-    // Filtered compras
-    const filteredCompras = useMemo(() => {
-        return compras.filter((compra) => {
-            // Filtro fornecedor
-            const matchesFornecedor =
-                !filtroFornecedor ||
-                (compra.fornecedor || "")
-                    .toLowerCase()
-                    .includes(filtroFornecedor.toLowerCase());
+    // Carregar compras quando monta ou quando filtros mudam
+    useEffect(() => {
+        loadCompras();
+    }, [loadCompras]);
 
-            // Filtro data
-            let matchesData = true;
-            if (dataInicio || dataFim) {
-                const compraDate = new Date(compra.data);
-                if (dataInicio) {
-                    const inicio = new Date(dataInicio);
-                    matchesData = matchesData && compraDate >= inicio;
-                }
-                if (dataFim) {
-                    const fim = new Date(dataFim);
-                    fim.setHours(23, 59, 59, 999);
-                    matchesData = matchesData && compraDate <= fim;
-                }
-            }
-
-            return matchesFornecedor && matchesData;
-        });
-    }, [compras, filtroFornecedor, dataInicio, dataFim]);
+    // Usar compras já filtradas pelo servidor
+    const filteredCompras = compras;
 
     // Selected compra for drawer
     const selectedCompra = useMemo(
@@ -140,7 +119,7 @@ export default function Compras() {
             try {
                 const payload = {
                     fornecedor: novaCompra.fornecedor === "-" ? null : novaCompra.fornecedor,
-                    data: novaCompra.data,
+                    data: new Date(novaCompra.data).toISOString(),
                     descricao: novaCompra.descricao || null,
                     itens: novaCompra.itens.map((item) => ({
                         produtoId: item.produtoId,
@@ -149,7 +128,7 @@ export default function Compras() {
                     })),
                 };
 
-                await createCompra(payload as any);
+                await createCompra(payload);
                 toast.success("Compra criada com sucesso!");
                 setIsNovaCompraOpen(false);
                 await loadCompras();

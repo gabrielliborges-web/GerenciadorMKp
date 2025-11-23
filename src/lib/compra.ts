@@ -5,27 +5,38 @@ export interface CompraItem {
   id: number;
   produtoId: number;
   quantidade: number;
-  preco: number;
+  custoUnit: number;
+  produto: {
+    id: number;
+    nome: string;
+    descricao: string;
+  };
 }
 
 export interface Compra {
   id: number;
-  fornecedor: string;
-  dataCompra: string;
+  fornecedor: string | null;
+  data: string;
   total: number;
+  observacao: string | null;
   itens: CompraItem[];
   usuarioId: number;
+  usuario: {
+    id: number;
+    nome: string;
+    email: string;
+  };
   criadoEm: string;
-  atualizadoEm: string;
 }
 
 export interface CreateCompraRequest {
-  fornecedor: string;
-  dataCompra: string;
+  fornecedor?: string | null;
+  data?: string;
+  descricao?: string | null;
   itens: {
     produtoId: number;
     quantidade: number;
-    preco: number;
+    custoUnit: number;
   }[];
 }
 
