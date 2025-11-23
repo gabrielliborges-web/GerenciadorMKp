@@ -14,7 +14,6 @@ export default function Signup() {
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [theme, setTheme] = useState<"LIGHT" | "DARK">("DARK");
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -40,7 +39,7 @@ export default function Signup() {
                 nome: nome.trim(),
                 email: email.trim(),
                 senha,
-                theme: theme || "DARK",
+                theme: "DARK",
             });
         } catch (err: any) {
             console.error("Erro no signup:", err);
@@ -174,20 +173,7 @@ export default function Signup() {
                                 </div>
                             </div>
 
-                            {/* Tema Preferido */}
-                            <div>
-                                <label className="block text-sm font-medium text-white/80 dark:text-white/80 text-[#2a143c] mb-2">
-                                    Tema Preferido
-                                </label>
-                                <select
-                                    value={theme}
-                                    onChange={(e) => setTheme(e.target.value as "LIGHT" | "DARK")}
-                                    className="w-full rounded-xl border border-white/20 dark:border-white/20 bg-white/10 dark:bg-white/10 py-2.5 px-4 text-white dark:text-white transition focus:border-[#f0b5d8] dark:focus:border-[#f0b5d8] focus:outline-none focus:ring-1 focus:ring-[#f0b5d8] dark:focus:ring-[#f0b5d8] border-white/30 dark:border-white/20 bg-white/60 dark:bg-white/10 text-[#1a0f2b] dark:text-white"
-                                >
-                                    <option value="DARK">🌙 Modo Escuro</option>
-                                    <option value="LIGHT">☀️ Modo Claro</option>
-                                </select>
-                            </div>
+
 
                             {/* Botão Cadastrar */}
                             <button

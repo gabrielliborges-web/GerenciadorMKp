@@ -43,7 +43,8 @@ export function useTheme() {
   }, []);
 
   useEffect(() => {
-    if (user?.theme) setIsDark(user?.theme === "DARK");
+    // if (user?.theme) setIsDark(user?.theme === "DARK");
+    if (user?.theme) setIsDark(true);
   }, [user?.theme]);
 
   const toggleTheme = async () => {

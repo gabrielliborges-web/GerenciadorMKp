@@ -181,7 +181,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
                             <button
                                 type="button"
                                 onClick={toggleTheme}
-                                disabled
+                                // disabled
                                 className="flex-1 flex items-center justify-center rounded-2xl bg-white/10 p-2.5 text-white transition-all duration-300 hover:bg-white/15"
                             >
                                 {isDark ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
@@ -276,10 +276,10 @@ export default function AppLayout({ children }: AppLayoutProps) {
                             <button
                                 type="button"
                                 onClick={() => {
-                                    toggleTheme();
                                     setIsMobileSidebarOpen(false);
                                 }}
-                                className={`flex items-center gap-3 rounded-2xl px-3 py-3 text-left transition-colors ${isDark ? "bg-white/10 text-white hover:bg-white/15" : "bg-white/60 text-[#2a143c] hover:bg-white/70"
+                                disabled
+                                className={`flex items-center gap-3 rounded-2xl px-3 py-3 text-left transition-colors opacity-50 cursor-not-allowed ${isDark ? "bg-white/10 text-white" : "bg-white/60 text-[#2a143c]"
                                     }`}
                             >
                                 {isDark ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
