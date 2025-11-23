@@ -40,7 +40,7 @@ function transformCompraAPIToMock(compra: CompraAPI): CompraMock {
         id: compra.id,
         fornecedor: compra.fornecedor || "-",
         data: compra.data,
-        total: compra.total,
+        total: typeof compra.total === 'string' ? parseFloat(compra.total) : compra.total,
         descricao: compra.observacao || undefined,
         usuarioNome: compra.usuario?.nome || "Desconhecido",
         itens: compra.itens.map((item) => ({
@@ -48,8 +48,8 @@ function transformCompraAPIToMock(compra: CompraAPI): CompraMock {
             produtoId: item.produtoId,
             produtoNome: item.produto.nome,
             quantidade: item.quantidade,
-            custoUnit: item.custoUnit,
-            total: item.quantidade * item.custoUnit,
+            custoUnit: typeof item.custoUnit === 'string' ? parseFloat(item.custoUnit) : item.custoUnit,
+            total: (typeof item.quantidade === 'string' ? parseFloat(item.quantidade) : item.quantidade) * (typeof item.custoUnit === 'string' ? parseFloat(item.custoUnit) : item.custoUnit),
         })),
     };
 }
