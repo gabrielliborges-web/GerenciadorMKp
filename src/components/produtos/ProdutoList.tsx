@@ -47,7 +47,7 @@ export default function ProdutoList({
                 </thead>
                 <tbody className="divide-y dark:divide-rose-500/10 light:divide-rose-200/30">
                     {produtos.map((produto) => {
-                        const preco = produto.precoPromocional || produto.precoVenda;
+                        const preco = Number(produto.precoPromocional || produto.precoVenda);
                         const temPromocao = produto.precoPromocional && produto.precoPromocional < produto.precoVenda;
 
                         return (
@@ -82,7 +82,7 @@ export default function ProdutoList({
                                     <div className="space-y-1">
                                         {temPromocao && (
                                             <p className="text-xs line-through dark:text-white/40 light:text-gray-400">
-                                                R$ {produto.precoVenda.toFixed(2)}
+                                                R$ {(Number(produto?.precoVenda))?.toFixed(2)}
                                             </p>
                                         )}
                                         <p className="text-sm font-bold dark:text-rose-400 light:text-rose-600">

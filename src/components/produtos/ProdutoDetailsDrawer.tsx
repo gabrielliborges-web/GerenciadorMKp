@@ -134,7 +134,7 @@ export default function ProdutoDetailsDrawer({
                                     <span className="text-xs font-semibold dark:text-white/60 light:text-gray-600">Preço de Venda</span>
                                 </div>
                                 <p className="text-sm font-bold dark:text-rose-400 light:text-rose-600">
-                                    R$ {produto.precoVenda.toFixed(2)}
+                                    R$ {produto?.precoVenda?.toFixed(2)}
                                 </p>
                             </div>
 

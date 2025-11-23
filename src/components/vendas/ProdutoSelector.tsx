@@ -97,7 +97,7 @@ export default function ProdutoSelector({
                                 <div className="flex items-center justify-between">
                                     <span className="font-medium">{produto.nome}</span>
                                     <span className="text-xs text-primary-400">
-                                        R$ {produto.precoVenda.toFixed(2)}
+                                        R$ {produto?.precoVenda?.toFixed(2)}
                                     </span>
                                 </div>
                             </button>

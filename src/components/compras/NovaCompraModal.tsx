@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import ItemCompraRow from "./ItemCompraRow";
 import { listProdutos } from "../../lib/produto";
 import type { ProdutoResumo, ItemCompraMock, CompraMock } from "../../mocks/comprasMock";
+import { useAuth } from "../../context/AuthContext";
 
 interface NovaCompraModalProps {
     isOpen: boolean;
@@ -27,7 +28,8 @@ export default function NovaCompraModal({
     const [descricao, setDescricao] = useState("");
     const [itens, setItens] = useState<ItemForm[]>([]);
     const [produtos, setProdutos] = useState<ProdutoResumo[]>([]);
-    const usuarioNome = "João Silva";
+    const { user } = useAuth();
+    console.log(user)
     const [erros, setErros] = useState<string[]>([]);
 
     // Load produtos from API when modal opens
@@ -160,13 +162,13 @@ export default function NovaCompraModal({
             data: new Date(data).toISOString(),
             descricao: descricao || undefined,
             total: totalCompra,
-            usuarioNome,
+            usuarioNome: user?.nome || "Usuário Desconhecido",
             itens: itens.map(({ _tempId, ...item }) => item),
         };
 
         onSave(novaCompra);
         resetarForm();
-    }, [fornecedor, data, descricao, totalCompra, usuarioNome, itens, onSave]);
+    }, [fornecedor, data, descricao, totalCompra, user?.nome, itens, onSave]);
 
     const resetarForm = () => {
         setFornecedor("");
@@ -261,11 +263,11 @@ export default function NovaCompraModal({
                             {/* Usuário */}
                             <div>
                                 <label className="mb-2 block text-sm font-semibold text-white/80">
-                                    Responsável
+                                    Usuário
                                 </label>
                                 <input
                                     type="text"
-                                    value={usuarioNome}
+                                    value={user?.nome}
                                     disabled
                                     className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-white/60 transition-all duration-300 disabled:opacity-50"
                                 />

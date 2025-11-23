@@ -20,8 +20,14 @@ export default function ProdutoCard({
     onDelete,
     onDetails,
 }: ProdutoCardProps) {
-    const preco = produto.precoPromocional || produto.precoVenda;
+    const preco = Number(produto.precoPromocional || produto.precoVenda);
     const temPromocao = produto.precoPromocional && produto.precoPromocional < produto.precoVenda;
+
+    console.log({
+        preco,
+        temPromocao,
+        produto
+    })
 
     return (
         <div className="group flex flex-col overflow-hidden rounded-2xl border transition-all duration-300 dark:border-rose-500/20 dark:bg-gradient-to-br dark:from-white/5 dark:to-white/2 dark:hover:border-rose-500/40 dark:hover:shadow-lg dark:hover:shadow-rose-500/10 light:border-rose-200/50 light:bg-gradient-to-br light:from-rose-50/30 light:to-white light:hover:border-rose-300/50 light:hover:shadow-lg light:hover:shadow-rose-200/30">
@@ -71,7 +77,7 @@ export default function ProdutoCard({
                 <div className="space-y-1">
                     {temPromocao && (
                         <p className="text-xs line-through dark:text-white/40 light:text-gray-400">
-                            R$ {produto.precoVenda.toFixed(2)}
+                            R$ {Number(produto?.precoVenda)?.toFixed(2)}
                         </p>
                     )}
                     <p className="text-lg font-bold dark:text-rose-400 light:text-rose-600">
