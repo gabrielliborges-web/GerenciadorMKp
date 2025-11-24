@@ -2,7 +2,7 @@ import { useState, useMemo, useCallback, useEffect } from "react";
 import { TrendingUp, Plus, RefreshCw, Calendar, Loader } from "lucide-react";
 import toast from "react-hot-toast";
 import { listVendas, createVenda, cancelVenda } from "../lib/venda";
-import NovaVendaModal from "../components/vendas/NovaVendaModal";
+import NovaVendaForm from "../components/vendas/NovaVendaForm";
 import VendaDetailsDrawer from "../components/vendas/VendaDetailsDrawer";
 import type { Venda as VendaAPI } from "../lib/venda";
 
@@ -48,7 +48,7 @@ function transformVendaAPIToMock(venda: VendaAPI): Venda {
 
 export default function Vendas() {
     const [vendas, setVendas] = useState<Venda[]>([]);
-    const [isNovaVendaOpen, setIsNovaVendaOpen] = useState(false);
+    const [isFormOpen, setIsFormOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
     const [selectedVendaId, setSelectedVendaId] = useState<number | null>(null);
@@ -166,7 +166,7 @@ export default function Vendas() {
                     itens: data.itens,
                 });
                 toast.success("Venda criada com sucesso!");
-                setIsNovaVendaOpen(false);
+                setIsFormOpen(false);
                 await loadVendas();
             } catch (error: any) {
                 toast.error(error.message || "Erro ao criar venda");
@@ -179,6 +179,19 @@ export default function Vendas() {
 
     const totalVendas = filteredVendas.length;
     const totalValor = filteredVendas.reduce((sum, v) => sum + v.total, 0);
+
+    // Mostrar formulário em tela cheia quando estiver aberto
+    if (isFormOpen) {
+        return (
+            <div className="min-h-screen p-2 lg:p-8">
+                <NovaVendaForm
+                    onClose={() => setIsFormOpen(false)}
+                    onSave={handleNovaVenda}
+                    isLoading={isSaving}
+                />
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen p-2 lg:p-8">
@@ -213,7 +226,7 @@ export default function Vendas() {
                         <span className="hidden sm:inline">Atualizar</span>
                     </button>
                     <button
-                        onClick={() => setIsNovaVendaOpen(true)}
+                        onClick={() => setIsFormOpen(true)}
                         disabled={isLoading}
                         className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-green-500 to-green-600 px-4 py-2.5 font-medium text-white shadow-lg transition-all hover:shadow-xl hover:scale-[1.01] active:scale-95 disabled:opacity-50"
                     >
@@ -402,14 +415,6 @@ export default function Vendas() {
                     </div>
                 </>
             )}
-
-            {/* Modal Nova Venda */}
-            <NovaVendaModal
-                isOpen={isNovaVendaOpen}
-                onClose={() => setIsNovaVendaOpen(false)}
-                onSave={handleNovaVenda}
-                isLoading={isSaving}
-            />
 
             {/* Drawer Detalhes */}
             <VendaDetailsDrawer

@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import ComprasFilters from "../components/compras/ComprasFilters";
 import ComprasTable from "../components/compras/ComprasTable";
 import CompraDetailsDrawer from "../components/compras/CompraDetailsDrawer";
-import NovaCompraModal from "../components/compras/NovaCompraModal";
+import NovaCompraForm from "../components/compras/NovaCompraForm";
 import ConfirmModal from "../components/common/ConfirmModal";
 import { listCompras, deleteCompra, createCompra } from "../lib/compra";
 import type { CompraMock } from "../mocks/comprasMock";
@@ -62,7 +62,7 @@ export default function Compras() {
     const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
 
-    const [isNovaCompraOpen, setIsNovaCompraOpen] = useState(false);
+    const [isFormOpen, setIsFormOpen] = useState(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [selectedCompraId, setSelectedCompraId] = useState<number | null>(null);
     const [confirmDelete, setConfirmDelete] = useState<{
@@ -109,7 +109,7 @@ export default function Compras() {
 
     // Handle nova compra
     const handleNovaCompra = useCallback(() => {
-        setIsNovaCompraOpen(true);
+        setIsFormOpen(true);
     }, []);
 
     // Handle salvar nova compra
@@ -130,7 +130,7 @@ export default function Compras() {
 
                 await createCompra(payload);
                 toast.success("Compra criada com sucesso!");
-                setIsNovaCompraOpen(false);
+                setIsFormOpen(false);
                 await loadCompras();
             } catch (error: any) {
                 toast.error(error.message || "Erro ao criar compra");
@@ -188,6 +188,19 @@ export default function Compras() {
     // Calculate KPIs
     const totalComprasCount = filteredCompras.length;
     const totalValor = filteredCompras.reduce((sum, c) => sum + c.total, 0);
+
+    // Mostrar formulário em tela cheia quando estiver aberto
+    if (isFormOpen) {
+        return (
+            <div className="min-h-screen p-2 lg:p-8">
+                <NovaCompraForm
+                    onClose={() => setIsFormOpen(false)}
+                    onSave={handleSalvarCompra}
+                    isLoading={isSaving}
+                />
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen p-2 lg:p-8">
@@ -338,14 +351,6 @@ export default function Compras() {
                     />
                 </>
             )}
-
-            {/* Modal Nova Compra */}
-            <NovaCompraModal
-                isOpen={isNovaCompraOpen}
-                onClose={() => setIsNovaCompraOpen(false)}
-                onSave={handleSalvarCompra}
-                isLoading={isSaving}
-            />
 
             {/* Drawer Detalhes */}
             <CompraDetailsDrawer
