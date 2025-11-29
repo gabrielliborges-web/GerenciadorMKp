@@ -81,8 +81,8 @@ export default function NovaVendaForm({
                             ...item,
                             produtoId,
                             produtoNome: prod?.nome || "",
-                            precoUnit: prod?.preco || 0,
-                            total: item.quantidade * (prod?.preco || 0),
+                            precoUnit: prod?.precoVenda || 0,
+                            total: item.quantidade * (prod?.precoVenda || 0),
                         };
                     }
                     return item;
@@ -212,13 +212,13 @@ export default function NovaVendaForm({
                                 value={formaPagamento}
                                 onChange={(e) => setFormaPagamento(e.target.value)}
                                 disabled={isLoading}
-                                className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-white transition-all duration-300 hover:border-white/20 focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/10 disabled:opacity-50"
+                                className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 dark:text-gray/90 light:text-gray-900 transition-all duration-300 hover:border-white/20 focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/10 disabled:opacity-50"
                             >
-                                <option value="dinheiro">💵 Dinheiro</option>
-                                <option value="pix">📱 Pix</option>
-                                <option value="débito">🏧 Débito</option>
-                                <option value="crédito">💳 Crédito</option>
-                                <option value="fiado">📝 Fiado</option>
+                                <option className="text-gray-900 dark:text-gray/90" value="dinheiro">💵 Dinheiro</option>
+                                <option className="text-gray-900 dark:text-gray/90" value="pix">📱 Pix</option>
+                                <option className="text-gray-900 dark:text-gray/90" value="débito">🏧 Débito</option>
+                                <option className="text-gray-900 dark:text-gray/90" value="crédito">💳 Crédito</option>
+                                <option className="text-gray-900 dark:text-gray/90" value="fiado">📝 Fiado</option>
                             </select>
                         </div>
 
@@ -281,11 +281,11 @@ export default function NovaVendaForm({
                                         <select
                                             value={item.produtoId}
                                             onChange={(e) => handleChangeProduto(item.id, Number(e.target.value))}
-                                            className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white transition-all duration-300 hover:border-white/20 focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/10"
+                                            className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm dark:text-gray/90 light:text-gray-900 transition-all duration-300 hover:border-white/20 focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/10"
                                         >
-                                            <option value="">Selecionar...</option>
+                                            <option className="text-gray-900 dark:text-gray/90" value="">Selecionar...</option>
                                             {produtos.map((prod) => (
-                                                <option key={prod.id} value={prod.id}>
+                                                <option className="text-gray-900 dark:text-gray/90" key={prod.id} value={prod.id}>
                                                     {prod.nome} (Est: {prod.estoque})
                                                 </option>
                                             ))}

@@ -1,7 +1,8 @@
 import { Edit, Trash2, Info } from "lucide-react";
-import { mockEntradas } from "../../mocks/financeiroMock";
+import type { EntradaFinanceira } from "../../lib/entradaFinanceira";
 
 interface FinanceiroEntradasProps {
+    entradas: EntradaFinanceira[];
     onEdit?: (id: number) => void;
     onDelete?: (id: number) => void;
 }
@@ -10,11 +11,8 @@ function formatarData(data: string): string {
     return new Date(data).toLocaleDateString("pt-BR");
 }
 
-export default function FinanceiroEntradas({
-    onEdit,
-    onDelete,
-}: FinanceiroEntradasProps) {
-    const totalEntradas = mockEntradas.reduce((sum, e) => sum + e.valor, 0);
+export default function FinanceiroEntradas({ entradas, onEdit, onDelete }: FinanceiroEntradasProps) {
+    const totalEntradas = entradas.reduce((sum, e) => sum + e.valor, 0);
 
     return (
         <div className="space-y-6">
@@ -24,7 +22,7 @@ export default function FinanceiroEntradas({
                     Total de Entradas
                 </p>
                 <p className="mt-2 text-4xl font-bold text-green-400">R$ {totalEntradas.toFixed(2)}</p>
-                <p className="mt-2 text-sm text-white/60">{mockEntradas.length} entradas registradas</p>
+                <p className="mt-2 text-sm text-white/60">{entradas.length} entradas registradas</p>
             </div>
 
             {/* Tabela */}
@@ -53,7 +51,7 @@ export default function FinanceiroEntradas({
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-white/10">
-                        {mockEntradas.map((entrada) => (
+                        {entradas.map((entrada) => (
                             <tr key={entrada.id} className="transition-all duration-300 hover:bg-white/5">
                                 <td className="px-6 py-4">
                                     <span className="inline-flex rounded-full bg-green-500/20 px-3 py-1 text-xs font-semibold text-green-400">
@@ -67,10 +65,10 @@ export default function FinanceiroEntradas({
                                     {formatarData(entrada.data)}
                                 </td>
                                 <td className="px-6 py-4 text-sm text-white/80">
-                                    {entrada.observacao || "-"}
+                                    {entrada.descricao || "-"}
                                 </td>
                                 <td className="px-6 py-4 text-sm text-white/80">
-                                    {entrada.usuarioNome}
+                                    {entrada.usuarioId}
                                 </td>
                                 <td className="px-6 py-4">
                                     <div className="flex items-center gap-2">
@@ -104,7 +102,7 @@ export default function FinanceiroEntradas({
 
             {/* Grid Mobile */}
             <div className="grid gap-4 sm:grid-cols-2 md:hidden">
-                {mockEntradas.map((entrada) => (
+                {entradas.map((entrada) => (
                     <div
                         key={entrada.id}
                         className="rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm"
@@ -115,10 +113,10 @@ export default function FinanceiroEntradas({
                             </span>
                             <p className="font-bold text-green-400">R$ {entrada.valor.toFixed(2)}</p>
                         </div>
-                        <p className="mb-2 text-sm text-white/80">{entrada.observacao}</p>
+                        <p className="mb-2 text-sm text-white/80">{entrada.descricao}</p>
                         <div className="mb-3 space-y-1 text-xs text-white/60">
                             <p>📅 {formatarData(entrada.data)}</p>
-                            <p>👤 {entrada.usuarioNome}</p>
+                            <p>👤 {entrada.usuarioId}</p>
                         </div>
                         <div className="flex gap-2">
                             <button className="flex-1 rounded-lg bg-white/10 py-2 text-xs font-semibold text-white transition-all duration-300 hover:bg-white/20">

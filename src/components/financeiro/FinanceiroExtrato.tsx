@@ -50,11 +50,11 @@ export default function FinanceiroExtrato() {
                         <select
                             value={filtroTipo}
                             onChange={(e) => setFiltroTipo(e.target.value as any)}
-                            className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-white transition-all duration-300 hover:border-white/20 focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/10"
+                            className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 dark:text-gray/90 light:text-gray-900 transition-all duration-300 hover:border-white/20 focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/10"
                         >
-                            <option value="todos">Todos</option>
-                            <option value="entrada">Entradas</option>
-                            <option value="saida">Saídas</option>
+                            <option className="text-gray-900 dark:text-gray/90" value="todos">Todos</option>
+                            <option className="text-gray-900 dark:text-gray/90" value="entrada">Entradas</option>
+                            <option className="text-gray-900 dark:text-gray/90" value="saida">Saídas</option>
                         </select>
                     </div>
 
@@ -66,11 +66,11 @@ export default function FinanceiroExtrato() {
                         <select
                             value={filtroCategoria}
                             onChange={(e) => setFiltroCategoria(e.target.value)}
-                            className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-white transition-all duration-300 hover:border-white/20 focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/10"
+                            className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 dark:text-gray/90 light:text-gray-900 transition-all duration-300 hover:border-white/20 focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/10"
                         >
-                            <option value="">Todas as categorias</option>
+                            <option className="text-gray-900 dark:text-gray/90" value="">Todas as categorias</option>
                             {categorias.map((cat) => (
-                                <option key={cat} value={cat}>
+                                <option className="text-gray-900 dark:text-gray/90" key={cat} value={cat}>
                                     {cat}
                                 </option>
                             ))}
@@ -106,8 +106,8 @@ export default function FinanceiroExtrato() {
                                 {/* Ícone e Categoria */}
                                 <div
                                     className={`flex h-12 w-12 items-center justify-center rounded-full ${mov.tipo === "entrada"
-                                            ? "bg-green-500/20"
-                                            : "bg-red-500/20"
+                                        ? "bg-green-500/20"
+                                        : "bg-red-500/20"
                                         }`}
                                 >
                                     {mov.tipo === "entrada" ? (
@@ -133,8 +133,8 @@ export default function FinanceiroExtrato() {
                             {/* Valor */}
                             <p
                                 className={`text-right text-lg font-bold ${mov.tipo === "entrada"
-                                        ? "text-green-400"
-                                        : "text-red-400"
+                                    ? "text-green-400"
+                                    : "text-red-400"
                                     }`}
                             >
                                 {mov.tipo === "entrada" ? "+" : "-"} R$ {mov.valor.toFixed(2)}

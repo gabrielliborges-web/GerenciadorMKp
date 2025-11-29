@@ -1,8 +1,7 @@
 import { ChevronLeft, ChevronRight, ArrowUpRight, ArrowDownLeft } from "lucide-react";
-import type { MovimentacaoExtrato } from "../../mocks/financeiroMock";
 
 interface ExtratoTableProps {
-    movimentacoes: MovimentacaoExtrato[];
+    movimentacoes: any[];
     currentPage: number;
     itemsPerPage: number;
     onPageChange: (page: number) => void;
@@ -118,8 +117,8 @@ export default function ExtratoTable({
                                     <td className="px-6 py-4 text-right">
                                         <span
                                             className={`font-semibold ${mov.tipo === "entrada"
-                                                    ? "text-green-400"
-                                                    : "text-red-400"
+                                                ? "text-green-400"
+                                                : "text-red-400"
                                                 }`}
                                         >
                                             {mov.tipo === "entrada" ? "+" : "-"}R${" "}
@@ -129,8 +128,8 @@ export default function ExtratoTable({
                                     <td className="px-6 py-4 text-right">
                                         <span
                                             className={`font-semibold ${mov.saldoApos >= 0
-                                                    ? "text-green-400"
-                                                    : "text-red-400"
+                                                ? "text-green-400"
+                                                : "text-red-400"
                                                 }`}
                                         >
                                             R$ {mov.saldoApos.toFixed(2)}
@@ -163,8 +162,8 @@ export default function ExtratoTable({
                             <div className="text-right">
                                 <p
                                     className={`font-bold text-lg ${mov.tipo === "entrada"
-                                            ? "text-green-400"
-                                            : "text-red-400"
+                                        ? "text-green-400"
+                                        : "text-red-400"
                                         }`}
                                 >
                                     {mov.tipo === "entrada" ? "+" : "-"}R${" "}
@@ -210,11 +209,11 @@ export default function ExtratoTable({
                     <select
                         value={itemsPerPage}
                         onChange={(e) => onItemsPerPageChange(parseInt(e.target.value))}
-                        className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-sm text-white transition-colors focus:border-primary-600 focus:bg-white/10 focus:outline-none"
+                        className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-sm dark:text-gray/90 light:text-gray-900 transition-colors focus:border-primary-600 focus:bg-white/10 focus:outline-none"
                     >
-                        <option value="10">10</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
+                        <option className="text-gray-900 dark:text-gray/90" value="10">10</option>
+                        <option className="text-gray-900 dark:text-gray/90" value="25">25</option>
+                        <option className="text-gray-900 dark:text-gray/90" value="50">50</option>
                     </select>
                 </div>
 

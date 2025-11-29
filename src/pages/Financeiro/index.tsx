@@ -8,17 +8,12 @@ import {
     TrendingDown,
     Settings2,
 } from "lucide-react";
-import type { Entrada, Despesa, MovimentacaoExtrato, AjusteManual } from "../../mocks/financeiroMock";
-import {
-    mockEntradas,
-    mockDespesas,
-    mockExtrato,
-    mockResumoFinanceiro,
-    mockAjustes,
-    dadosGraficosReceitasVsDespesas,
-    dadosReceitasPorTipo,
-    dadosDespesasPorTipo,
-} from "../../mocks/financeiroMock";
+import type { EntradaFinanceira } from "../../lib/entradaFinanceira";
+import type { Despesa as DespesaType } from "../../lib/despesa";
+import type { Movimentacao } from "../../lib/movimentacao";
+import { listEntradas, createEntrada } from "../../lib/entradaFinanceira";
+import { listDespesas, createDespesa } from "../../lib/despesa";
+import { listMovimentacoes, getDashboardResumo, registrarAjuste } from "../../lib/movimentacao";
 import FinanceiroResumo from "../../components/financeiro/FinanceiroResumo";
 import ExtratoTable from "../../components/financeiro/ExtratoTable";
 import ResumoDRE from "../../components/financeiro/ResumoDRE";
@@ -36,11 +31,10 @@ export default function FinanceiroPage() {
     const [isLoading, setIsLoading] = useState(false);
 
     // State para dados
-    const [entradas, setEntradas] = useState<Entrada[]>(mockEntradas);
-    const [despesas, setDespesas] = useState<Despesa[]>(mockDespesas);
-    const [movimentacoes, setMovimentacoes] =
-        useState<MovimentacaoExtrato[]>(mockExtrato);
-    const [ajustes, setAjustes] = useState<AjusteManual[]>(mockAjustes);
+    const [entradas, setEntradas] = useState<EntradaFinanceira[]>([]);
+    const [despesas, setDespesas] = useState<DespesaType[]>([]);
+    const [movimentacoes, setMovimentacoes] = useState<Movimentacao[]>([]);
+    const [resumo, setResumo] = useState<any | null>(null);
 
     // State para paginação
     const [currentPage, setCurrentPage] = useState(1);
@@ -52,14 +46,8 @@ export default function FinanceiroPage() {
     const [filtroDataFim, setFiltroDataFim] = useState("");
 
     // Calcular totais
-    const totalEntradas = useMemo(
-        () => entradas.reduce((sum, e) => sum + e.valor, 0),
-        [entradas]
-    );
-    const totalDespesas = useMemo(
-        () => despesas.reduce((sum, d) => sum + d.valor, 0),
-        [despesas]
-    );
+    const totalEntradas = useMemo(() => entradas.reduce((sum, e) => sum + e.valor, 0), [entradas]);
+    const totalDespesas = useMemo(() => despesas.reduce((sum, d) => sum + d.valor, 0), [despesas]);
     // Movimentações filtradas
     const filteredMovimentacoes = useMemo(() => {
         let result = [...movimentacoes];
@@ -87,98 +75,101 @@ export default function FinanceiroPage() {
     }, [movimentacoes, filtroExtratoTipo, filtroDataInicio, filtroDataFim]);
 
     // Handlers
-    const handleSalvarEntrada = useCallback(
-        async (data: {
-            tipo: string;
-            valor: number;
-            data: string;
-            descricao: string;
-        }) => {
-            setIsLoading(true);
-            await new Promise((resolve) => setTimeout(resolve, 500));
+    const fetchResumo = useCallback(async () => {
+        try {
+            const d = await getDashboardResumo();
+            setResumo(d);
+        } catch (err) {
+            console.error(err);
+        }
+    }, []);
 
-            const novaEntrada: Entrada = {
-                id: Math.max(...entradas.map((e) => e.id), 0) + 1,
-                tipo: data.tipo,
-                valor: data.valor,
-                data: data.data,
-                descricao: data.observacao,
-                usuarioNome: "João Silva",
-            }; setEntradas([novaEntrada, ...entradas]);
-            setIsEntradaModalOpen(false);
-            setIsLoading(false);
-            console.log("✅ Entrada registrada:", novaEntrada);
+    const fetchMovimentacoes = useCallback(async () => {
+        try {
+            const data = await listMovimentacoes();
+            setMovimentacoes(data || []);
+        } catch (err) {
+            console.error(err);
+        }
+    }, []);
+
+    const fetchEntradas = useCallback(async () => {
+        try {
+            const data = await listEntradas();
+            setEntradas(data || []);
+        } catch (err) {
+            console.error(err);
+        }
+    }, []);
+
+    const fetchDespesas = useCallback(async () => {
+        try {
+            const data = await listDespesas();
+            setDespesas(data || []);
+        } catch (err) {
+            console.error(err);
+        }
+    }, []);
+
+    // Inicializar dados
+    useMemo(() => {
+        fetchResumo();
+        fetchMovimentacoes();
+        fetchEntradas();
+        fetchDespesas();
+    }, [fetchResumo, fetchMovimentacoes, fetchEntradas, fetchDespesas]);
+
+    const handleSalvarEntrada = useCallback(
+        async (data: { tipo: string; valor: number; data: string; descricao?: string }) => {
+            setIsLoading(true);
+            try {
+                await createEntrada({ tipo: data.tipo, descricao: data.descricao || "", valor: data.valor, data: data.data });
+                await fetchEntradas();
+                await fetchMovimentacoes();
+                await fetchResumo();
+                setIsEntradaModalOpen(false);
+            } catch (err: any) {
+                console.error(err);
+            } finally {
+                setIsLoading(false);
+            }
         },
-        [entradas]
+        [fetchEntradas, fetchMovimentacoes, fetchResumo]
     );
 
     const handleSalvarDespesa = useCallback(
-        async (data: {
-            tipo: string;
-            descricao: string;
-            valor: number;
-            data: string;
-            descricao: string;
-        }) => {
+        async (data: { tipo: string; descricao?: string; valor: number; data: string }) => {
             setIsLoading(true);
-            await new Promise((resolve) => setTimeout(resolve, 500));
-
-            const novaDespesa: Despesa = {
-                id: Math.max(...despesas.map((d) => d.id), 0) + 1,
-                tipo: data.tipo,
-                descricao: data.descricao,
-                valor: data.valor,
-                data: data.data,
-                descricao: data.observacao,
-                usuarioNome: "João Silva",
-            }; setDespesas([novaDespesa, ...despesas]);
-            setIsDespesaModalOpen(false);
-            setIsLoading(false);
-            console.log("✅ Despesa registrada:", novaDespesa);
+            try {
+                await createDespesa({ tipo: data.tipo, descricao: data.descricao || "", valor: data.valor, data: data.data });
+                await fetchDespesas();
+                await fetchMovimentacoes();
+                await fetchResumo();
+                setIsDespesaModalOpen(false);
+            } catch (err) {
+                console.error(err);
+            } finally {
+                setIsLoading(false);
+            }
         },
-        [despesas]
+        [fetchDespesas, fetchMovimentacoes, fetchResumo]
     );
 
     const handleSalvarAjuste = useCallback(
-        async (data: {
-            tipo: "entrada" | "saida";
-            descricao: string;
-            valor: number;
-            data: string;
-            motivo: string;
-        }) => {
+        async (data: { tipo: "entrada" | "saida"; descricao: string; valor: number; data: string; motivo: string }) => {
             setIsLoading(true);
-            await new Promise((resolve) => setTimeout(resolve, 500));
-
-            const novoAjuste: AjusteManual = {
-                id: Math.max(...ajustes.map((a) => a.id), 0) + 1,
-                tipo: data.tipo === "saida" ? "saida" : "entrada",
-                descricao: data.descricao,
-                valor: data.valor,
-                data: data.data,
-                usuarioNome: "João Silva",
-                motivo: data.motivo,
-            };
-
-            setAjustes([novoAjuste, ...ajustes]);
-
-            // Adicionar também à movimentação
-            const novaMovimentacao: MovimentacaoExtrato = {
-                id: Math.max(...movimentacoes.map((m) => m.id), 0) + 1,
-                tipo: data.tipo === "saida" ? "saida" : "entrada",
-                descricao: data.descricao,
-                valor: data.valor,
-                data: data.data,
-                categoria: "Ajuste Manual",
-                usuarioNome: "João Silva",
-            };
-            setMovimentacoes([novaMovimentacao, ...movimentacoes]);
-
-            setIsAjusteModalOpen(false);
-            setIsLoading(false);
-            console.log("✅ Ajuste registrado:", novoAjuste);
+            try {
+                await registrarAjuste({ tipo: data.tipo, valor: data.valor, data: data.data, descricao: data.descricao, entrada: data.tipo === "entrada" });
+                await fetchMovimentacoes();
+                await fetchResumo();
+                setIsAjusteModalOpen(false);
+            } catch (err) {
+                console.error(err);
+            } finally {
+                setIsLoading(false);
+            }
         },
-        [ajustes, movimentacoes]
+        [fetchMovimentacoes, fetchResumo]
     );
 
     return (
@@ -241,7 +232,7 @@ export default function FinanceiroPage() {
                 <div className="rounded-2xl border border-blue-600/30 bg-gradient-to-br from-blue-600/10 to-blue-700/5 p-4">
                     <p className="text-sm font-medium text-blue-400">Saldo Atual</p>
                     <p className="mt-2 text-3xl font-bold text-white">
-                        R$ {mockResumoFinanceiro.saldoAtual.toFixed(2)}
+                        R$ {((resumo && resumo.saldoAtual) || 0).toFixed(2)}
                     </p>
                     <p className="mt-1 text-xs text-white/50">em caixa</p>
                 </div>
@@ -271,14 +262,9 @@ export default function FinanceiroPage() {
                 </div>
 
                 {/* Lucro */}
-                <div
-                    className={`rounded-2xl border-2 p-4 ${mockResumoFinanceiro.lucro >= 0
-                        ? "border-green-600/30 bg-gradient-to-br from-green-600/10 to-green-700/5"
-                        : "border-red-600/30 bg-gradient-to-br from-red-600/10 to-red-700/5"
-                        }`}
-                >
+                <div className={`rounded-2xl border-2 p-4 ${((resumo && resumo.lucro) || 0) >= 0 ? "border-green-600/30 bg-gradient-to-br from-green-600/10 to-green-700/5" : "border-red-600/30 bg-gradient-to-br from-red-600/10 to-red-700/5"}`}>
                     <p
-                        className={`text-sm font-medium ${mockResumoFinanceiro.lucro >= 0
+                        className={`text-sm font-medium ${((resumo && resumo.lucro) || 0) >= 0
                             ? "text-green-400"
                             : "text-red-400"
                             }`}
@@ -286,15 +272,15 @@ export default function FinanceiroPage() {
                         Lucro/Prejuízo
                     </p>
                     <p
-                        className={`mt-2 text-3xl font-bold ${mockResumoFinanceiro.lucro >= 0
+                        className={`mt-2 text-3xl font-bold ${((resumo && resumo.lucro) || 0) >= 0
                             ? "text-green-400"
                             : "text-red-400"
                             }`}
                     >
-                        R$ {Math.abs(mockResumoFinanceiro.lucro).toFixed(2)}
+                        R$ {Math.abs(((resumo && resumo.lucro) || 0)).toFixed(2)}
                     </p>
                     <p className="mt-1 text-xs text-white/50">
-                        {mockResumoFinanceiro.lucro >= 0 ? "lucro" : "prejuízo"}
+                        {((resumo && resumo.lucro) || 0) >= 0 ? "lucro" : "prejuízo"}
                     </p>
                 </div>
             </div>
@@ -344,11 +330,11 @@ export default function FinanceiroPage() {
                     <FinanceiroResumo
                         entradas={entradas}
                         despesas={despesas}
-                        resumo={mockResumoFinanceiro}
+                        resumo={resumo || { saldoAtual: 0, receitasMes: totalEntradas, despesasMes: totalDespesas, lucro: totalEntradas - totalDespesas }}
                         graficos={{
-                            receitasVsDespesas: dadosGraficosReceitasVsDespesas,
-                            receitasPorTipo: dadosReceitasPorTipo,
-                            despesasPorTipo: dadosDespesasPorTipo,
+                            receitasVsDespesas: [],
+                            receitasPorTipo: [],
+                            despesasPorTipo: [],
                         }}
                     />
                 )}
@@ -368,11 +354,11 @@ export default function FinanceiroPage() {
                                             setFiltroExtratoTipo(e.target.value);
                                             setCurrentPage(1);
                                         }}
-                                        className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-white transition-colors focus:border-primary-600 focus:bg-white/10 focus:outline-none"
+                                        className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 dark:text-gray/90 light:text-gray-900 transition-colors focus:border-primary-600 focus:bg-white/10 focus:outline-none"
                                     >
-                                        <option value="">Todos</option>
-                                        <option value="entrada">Entradas</option>
-                                        <option value="saida">Saídas</option>
+                                        <option className="text-gray-900 dark:text-gray/90" value="">Todos</option>
+                                        <option className="text-gray-900 dark:text-gray/90" value="entrada">Entradas</option>
+                                        <option className="text-gray-900 dark:text-gray/90" value="saida">Saídas</option>
                                     </select>
                                 </div>
 
@@ -464,7 +450,7 @@ export default function FinanceiroPage() {
                                                     {new Date(e.data).toLocaleDateString("pt-BR")}
                                                 </td>
                                                 <td className="px-6 py-4 text-sm text-white/70">
-                                                    {e.usuarioNome}
+                                                    {e.usuarioId}
                                                 </td>
                                             </tr>
                                         ))}
@@ -526,7 +512,7 @@ export default function FinanceiroPage() {
                                                     {new Date(d.data).toLocaleDateString("pt-BR")}
                                                 </td>
                                                 <td className="px-6 py-4 text-sm text-white/70">
-                                                    {d.usuarioNome}
+                                                    {d.usuarioId}
                                                 </td>
                                             </tr>
                                         ))}

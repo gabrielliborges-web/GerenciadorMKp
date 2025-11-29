@@ -1,7 +1,8 @@
 import { Edit, Trash2, Info } from "lucide-react";
-import { mockDespesas } from "../../mocks/financeiroMock";
+import type { DespesaType } from "../../lib/despesa";
 
 interface FinanceiroDespesasProps {
+    despesas: DespesaType[];
     onEdit?: (id: number) => void;
     onDelete?: (id: number) => void;
 }
@@ -10,11 +11,8 @@ function formatarData(data: string): string {
     return new Date(data).toLocaleDateString("pt-BR");
 }
 
-export default function FinanceiroDespesas({
-    onEdit,
-    onDelete,
-}: FinanceiroDespesasProps) {
-    const totalDespesas = mockDespesas.reduce((sum, d) => sum + d.valor, 0);
+export default function FinanceiroDespesas({ despesas, onEdit, onDelete }: FinanceiroDespesasProps) {
+    const totalDespesas = despesas.reduce((sum, d) => sum + d.valor, 0);
 
     return (
         <div className="space-y-6">
@@ -24,7 +22,7 @@ export default function FinanceiroDespesas({
                     Total de Despesas
                 </p>
                 <p className="mt-2 text-4xl font-bold text-red-400">R$ {totalDespesas.toFixed(2)}</p>
-                <p className="mt-2 text-sm text-white/60">{mockDespesas.length} despesas registradas</p>
+                <p className="mt-2 text-sm text-white/60">{despesas.length} despesas registradas</p>
             </div>
 
             {/* Tabela */}
@@ -53,7 +51,7 @@ export default function FinanceiroDespesas({
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-white/10">
-                        {mockDespesas.map((despesa) => (
+                        {despesas.map((despesa) => (
                             <tr key={despesa.id} className="transition-all duration-300 hover:bg-white/5">
                                 <td className="px-6 py-4">
                                     <span className="inline-flex rounded-full bg-red-500/20 px-3 py-1 text-xs font-semibold text-red-400">
@@ -104,7 +102,7 @@ export default function FinanceiroDespesas({
 
             {/* Grid Mobile */}
             <div className="grid gap-4 sm:grid-cols-2 md:hidden">
-                {mockDespesas.map((despesa) => (
+                {despesas.map((despesa) => (
                     <div
                         key={despesa.id}
                         className="rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm"

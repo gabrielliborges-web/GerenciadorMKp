@@ -1,12 +1,17 @@
 import { useState } from "react";
 import { X } from "lucide-react";
-import { tiposEntrada } from "../../mocks/financeiroMock";
+
+interface TipoItem {
+    id: number;
+    nome: string;
+}
 
 interface FinanceiroEntradaModalProps {
     isOpen: boolean;
     onClose: () => void;
     onSave: (data: any) => void;
     isLoading?: boolean;
+    tipos?: TipoItem[];
 }
 
 export default function FinanceiroEntradaModal({
@@ -14,6 +19,7 @@ export default function FinanceiroEntradaModal({
     onClose,
     onSave,
     isLoading = false,
+    tipos = [{ id: 1, nome: "Venda" }, { id: 2, nome: "Recebimento" }, { id: 3, nome: "Outro" }],
 }: FinanceiroEntradaModalProps) {
     const [formData, setFormData] = useState({
         tipo: "",
@@ -47,7 +53,7 @@ export default function FinanceiroEntradaModal({
             tipo: formData.tipo,
             valor: Number(formData.valor),
             data: new Date(formData.data).toISOString(),
-            descricao: formData.observacao,
+            descricao: formData.descricao,
         });
 
         setFormData({
@@ -119,11 +125,11 @@ export default function FinanceiroEntradaModal({
                             value={formData.tipo}
                             onChange={(e) => setFormData({ ...formData, tipo: e.target.value })}
                             disabled={isLoading}
-                            className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-white transition-all duration-300 hover:border-white/20 focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/10 disabled:opacity-50"
+                            className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 dark:text-gray/90 light:text-gray-900 transition-all duration-300 hover:border-white/20 focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/10 disabled:opacity-50"
                         >
-                            <option value="">Selecionar...</option>
-                            {tiposEntrada.map((tipo) => (
-                                <option key={tipo.id} value={tipo.nome}>
+                            <option className="text-gray-900 dark:text-gray/90" value="">Selecionar...</option>
+                            {tipos.map((tipo) => (
+                                <option className="text-gray-900 dark:text-gray/90" key={tipo.id} value={tipo.nome}>
                                     {tipo.nome}
                                 </option>
                             ))}
@@ -167,7 +173,7 @@ export default function FinanceiroEntradaModal({
                             Observação
                         </label>
                         <textarea
-                            value={formData.observacao}
+                            value={formData.descricao}
                             onChange={(e) => setFormData({ ...formData, descricao: e.target.value })}
                             placeholder="Adicione uma observação (opcional)"
                             rows={3}

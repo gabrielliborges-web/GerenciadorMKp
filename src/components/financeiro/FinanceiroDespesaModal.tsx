@@ -1,12 +1,17 @@
 import { useState } from "react";
 import { X } from "lucide-react";
-import { tiposDespesa } from "../../mocks/financeiroMock";
+
+interface TipoItem {
+    id: number;
+    nome: string;
+}
 
 interface FinanceiroDespesaModalProps {
     isOpen: boolean;
     onClose: () => void;
     onSave: (data: any) => void;
     isLoading?: boolean;
+    tipos?: TipoItem[];
 }
 
 export default function FinanceiroDespesaModal({
@@ -14,6 +19,7 @@ export default function FinanceiroDespesaModal({
     onClose,
     onSave,
     isLoading = false,
+    tipos = [{ id: 1, nome: "Operacional" }, { id: 2, nome: "Fornecedor" }, { id: 3, nome: "Outro" }],
 }: FinanceiroDespesaModalProps) {
     const [formData, setFormData] = useState({
         tipo: "",
@@ -123,11 +129,11 @@ export default function FinanceiroDespesaModal({
                             value={formData.tipo}
                             onChange={(e) => setFormData({ ...formData, tipo: e.target.value })}
                             disabled={isLoading}
-                            className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-white transition-all duration-300 hover:border-white/20 focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/10 disabled:opacity-50"
+                            className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 dark:text-gray/90 light:text-gray-900 transition-all duration-300 hover:border-white/20 focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/10 disabled:opacity-50"
                         >
-                            <option value="">Selecionar...</option>
-                            {tiposDespesa.map((tipo) => (
-                                <option key={tipo.id} value={tipo.nome}>
+                            <option className="text-gray-900 dark:text-gray/90" value="">Selecionar...</option>
+                            {tipos.map((tipo) => (
+                                <option className="text-gray-900 dark:text-gray/90" key={tipo.id} value={tipo.nome}>
                                     {tipo.nome}
                                 </option>
                             ))}

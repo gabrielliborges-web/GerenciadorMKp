@@ -267,26 +267,26 @@ export default function Vendas() {
                     <select
                         value={filtroFormaPagamento}
                         onChange={(e) => setFiltroFormaPagamento(e.target.value)}
-                        className="rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-white transition-colors focus:border-green-600 focus:bg-white/10 focus:outline-none"
+                        className="rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 dark:text-gray/90 light:text-gray-900 transition-colors focus:border-green-600 focus:bg-white/10 focus:outline-none"
                     >
-                        <option value="">Todas as formas</option>
-                        <option value="dinheiro">💵 Dinheiro</option>
-                        <option value="pix">📱 Pix</option>
-                        <option value="débito">🏧 Débito</option>
-                        <option value="crédito">💳 Crédito</option>
-                        <option value="fiado">📝 Fiado</option>
+                        <option className="text-gray-900 dark:text-gray/90" value="">Todas as formas</option>
+                        <option className="text-gray-900 dark:text-gray/90" value="dinheiro">💵 Dinheiro</option>
+                        <option className="text-gray-900 dark:text-gray/90" value="pix">📱 Pix</option>
+                        <option className="text-gray-900 dark:text-gray/90" value="débito">🏧 Débito</option>
+                        <option className="text-gray-900 dark:text-gray/90" value="crédito">💳 Crédito</option>
+                        <option className="text-gray-900 dark:text-gray/90" value="fiado">📝 Fiado</option>
                     </select>
 
                     {/* Period Filter */}
                     <select
                         value={filtroPeriodo}
                         onChange={(e) => setFiltroPeriodo(e.target.value as PeriodoFiltro)}
-                        className="rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-white transition-colors focus:border-green-600 focus:bg-white/10 focus:outline-none"
+                        className="rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 dark:text-gray/90 light:text-gray-900 transition-colors focus:border-green-600 focus:bg-white/10 focus:outline-none"
                     >
-                        <option value="todos">📅 Todos os períodos</option>
-                        <option value="hoje">Hoje</option>
-                        <option value="semana">Última semana</option>
-                        <option value="mes">Último mês</option>
+                        <option className="text-gray-900 dark:text-gray/90" value="todos">📅 Todos os períodos</option>
+                        <option className="text-gray-900 dark:text-gray/90" value="hoje">Hoje</option>
+                        <option className="text-gray-900 dark:text-gray/90" value="semana">Última semana</option>
+                        <option className="text-gray-900 dark:text-gray/90" value="mes">Último mês</option>
                     </select>
                 </div>
             </div>

@@ -1,11 +1,12 @@
 import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { TrendingUp, TrendingDown, Wallet, AlertCircle } from "lucide-react";
-import type { Entrada, Despesa, ResumoFinanceiro } from "../../mocks/financeiroMock";
+import type { EntradaFinanceira } from "../../lib/entradaFinanceira";
+import type { Despesa } from "../../lib/despesa";
 
 interface FinanceiroResumoProps {
-    entradas: Entrada[];
+    entradas: EntradaFinanceira[];
     despesas: Despesa[];
-    resumo: ResumoFinanceiro;
+    resumo: any;
     graficos: {
         receitasVsDespesas: any[];
         receitasPorTipo: any[];
@@ -17,7 +18,7 @@ export default function FinanceiroResumo({
     resumo,
     graficos,
 }: FinanceiroResumoProps) {
-    const { saldoAtual, receitasMes, despesasMes, lucro } = resumo;
+    const { saldoAtual = 0, receitasMes = 0, despesasMes = 0, lucro = 0 } = resumo || {};
 
     const alertas = [
         despesasMes > receitasMes && {

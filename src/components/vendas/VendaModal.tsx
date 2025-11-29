@@ -96,13 +96,13 @@ export default function VendaModal({
                                     )
                                 }
                                 disabled={isLoading}
-                                className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white transition-colors focus:border-primary-600 focus:bg-white/10 focus:outline-none disabled:opacity-50"
+                                className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 dark:text-gray/90 light:text-gray-900 transition-colors focus:border-primary-600 focus:bg-white/10 focus:outline-none disabled:opacity-50"
                             >
-                                <option value="dinheiro">💵 Dinheiro</option>
-                                <option value="pix">📱 Pix</option>
-                                <option value="débito">🏧 Débito</option>
-                                <option value="crédito">💳 Crédito</option>
-                                <option value="fiado">📝 Fiado</option>
+                                <option className="text-gray-900 dark:text-gray/90" value="dinheiro">💵 Dinheiro</option>
+                                <option className="text-gray-900 dark:text-gray/90" value="pix">📱 Pix</option>
+                                <option className="text-gray-900 dark:text-gray/90" value="débito">🏧 Débito</option>
+                                <option className="text-gray-900 dark:text-gray/90" value="crédito">💳 Crédito</option>
+                                <option className="text-gray-900 dark:text-gray/90" value="fiado">📝 Fiado</option>
                             </select>
                         </div>
 

@@ -32,20 +32,14 @@ export default function CategoriaFilters({
                 <Filter className="h-3.5 sm:h-4 w-3.5 sm:w-4 dark:text-white/60 light:text-gray-500 flex-shrink-0" />
                 <select
                     value={statusFilter}
-                    onChange={(e) =>
-                        onStatusChange(e.target.value as "todos" | "ativas" | "inativas")
-                    }
-                    className="rounded-lg border px-2 sm:px-3 py-2 text-xs sm:text-sm transition-all duration-300 focus:outline-none dark:border-white/10 dark:bg-white/5 dark:text-white dark:focus:border-white/30 dark:focus:bg-white/10 light:border-gray-200 light:bg-white light:text-gray-900 light:focus:border-primary-500"
+                    onChange={(e) => onStatusChange(e.target.value as "todos" | "ativas" | "inativas")}
+                    className="rounded-lg border px-2 sm:px-3 py-2 text-xs sm:text-sm transition-all duration-300 focus:outline-none 
+                    dark:border-white/10 dark:bg-white/5 dark:text-gray/90 dark:focus:border-white/30 dark:focus:bg-white/10 
+                    light:border-gray-200 light:bg-white light:text-gray-900 light:focus:border-primary-500"
                 >
-                    <option value="todos" className="dark:bg-[#13081a] dark:text-white light:bg-white light:text-gray-900">
-                        Todas
-                    </option>
-                    <option value="ativas" className="dark:bg-[#13081a] dark:text-white light:bg-white light:text-gray-900">
-                        Ativas
-                    </option>
-                    <option value="inativas" className="dark:bg-[#13081a] dark:text-white light:bg-white light:text-gray-900">
-                        Inativas
-                    </option>
+                    <option value="todos" className="text-gray-900 dark:text-gray/90">Todas</option>
+                    <option value="ativas" className="text-gray-900 dark:text-gray/90">Ativas</option>
+                    <option value="inativas" className="text-gray-900 dark:text-gray/90">Inativas</option>
                 </select>
             </div>
         </div>

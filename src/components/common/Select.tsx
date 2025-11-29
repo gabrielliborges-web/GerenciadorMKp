@@ -57,7 +57,7 @@ export default function Select({
                     className={`
             w-full h-[48px] appearance-none rounded-sm px-4 pr-10 text-[16px]
             bg-mauve-light-1 dark:bg-mauve-dark-2
-            border text-text-primary-light dark:text-text-primary-dark
+            border text-text-primary-light dark:text-text-primary-dark dark:text-gray/90 light:text-gray-900
             focus:outline-none transition-colors duration-200 cursor-pointer
             ${showError
                             ? "border-red-500 focus:border-red-500"
@@ -72,6 +72,7 @@ export default function Select({
                         <option
                             key={opt.value}
                             value={opt.value}
+                            className="text-gray-900 dark:text-gray/90"
                             dangerouslySetInnerHTML={
                                 typeof opt.content === "string"
                                     ? { __html: opt.content }

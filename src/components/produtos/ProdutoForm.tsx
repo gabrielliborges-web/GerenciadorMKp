@@ -277,11 +277,11 @@ export default function ProdutoForm({
                             })
                         }
                         disabled={isLoading}
-                        className="w-full rounded-lg border border-blue-500/20 bg-blue-500/10 text-white py-2 px-3 text-sm transition-all duration-300 focus:border-blue-500/40 focus:outline-none"
+                        className="w-full rounded-lg border border-blue-500/20 bg-blue-500/10 dark:text-gray/90 light:text-gray-900 py-2 px-3 text-sm transition-all duration-300 focus:border-blue-500/40 focus:outline-none"
                     >
-                        <option value="">Selecione uma categoria</option>
+                        <option className="text-gray-900 dark:text-gray/90" value="">Selecione uma categoria</option>
                         {categorias.map((cat) => (
-                            <option key={cat.id} value={cat.id}>
+                            <option className="text-gray-900 dark:text-gray/90" key={cat.id} value={cat.id}>
                                 {cat.nome}
                             </option>
                         ))}

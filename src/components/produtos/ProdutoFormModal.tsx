@@ -284,11 +284,11 @@ export default function ProdutoFormModal({
                                     })
                                 }
                                 disabled={isLoading}
-                                className="w-full rounded-lg border py-2 px-3 text-sm transition-all duration-300 dark:border-rose-500/20 dark:bg-rose-500/10 dark:text-white dark:focus:border-rose-500/40 light:border-rose-200/50 light:bg-rose-50 light:text-gray-900 focus:outline-none"
+                                className="w-full rounded-lg border py-2 px-3 text-sm transition-all duration-300 dark:border-rose-500/20 dark:bg-rose-500/10 dark:text-gray/90 dark:focus:border-rose-500/40 light:border-rose-200/50 light:bg-rose-50 light:text-gray-900 focus:outline-none"
                             >
-                                <option value="">Selecione uma categoria</option>
+                                <option className="text-gray-900 dark:text-gray/90" value="">Selecione uma categoria</option>
                                 {categorias.map((cat) => (
-                                    <option key={cat.id} value={cat.id}>
+                                    <option className="text-gray-900 dark:text-gray/90" key={cat.id} value={cat.id}>
                                         {cat.nome}
                                     </option>
                                 ))}

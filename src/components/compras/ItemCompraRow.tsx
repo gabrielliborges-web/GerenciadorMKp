@@ -30,11 +30,11 @@ export default function ItemCompraRow({
                 <select
                     value={item.produtoId}
                     onChange={(e) => onChangeProduto(item.id, Number(e.target.value))}
-                    className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white transition-all duration-300 hover:border-white/20 focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/10"
+                    className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm dark:text-gray/90 light:text-gray-900 transition-all duration-300 hover:border-white/20 focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/10"
                 >
-                    <option value="">Selecionar...</option>
+                    <option className="text-gray-900 dark:text-gray/90" value="">Selecionar...</option>
                     {produtos.map((prod) => (
-                        <option key={prod.id} value={prod.id}>
+                        <option className="text-gray-900 dark:text-gray/90" key={prod.id} value={prod.id}>
                             {prod.nome} (Est: {prod.estoque})
                         </option>
                     ))}
