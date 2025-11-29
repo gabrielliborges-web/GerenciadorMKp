@@ -9,6 +9,7 @@ import ProdutoForm from "../components/produtos/ProdutoForm";
 import ProdutoDetailsDrawer from "../components/produtos/ProdutoDetailsDrawer";
 import ProdutoEmpty from "../components/produtos/ProdutoEmpty";
 import ConfirmModal from "../components/common/ConfirmModal";
+import ResumoEstoqueDashboard from "../components/produtos/ResumoEstoqueDashboard";
 import { listProdutos, createProduto, updateProduto, deleteProduto, type Produto } from "../lib/produto";
 import { listCategorias, type Categoria } from "../lib/categoria";
 
@@ -298,6 +299,9 @@ export default function ProdutosPage() {
                     }))}
                 />
             </div>
+
+            {/* Resumo do estoque (dashboard) */}
+            <ResumoEstoqueDashboard produtos={filteredProdutos} />
 
             {/* Content */}
             {filteredProdutos.length === 0 ? (

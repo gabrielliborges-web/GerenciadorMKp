@@ -1,4 +1,4 @@
-import { Edit, Trash2, Info, Tag } from "lucide-react";
+import { Edit, Trash2, Info, Tag, AlertTriangle } from "lucide-react";
 import type { Produto } from "../../mocks/produtosMock";
 
 interface ProdutoListProps {
@@ -32,10 +32,19 @@ export default function ProdutoList({
                             Categoria
                         </th>
                         <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider dark:text-white/60 light:text-gray-700">
-                            Preço
+                            Preço venda
+                        </th>
+                        <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider dark:text-white/60 light:text-gray-700">
+                            Preço compra
+                        </th>
+                        <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider dark:text-white/60 light:text-gray-700">
+                            Preço promo
                         </th>
                         <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider dark:text-white/60 light:text-gray-700">
                             Estoque
+                        </th>
+                        <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider dark:text-white/60 light:text-gray-700">
+                            Resumo
                         </th>
                         <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider dark:text-white/60 light:text-gray-700">
                             Status
@@ -78,17 +87,35 @@ export default function ProdutoList({
                                 <td className="px-6 py-4 text-sm dark:text-white/80 light:text-gray-700">
                                     {produto.categoria?.nome || "-"}
                                 </td>
+                                <td className="px-6 py-4 text-sm font-semibold dark:text-white light:text-gray-900">
+                                    R$ {(Number(produto.precoVenda) || 0).toFixed(2)}
+                                </td>
+
+                                <td className="px-6 py-4 text-sm dark:text-white/80 light:text-gray-700">
+                                    {produto.precoCompra !== undefined ? `R$ ${Number(produto.precoCompra).toFixed(2)}` : "-"}
+                                </td>
+
+                                <td className="px-6 py-4 text-sm dark:text-white/80 light:text-gray-700">
+                                    {produto.precoPromocional !== undefined && produto.precoPromocional > 0
+                                        ? `R$ ${Number(produto.precoPromocional).toFixed(2)}`
+                                        : "-"}
+                                </td>
+
                                 <td className="px-6 py-4">
-                                    <div className="space-y-1">
-                                        {temPromocao && (
-                                            <p className="text-xs line-through dark:text-white/40 light:text-gray-400">
-                                                R$ {(Number(produto?.precoVenda))?.toFixed(2)}
-                                            </p>
-                                        )}
-                                        <p className="text-sm font-bold dark:text-rose-400 light:text-rose-600">
-                                            R$ {preco.toFixed(2)}
-                                        </p>
-                                    </div>
+                                    <span className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${getEstoqueColor(produto.estoque)}`}>
+                                        {produto.estoque}
+                                    </span>
+                                </td>
+
+                                <td className="px-6 py-4">
+                                    {produto.estoque <= 5 ? (
+                                        <div className="inline-flex items-center gap-2 rounded-full bg-yellow-500/10 px-3 py-1 text-sm font-semibold text-yellow-300">
+                                            <AlertTriangle className="h-4 w-4 text-yellow-300" />
+                                            Estoque baixo
+                                        </div>
+                                    ) : (
+                                        <span className="text-sm text-white/60">-</span>
+                                    )}
                                 </td>
                                 <td className="px-6 py-4">
                                     <span className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${getEstoqueColor(produto.estoque)}`}>

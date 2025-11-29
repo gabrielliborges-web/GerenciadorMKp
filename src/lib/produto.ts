@@ -49,6 +49,29 @@ export interface FiltroListagemProduto {
   take?: number;
 }
 
+// Normaliza campos numéricos que chegam como string do backend (Prisma Decimal)
+const normalizeProduto = (p: any): Produto => ({
+  ...p,
+  precoVenda:
+    p.precoVenda !== undefined && p.precoVenda !== null
+      ? Number(p.precoVenda)
+      : 0,
+  precoCompra:
+    p.precoCompra !== undefined && p.precoCompra !== null
+      ? Number(p.precoCompra)
+      : undefined,
+  precoPromocional:
+    p.precoPromocional !== undefined && p.precoPromocional !== null
+      ? Number(p.precoPromocional)
+      : undefined,
+  estoque:
+    p.estoque !== undefined && p.estoque !== null ? Number(p.estoque) : 0,
+  categoriaId:
+    p.categoriaId !== undefined && p.categoriaId !== null
+      ? Number(p.categoriaId)
+      : undefined,
+});
+
 // API Calls
 export const listProdutos = async (
   filtros?: FiltroListagemProduto
@@ -63,7 +86,8 @@ export const listProdutos = async (
     if (filtros?.take) params.append("take", filtros.take.toString());
 
     const response = await api.get(`/produtos?${params.toString()}`);
-    return response.data;
+    // Normaliza cada produto (preços e estoque vêm como string do Prisma)
+    return (response.data as any[]).map(normalizeProduto);
   } catch (error: any) {
     const apiError = error.response?.data;
     const message = apiError?.message || "Erro ao listar produtos.";
@@ -74,7 +98,7 @@ export const listProdutos = async (
 export const getProdutoById = async (id: number): Promise<Produto> => {
   try {
     const response = await api.get(`/produtos/${id}`);
-    return response.data;
+    return normalizeProduto(response.data);
   } catch (error: any) {
     const apiError = error.response?.data;
     if (apiError?.errors) {
@@ -106,7 +130,7 @@ export const createProduto = async (
     const response = await api.post("/produtos", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
-    return response.data;
+    return normalizeProduto(response.data);
   } catch (error: any) {
     const apiError = error.response?.data;
     if (apiError?.errors) {
@@ -141,7 +165,7 @@ export const updateProduto = async (
     const response = await api.put(`/produtos/${id}`, formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
-    return response.data;
+    return normalizeProduto(response.data);
   } catch (error: any) {
     const apiError = error.response?.data;
     if (apiError?.errors) {
