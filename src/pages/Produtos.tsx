@@ -28,10 +28,12 @@ export default function ProdutosPage() {
     const [isLoading, setIsLoading] = useState(false);
     const [isInitialLoading, setIsInitialLoading] = useState(true);
 
-    const [confirmDelete, setConfirmDelete] = useState<{ isOpen: boolean; produtoId: number | null }>({
+    const [confirmDelete, setConfirmDelete] = useState<{ isOpen: boolean; produtoId: number | null; isMultiple?: boolean }>({
         isOpen: false,
         produtoId: null,
+        isMultiple: false,
     });
+    const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
 
     // Load produtos and categorias on mount
     useEffect(() => {
@@ -176,20 +178,55 @@ export default function ProdutosPage() {
         setConfirmDelete({ isOpen: true, produtoId: id });
     }, []);
 
+    const handleDeleteMultiple = useCallback(() => {
+        setConfirmDelete({ isOpen: true, produtoId: null, isMultiple: true });
+    }, []);
+
     // Handle confirm delete
     const handleConfirmDelete = useCallback(async () => {
-        if (confirmDelete.produtoId !== null) {
+        if (confirmDelete.isMultiple && selectedIds.size > 0) {
+            setIsLoading(true);
+            try {
+                let successCount = 0;
+                let errorCount = 0;
+                for (const id of selectedIds) {
+                    try {
+                        await deleteProduto(id);
+                        successCount++;
+                    } catch (error) {
+                        errorCount++;
+                    }
+                }
+
+                setProdutos((prev) => prev.filter((p) => !selectedIds.has(p.id)));
+                setSelectedIds(new Set());
+
+                if (errorCount === 0) {
+                    toast.success(`✅ ${successCount} produto(s) excluído(s) com sucesso!`);
+                } else {
+                    toast.error(`❌ ${successCount} excluído(s), ${errorCount} erro(s)`);
+                }
+
+                setConfirmDelete({ isOpen: false, produtoId: null, isMultiple: false });
+            } catch (error: any) {
+                toast.error(error.message || "Erro ao excluir produtos");
+                console.error("❌ Erro ao excluir produtos:", error);
+                setConfirmDelete({ isOpen: false, produtoId: null, isMultiple: false });
+            } finally {
+                setIsLoading(false);
+            }
+        } else if (confirmDelete.produtoId !== null) {
             setIsLoading(true);
             try {
                 await deleteProduto(confirmDelete.produtoId);
                 setProdutos((prev) => prev.filter((p) => p.id !== confirmDelete.produtoId));
                 toast.success("✅ Produto excluído com sucesso!");
                 console.log("✅ Produto excluído:", confirmDelete.produtoId);
-                setConfirmDelete({ isOpen: false, produtoId: null });
+                setConfirmDelete({ isOpen: false, produtoId: null, isMultiple: false });
             } catch (error: any) {
                 toast.error(error.message || "Erro ao excluir produto");
                 console.error("❌ Erro ao excluir produto:", error);
-                setConfirmDelete({ isOpen: false, produtoId: null });
+                setConfirmDelete({ isOpen: false, produtoId: null, isMultiple: false });
             } finally {
                 setIsLoading(false);
             }
@@ -200,6 +237,29 @@ export default function ProdutosPage() {
     const handleDetailsProduto = useCallback((id: number) => {
         setSelectedProdutoId(id);
         setIsDrawerOpen(true);
+    }, []);
+
+    // Selection handlers for bulk actions
+    const handleSelectAll = useCallback(() => {
+        if (selectedIds.size === filteredProdutos.length) {
+            setSelectedIds(new Set());
+        } else {
+            setSelectedIds(new Set(filteredProdutos.map((p) => p.id)));
+        }
+    }, [selectedIds, filteredProdutos]);
+
+    const handleSelectSingle = useCallback((id: number) => {
+        const newSelected = new Set(selectedIds);
+        if (newSelected.has(id)) {
+            newSelected.delete(id);
+        } else {
+            newSelected.add(id);
+        }
+        setSelectedIds(newSelected);
+    }, [selectedIds]);
+
+    const handleClearSelection = useCallback(() => {
+        setSelectedIds(new Set());
     }, []);
 
     // Handle refresh
@@ -327,6 +387,11 @@ export default function ProdutosPage() {
                         onEdit={handleEditProduto}
                         onDelete={handleDeleteProduto}
                         onDetails={handleDetailsProduto}
+                        selectedIds={selectedIds}
+                        onSelectAll={handleSelectAll}
+                        onSelectSingle={handleSelectSingle}
+                        onDeleteMultiple={handleDeleteMultiple}
+                        onClearSelection={handleClearSelection}
                     />
                 </>
             )}
@@ -342,13 +407,13 @@ export default function ProdutosPage() {
             <ConfirmModal
                 isOpen={confirmDelete.isOpen}
                 title="Excluir Produto"
-                message="Tem certeza que deseja excluir esse produto? Esta ação não pode ser desfeita."
+                message={confirmDelete.isMultiple ? `Tem certeza que deseja excluir ${selectedIds.size} produto(s)? Esta ação não pode ser desfeita.` : "Tem certeza que deseja excluir esse produto? Esta ação não pode ser desfeita."}
                 confirmText="Excluir"
                 cancelText="Cancelar"
                 isDangerous={true}
                 isLoading={isLoading}
                 onConfirm={handleConfirmDelete}
-                onCancel={() => setConfirmDelete({ isOpen: false, produtoId: null })}
+                onCancel={() => setConfirmDelete({ isOpen: false, produtoId: null, isMultiple: false })}
             />
         </div>
     );

@@ -36,6 +36,7 @@ export interface UpdateProdutoRequest {
   precoPromocional?: number;
   estoque?: number;
   categoriaId?: number;
+  ativo?: boolean;
 }
 
 export interface ChangeStatusRequest {
@@ -125,6 +126,7 @@ export const createProduto = async (
     formData.append("estoqueInicial", data.estoque.toString());
     if (data.categoriaId !== undefined)
       formData.append("categoriaId", data.categoriaId.toString());
+    if (data.ativo !== undefined) formData.append("ativo", String(data.ativo));
     if (file) formData.append("imagem", file);
 
     const response = await api.post("/produtos", formData, {
@@ -160,6 +162,7 @@ export const updateProduto = async (
       formData.append("estoque", data.estoque.toString());
     if (data.categoriaId !== undefined)
       formData.append("categoriaId", data.categoriaId.toString());
+    if (data.ativo !== undefined) formData.append("ativo", String(data.ativo));
     if (file) formData.append("imagem", file);
 
     const response = await api.put(`/produtos/${id}`, formData, {
