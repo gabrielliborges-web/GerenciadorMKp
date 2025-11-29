@@ -50,15 +50,15 @@ export default function ProdutoDetailsDrawer({
 
             {/* Drawer */}
             <div
-                className={`fixed inset-y-0 right-0 z-50 w-full max-w-md transform backdrop-blur-xl transition-transform duration-300 dark:bg-gradient-to-b dark:from-gray-900 dark:to-gray-800 dark:border-l dark:border-rose-500/20 light:bg-gradient-to-b light:from-white light:to-rose-50/30 light:border-l light:border-rose-200/50 ${isOpen ? "translate-x-0" : "translate-x-full"
+                className={`fixed inset-y-0 right-0 z-50 w-full max-w-md transform backdrop-blur-xl transition-transform duration-300 dark:bg-gradient-to-b dark:from-gray-900 dark:to-gray-800 dark:border-l dark:border-primary-600/20 light:bg-gradient-to-b light:from-white light:to-primary-50/30 light:border-l light:border-primary-200/50 ${isOpen ? "translate-x-0" : "translate-x-full"
                     }`}
             >
                 {/* Header */}
-                <div className="sticky top-0 flex items-center justify-between px-4 sm:px-6 py-4 backdrop-blur dark:border-b dark:border-rose-500/20 dark:bg-gray-900/50 light:border-b light:border-rose-200/50 light:bg-white/50">
+                <div className="sticky top-0 flex items-center justify-between px-4 sm:px-6 py-4 backdrop-blur dark:border-b dark:border-primary-600/20 dark:bg-gray-900/50 light:border-b light:border-primary-200/50 light:bg-white/50">
                     <h2 className="text-lg sm:text-xl font-bold dark:text-white light:text-gray-900">Detalhes do Produto</h2>
                     <button
                         onClick={onClose}
-                        className="rounded-lg p-2 transition-all duration-300 dark:hover:bg-white/10 light:hover:bg-rose-100/50"
+                        className="rounded-lg p-2 transition-all duration-300 dark:hover:bg-white/10 light:hover:bg-primary-100/50"
                     >
                         <X className="h-5 w-5 dark:text-white/60 light:text-gray-400" />
                     </button>
@@ -67,7 +67,7 @@ export default function ProdutoDetailsDrawer({
                 {/* Content */}
                 <div className="h-[calc(100vh-80px)] overflow-y-auto scrollbar dark:scrollbar-track-transparent dark:scrollbar-thumb-white/20 light:scrollbar-track-gray-100 light:scrollbar-thumb-gray-400">
                     {/* Image */}
-                    <div className="relative h-48 w-full overflow-hidden bg-gradient-to-br dark:from-rose-500/10 dark:to-rose-600/5 light:from-rose-100/40 light:to-rose-50/20">
+                    <div className="relative h-48 w-full overflow-hidden bg-gradient-to-br dark:from-primary-600/10 dark:to-primary-700/5 light:from-primary-100/40 light:to-primary-50/20">
                         <img
                             src={produto.imagem}
                             alt={produto.nome}
@@ -127,13 +127,13 @@ export default function ProdutoDetailsDrawer({
                         )}
 
                         {/* Preços */}
-                        <div className="space-y-3 rounded-2xl p-4 dark:bg-gradient-to-br dark:from-rose-500/10 dark:to-rose-600/5 light:bg-gradient-to-br light:from-rose-100/50 light:to-rose-50/30">
+                        <div className="space-y-3 rounded-2xl p-4 dark:bg-gradient-to-br dark:from-primary-600/10 dark:to-primary-700/5 light:bg-gradient-to-br light:from-primary-100/50 light:to-primary-50/30">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-2">
-                                    <DollarSign className="h-4 w-4 dark:text-rose-400 light:text-rose-600" />
+                                    <DollarSign className="h-4 w-4 dark:text-primary-400 light:text-primary-600" />
                                     <span className="text-xs font-semibold dark:text-white/60 light:text-gray-600">Preço de Venda</span>
                                 </div>
-                                <p className="text-sm font-bold dark:text-rose-400 light:text-rose-600">
+                                <p className="text-sm font-bold dark:text-primary-400 light:text-primary-600">
                                     R$ {produto?.precoVenda?.toFixed(2)}
                                 </p>
                             </div>
@@ -148,7 +148,7 @@ export default function ProdutoDetailsDrawer({
                             )}
 
                             {produto.precoPromocional && (
-                                <div className="flex items-center justify-between pt-2 border-t dark:border-rose-500/20 light:border-rose-200/50">
+                                <div className="flex items-center justify-between pt-2 border-t dark:border-primary-600/20 light:border-primary-200/50">
                                     <span className="text-xs font-semibold dark:text-white/60 light:text-gray-600">
                                         Preço Promocional
                                     </span>
@@ -179,7 +179,7 @@ export default function ProdutoDetailsDrawer({
                         {/* Stock */}
                         <div className="rounded-2xl p-4 dark:bg-gradient-to-br dark:from-white/10 dark:to-white/5 light:bg-gradient-to-br light:from-gray-100 light:to-gray-50">
                             <div className="flex items-center gap-3">
-                                <Package className="h-5 w-5 dark:text-rose-400 light:text-rose-600" />
+                                <Package className="h-5 w-5 dark:text-primary-400 light:text-primary-600" />
                                 <div>
                                     <p className="text-xs font-semibold uppercase tracking-wider dark:text-white/60 light:text-gray-600">
                                         Estoque

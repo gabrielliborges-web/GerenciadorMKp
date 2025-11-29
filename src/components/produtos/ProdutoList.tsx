@@ -84,10 +84,10 @@ export default function ProdutoList({
         return alerts;
     };
     return (
-        <div className="hidden md:block overflow-x-auto rounded-2xl border backdrop-blur-sm dark:border-rose-500/20 dark:bg-gradient-to-br dark:from-white/5 dark:to-white/2 light:border-rose-200/50 light:bg-white">
+        <div className="hidden md:block overflow-x-auto rounded-2xl border backdrop-blur-sm dark:border-primary-600/20 dark:bg-gradient-to-br dark:from-white/5 dark:to-white/2 light:border-primary-200/50 light:bg-white">
             {/* Selection bar */}
             {selectedIds && selectedIds.size > 0 && (
-                <div className="border-b dark:border-white/10 light:border-gray-200 p-3 lg:p-4 bg-gradient-to-r dark:from-rose-500/10 dark:to-rose-600/10 light:from-rose-100/50 light:to-rose-200/50 flex items-center justify-between gap-4">
+                <div className="border-b dark:border-white/10 light:border-gray-200 p-3 lg:p-4 bg-gradient-to-r dark:from-primary-600/10 dark:to-primary-700/10 light:from-primary-100/50 light:to-primary-200/50 flex items-center justify-between gap-4">
                     <p className="text-sm font-medium dark:text-white light:text-gray-900">
                         {selectedIds.size} produto(s) selecionado(s)
                     </p>
@@ -111,13 +111,13 @@ export default function ProdutoList({
 
             <table className="w-full text-sm">
                 <thead>
-                    <tr className="border-b dark:border-rose-500/20 light:border-rose-200/50">
+                    <tr className="border-b dark:border-primary-600/20 light:border-primary-200/50">
                         <th className="px-4 lg:px-6 py-3 lg:py-4">
                             <input
                                 type="checkbox"
                                 checked={selectedIds ? selectedIds.size > 0 && selectedIds.size === produtos.length : false}
                                 onChange={onSelectAll}
-                                className="h-4 w-4 cursor-pointer rounded dark:border-rose-500/30 dark:bg-rose-500/10 light:border-rose-300 light:bg-rose-100 text-rose-500 transition-colors"
+                                className="h-4 w-4 cursor-pointer rounded dark:border-primary-600/30 dark:bg-primary-600/10 light:border-primary-300 light:bg-primary-100 text-primary-600 transition-colors"
                                 title={selectedIds && selectedIds.size === produtos.length ? "Desselecionar todas" : "Selecionar todas"}
                             />
                         </th>
@@ -148,7 +148,7 @@ export default function ProdutoList({
                         </th>
                     </tr>
                 </thead>
-                <tbody className="divide-y dark:divide-rose-500/10 light:divide-rose-200/30">
+                <tbody className="divide-y dark:divide-primary-600/10 light:divide-primary-200/30">
                     {produtos.map((produto) => {
                         const rowSelected = selectedIds ? selectedIds.has(produto.id) : false;
                         const isExpanded = expandedProdutoId === produto.id;
@@ -162,14 +162,14 @@ export default function ProdutoList({
                                 <tr
                                     key={produto.id}
                                     onClick={() => setExpandedProdutoId(isExpanded ? null : produto.id)}
-                                    className={`group transition-all duration-300 dark:hover:bg-white/5 light:hover:bg-gray-50 cursor-pointer ${rowSelected ? 'dark:bg-rose-500/10 light:bg-rose-100/50' : ''}`}
+                                    className={`group transition-all duration-300 dark:hover:bg-white/5 light:hover:bg-gray-50 cursor-pointer ${rowSelected ? 'dark:bg-primary-600/10 light:bg-primary-100/50' : ''}`}
                                 >
                                     <td className="px-4 lg:px-6 py-3 lg:py-4">
                                         <input
                                             type="checkbox"
                                             checked={rowSelected}
                                             onChange={(e) => { e.stopPropagation(); onSelectSingle?.(produto.id); }}
-                                            className="h-4 w-4 cursor-pointer rounded dark:border-rose-500/30 dark:bg-rose-500/10 light:border-rose-300 light:bg-rose-100 text-rose-500 transition-colors"
+                                            className="h-4 w-4 cursor-pointer rounded dark:border-primary-600/30 dark:bg-primary-600/10 light:border-primary-300 light:bg-primary-100 text-primary-600 transition-colors"
                                         />
                                     </td>
                                     <td className="px-6 py-4">
@@ -229,10 +229,10 @@ export default function ProdutoList({
                                         <div className="flex items-center gap-2">
                                             <button
                                                 onClick={(e) => { e.stopPropagation(); onDetails(produto.id); }}
-                                                className="rounded-lg p-2 transition-all duration-300 dark:hover:bg-rose-500/20 light:hover:bg-rose-100"
+                                                className="rounded-lg p-2 transition-all duration-300 dark:hover:bg-primary-600/20 light:hover:bg-primary-100"
                                                 title="Detalhes"
                                             >
-                                                <Info className="h-4 w-4 dark:text-rose-400 light:text-rose-600" />
+                                                <Info className="h-4 w-4 dark:text-primary-400 light:text-primary-600" />
                                             </button>
                                             <button
                                                 onClick={(e) => { e.stopPropagation(); onEdit(produto.id); }}
