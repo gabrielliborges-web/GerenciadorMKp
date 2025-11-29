@@ -82,7 +82,7 @@ export default function ProdutosPage() {
                 case "nome":
                     return a.nome.localeCompare(b.nome);
                 case "preco":
-                    return a.preco - b.preco;
+                    return Number(a.precoVenda) - Number(b.precoVenda);
                 case "estoque":
                     return b.estoque - a.estoque;
                 default:
@@ -124,10 +124,12 @@ export default function ProdutosPage() {
                     const updatedProduto = await updateProduto(editingProduto.id, {
                         nome: data.nome,
                         descricao: data.descricao,
-                        preco: data.preco,
+                        precoVenda: data.precoVenda,
+                        precoCompra: data.precoCompra,
+                        precoPromocional: data.precoPromocional,
                         estoque: data.estoque,
                         categoriaId: data.categoriaId,
-                    });
+                    }, data.file);
 
                     setProdutos((prev) =>
                         prev.map((p) => (p.id === editingProduto.id ? updatedProduto : p))
@@ -141,9 +143,12 @@ export default function ProdutosPage() {
                         {
                             nome: data.nome,
                             descricao: data.descricao,
-                            preco: data.preco,
+                            precoVenda: data.precoVenda,
+                            precoCompra: data.precoCompra,
+                            precoPromocional: data.precoPromocional,
                             estoque: data.estoque,
                             categoriaId: data.categoriaId,
+                            ativo: data.ativo,
                         },
                         data.file
                     );

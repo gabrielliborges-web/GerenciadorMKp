@@ -16,7 +16,9 @@ interface FormData {
     nome: string;
     descricao: string;
     categoriaId: number | null;
-    preco: string;
+    precoVenda: string;
+    precoCompra: string;
+    precoPromocional: string;
     estoque: string;
     imagem: string;
     ativo: boolean;
@@ -37,12 +39,15 @@ export default function ProdutoForm({
         nome: initialData?.nome || "",
         descricao: initialData?.descricao || "",
         categoriaId: initialData?.categoriaId || null,
-        preco: initialData?.preco?.toString() || "",
+        precoVenda: initialData?.precoVenda?.toString() || "",
+        precoCompra: initialData?.precoCompra?.toString() || "",
+        precoPromocional: initialData?.precoPromocional?.toString() || "",
         estoque: initialData?.estoque?.toString() || "",
         imagem: initialData?.imagem || "",
         ativo: initialData?.ativo ?? true,
     });
 
+    const [imagemFile, setImagemFile] = useState<File | null>(null);
     const [errors, setErrors] = useState<FormErrors>({});
     const [imagePreview, setImagePreview] = useState<string>(initialData?.imagem || "");
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -54,9 +59,25 @@ export default function ProdutoForm({
             newErrors.nome = "Nome é obrigatório";
         }
 
-        const preco = parseFloat(formData.preco);
-        if (!formData.preco || isNaN(preco) || preco <= 0) {
-            newErrors.preco = "Preço é obrigatório e deve ser maior que 0";
+        const precoVenda = parseFloat(formData.precoVenda);
+        if (!formData.precoVenda || isNaN(precoVenda) || precoVenda <= 0) {
+            newErrors.precoVenda = "Preço de venda é obrigatório e deve ser maior que 0";
+        }
+
+        if (formData.precoCompra) {
+            const precoCompra = parseFloat(formData.precoCompra);
+            if (isNaN(precoCompra) || precoCompra < 0) {
+                newErrors.precoCompra = "Preço de compra deve ser um número válido >= 0";
+            }
+        }
+
+        if (formData.precoPromocional) {
+            const precoPromocional = parseFloat(formData.precoPromocional);
+            if (isNaN(precoPromocional) || precoPromocional < 0) {
+                newErrors.precoPromocional = "Preço promocional deve ser um número válido >= 0";
+            } else if (parseFloat(formData.precoVenda) && precoPromocional > parseFloat(formData.precoVenda)) {
+                newErrors.precoPromocional = "Preço promocional não pode ser maior que preço de venda";
+            }
         }
 
         const estoque = parseFloat(formData.estoque);
@@ -71,10 +92,10 @@ export default function ProdutoForm({
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
+            setImagemFile(file);
             const reader = new FileReader();
             reader.onloadend = () => {
                 setImagePreview(reader.result as string);
-                setFormData({ ...formData, imagem: reader.result as string });
             };
             reader.readAsDataURL(file);
         }
@@ -93,21 +114,27 @@ export default function ProdutoForm({
             nome: formData.nome,
             descricao: formData.descricao || undefined,
             categoriaId: formData.categoriaId ?? undefined,
-            preco: parseFloat(formData.preco),
+            precoVenda: parseFloat(formData.precoVenda),
+            precoCompra: formData.precoCompra ? parseFloat(formData.precoCompra) : undefined,
+            precoPromocional: formData.precoPromocional ? parseFloat(formData.precoPromocional) : undefined,
             estoque: parseFloat(formData.estoque),
-            imagem: formData.imagem || undefined,
+            imagem: imagePreview || undefined,
             ativo: formData.ativo,
+            file: imagemFile,
         } as any);
 
         setFormData({
             nome: "",
             descricao: "",
             categoriaId: null,
-            preco: "",
+            precoVenda: "",
+            precoCompra: "",
+            precoPromocional: "",
             estoque: "",
             imagem: "",
             ativo: true,
         });
+        setImagemFile(null);
         setImagePreview("");
         setErrors({});
     };
@@ -117,11 +144,14 @@ export default function ProdutoForm({
             nome: "",
             descricao: "",
             categoriaId: null,
-            preco: "",
+            precoVenda: "",
+            precoCompra: "",
+            precoPromocional: "",
             estoque: "",
             imagem: "",
             ativo: true,
         });
+        setImagemFile(null);
         setImagePreview("");
         setErrors({});
         onClose();
@@ -258,51 +288,96 @@ export default function ProdutoForm({
                     </select>
                 </div>
 
-                {/* Preço e Estoque */}
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                {/* Preços */}
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                     <div>
                         <label className="mb-2 block text-sm font-semibold text-white">
-                            Preço <span className="text-blue-400">*</span>
+                            Preço de Venda <span className="text-blue-400">*</span>
                         </label>
                         <input
                             type="number"
                             step="0.01"
                             min="0"
-                            value={formData.preco}
+                            value={formData.precoVenda}
                             onChange={(e) => {
-                                setFormData({ ...formData, preco: e.target.value });
-                                if (errors.preco) setErrors({ ...errors, preco: "" });
+                                setFormData({ ...formData, precoVenda: e.target.value });
+                                if (errors.precoVenda) setErrors({ ...errors, precoVenda: "" });
                             }}
                             placeholder="0.00"
                             disabled={isLoading}
-                            className={`w-full rounded-lg border py-2 px-3 text-sm transition-all duration-300 border-blue-500/20 bg-blue-500/10 text-white focus:border-blue-500/40 focus:outline-none ${errors.preco ? "border-red-500" : ""}`}
+                            className={`w-full rounded-lg border py-2 px-3 text-sm transition-all duration-300 border-blue-500/20 bg-blue-500/10 text-white focus:border-blue-500/40 focus:outline-none ${errors.precoVenda ? "border-red-500" : ""}`}
                         />
-                        {errors.preco && (
-                            <p className="mt-1 text-xs text-red-400">{errors.preco}</p>
+                        {errors.precoVenda && (
+                            <p className="mt-1 text-xs text-red-400">{errors.precoVenda}</p>
                         )}
                     </div>
 
                     <div>
                         <label className="mb-2 block text-sm font-semibold text-white">
-                            Estoque <span className="text-blue-400">*</span>
+                            Preço de Compra
                         </label>
                         <input
                             type="number"
-                            step="1"
+                            step="0.01"
                             min="0"
-                            value={formData.estoque}
+                            value={formData.precoCompra}
                             onChange={(e) => {
-                                setFormData({ ...formData, estoque: e.target.value });
-                                if (errors.estoque) setErrors({ ...errors, estoque: "" });
+                                setFormData({ ...formData, precoCompra: e.target.value });
+                                if (errors.precoCompra) setErrors({ ...errors, precoCompra: "" });
                             }}
-                            placeholder="0"
+                            placeholder="0.00"
                             disabled={isLoading}
-                            className={`w-full rounded-lg border py-2 px-3 text-sm transition-all duration-300 border-blue-500/20 bg-blue-500/10 text-white focus:border-blue-500/40 focus:outline-none ${errors.estoque ? "border-red-500" : ""}`}
+                            className={`w-full rounded-lg border py-2 px-3 text-sm transition-all duration-300 border-blue-500/20 bg-blue-500/10 text-white focus:border-blue-500/40 focus:outline-none ${errors.precoCompra ? "border-red-500" : ""}`}
                         />
-                        {errors.estoque && (
-                            <p className="mt-1 text-xs text-red-400">{errors.estoque}</p>
+                        {errors.precoCompra && (
+                            <p className="mt-1 text-xs text-red-400">{errors.precoCompra}</p>
                         )}
                     </div>
+
+                    <div>
+                        <label className="mb-2 block text-sm font-semibold text-white">
+                            Preço Promocional
+                        </label>
+                        <input
+                            type="number"
+                            step="0.01"
+                            min="0"
+                            value={formData.precoPromocional}
+                            onChange={(e) => {
+                                setFormData({ ...formData, precoPromocional: e.target.value });
+                                if (errors.precoPromocional) setErrors({ ...errors, precoPromocional: "" });
+                            }}
+                            placeholder="0.00"
+                            disabled={isLoading}
+                            className={`w-full rounded-lg border py-2 px-3 text-sm transition-all duration-300 border-blue-500/20 bg-blue-500/10 text-white focus:border-blue-500/40 focus:outline-none ${errors.precoPromocional ? "border-red-500" : ""}`}
+                        />
+                        {errors.precoPromocional && (
+                            <p className="mt-1 text-xs text-red-400">{errors.precoPromocional}</p>
+                        )}
+                    </div>
+                </div>
+
+                {/* Estoque */}
+                <div>
+                    <label className="mb-2 block text-sm font-semibold text-white">
+                        Estoque <span className="text-blue-400">*</span>
+                    </label>
+                    <input
+                        type="number"
+                        step="1"
+                        min="0"
+                        value={formData.estoque}
+                        onChange={(e) => {
+                            setFormData({ ...formData, estoque: e.target.value });
+                            if (errors.estoque) setErrors({ ...errors, estoque: "" });
+                        }}
+                        placeholder="0"
+                        disabled={isLoading}
+                        className={`w-full rounded-lg border py-2 px-3 text-sm transition-all duration-300 border-blue-500/20 bg-blue-500/10 text-white focus:border-blue-500/40 focus:outline-none ${errors.estoque ? "border-red-500" : ""}`}
+                    />
+                    {errors.estoque && (
+                        <p className="mt-1 text-xs text-red-400">{errors.estoque}</p>
+                    )}
                 </div>
 
                 {/* Status */}

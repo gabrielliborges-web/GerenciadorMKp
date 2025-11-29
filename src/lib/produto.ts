@@ -5,11 +5,13 @@ export interface Produto {
   id: number;
   nome: string;
   descricao?: string;
-  preco: number;
+  precoVenda: number;
+  precoCompra?: number;
+  precoPromocional?: number;
   estoque: number;
   imagem?: string;
   ativo: boolean;
-  categoriaId: number;
+  categoriaId?: number;
   usuarioId: number;
   criadoEm: string;
   atualizadoEm: string;
@@ -18,15 +20,20 @@ export interface Produto {
 export interface CreateProdutoRequest {
   nome: string;
   descricao?: string;
-  preco: number;
+  precoVenda: number;
+  precoCompra?: number;
+  precoPromocional?: number;
   estoque: number;
-  categoriaId: number;
+  categoriaId?: number;
+  ativo?: boolean;
 }
 
 export interface UpdateProdutoRequest {
   nome?: string;
   descricao?: string;
-  preco?: number;
+  precoVenda?: number;
+  precoCompra?: number;
+  precoPromocional?: number;
   estoque?: number;
   categoriaId?: number;
 }
@@ -86,10 +93,15 @@ export const createProduto = async (
     const formData = new FormData();
     formData.append("nome", data.nome);
     if (data.descricao) formData.append("descricao", data.descricao);
-    formData.append("preco", data.preco.toString());
-    formData.append("estoque", data.estoque.toString());
-    formData.append("categoriaId", data.categoriaId.toString());
-    if (file) formData.append("file", file);
+    formData.append("precoVenda", data.precoVenda.toString());
+    if (data.precoCompra !== undefined)
+      formData.append("precoCompra", data.precoCompra.toString());
+    if (data.precoPromocional !== undefined)
+      formData.append("precoPromocional", data.precoPromocional.toString());
+    formData.append("estoqueInicial", data.estoque.toString());
+    if (data.categoriaId !== undefined)
+      formData.append("categoriaId", data.categoriaId.toString());
+    if (file) formData.append("imagem", file);
 
     const response = await api.post("/produtos", formData, {
       headers: { "Content-Type": "multipart/form-data" },
@@ -114,13 +126,17 @@ export const updateProduto = async (
     const formData = new FormData();
     if (data.nome) formData.append("nome", data.nome);
     if (data.descricao) formData.append("descricao", data.descricao);
-    if (data.preco !== undefined)
-      formData.append("preco", data.preco.toString());
+    if (data.precoVenda !== undefined)
+      formData.append("precoVenda", data.precoVenda.toString());
+    if (data.precoCompra !== undefined)
+      formData.append("precoCompra", data.precoCompra.toString());
+    if (data.precoPromocional !== undefined)
+      formData.append("precoPromocional", data.precoPromocional.toString());
     if (data.estoque !== undefined)
       formData.append("estoque", data.estoque.toString());
-    if (data.categoriaId)
+    if (data.categoriaId !== undefined)
       formData.append("categoriaId", data.categoriaId.toString());
-    if (file) formData.append("file", file);
+    if (file) formData.append("imagem", file);
 
     const response = await api.put(`/produtos/${id}`, formData, {
       headers: { "Content-Type": "multipart/form-data" },
