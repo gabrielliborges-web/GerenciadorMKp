@@ -41,9 +41,9 @@ export default function ExtratoTable({
 
     let saldoAcumulado = 0;
     const movimentacoesComSaldo = paginatedItems.map((mov) => {
-        saldoAcumulado +=
-            mov.tipo === "entrada" ? mov.valor : -mov.valor;
-        return { ...mov, saldoApos: saldoAcumulado };
+        const valorNum = typeof mov.valor === "number" ? mov.valor : Number(mov.valor || 0);
+        saldoAcumulado += mov.tipo === "entrada" ? valorNum : -valorNum;
+        return { ...mov, valor: valorNum, saldoApos: saldoAcumulado };
     });
 
     return (
