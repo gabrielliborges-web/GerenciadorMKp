@@ -53,7 +53,15 @@ export default function FinanceiroPage() {
         let result = [...movimentacoes];
 
         if (filtroExtratoTipo) {
-            result = result.filter((m) => m.tipo === filtroExtratoTipo);
+            // filtroExtratoTipo pode ser 'entrada' ou 'saida' vindo do select
+            if (filtroExtratoTipo === "entrada") {
+                result = result.filter((m) => (m as any).entrada === true);
+            } else if (filtroExtratoTipo === "saida") {
+                result = result.filter((m) => (m as any).entrada === false);
+            } else {
+                // fallback: filtrar por tipo textual se for outro valor
+                result = result.filter((m) => m.tipo === filtroExtratoTipo);
+            }
         }
 
         if (filtroDataInicio) {
@@ -87,7 +95,7 @@ export default function FinanceiroPage() {
     const fetchMovimentacoes = useCallback(async () => {
         try {
             const data = await listMovimentacoes();
-            setMovimentacoes(data || []);
+            setMovimentacoes((data || []).map((m: any) => ({ ...m, valor: typeof m.valor === "number" ? m.valor : Number(m.valor || 0) })));
         } catch (err) {
             console.error(err);
         }
@@ -96,7 +104,7 @@ export default function FinanceiroPage() {
     const fetchEntradas = useCallback(async () => {
         try {
             const data = await listEntradas();
-            setEntradas(data || []);
+            setEntradas((data || []).map((e: any) => ({ ...e, valor: typeof e.valor === "number" ? e.valor : Number(e.valor || 0) })));
         } catch (err) {
             console.error(err);
         }
@@ -105,7 +113,7 @@ export default function FinanceiroPage() {
     const fetchDespesas = useCallback(async () => {
         try {
             const data = await listDespesas();
-            setDespesas(data || []);
+            setDespesas((data || []).map((d: any) => ({ ...d, valor: typeof d.valor === "number" ? d.valor : Number(d.valor || 0) })));
         } catch (err) {
             console.error(err);
         }

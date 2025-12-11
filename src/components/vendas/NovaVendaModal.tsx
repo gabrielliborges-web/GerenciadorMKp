@@ -19,6 +19,78 @@ interface NovaVendaModalProps {
     isLoading?: boolean;
 }
 
+function PriceModalFragment(props: {
+    open: boolean;
+    produto: Produto | null;
+    precoInput: number;
+    setPrecoInput: (v: number) => void;
+    onConfirm: () => void;
+    onCancel: () => void;
+}) {
+    const { open, produto, precoInput, setPrecoInput, onConfirm, onCancel } = props;
+    if (!open || !produto) return null;
+    return (
+        <>
+            <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm" onClick={onCancel} />
+            <div className="fixed left-1/2 top-1/2 z-60 w-full max-w-xl -translate-x-1/2 -translate-y-1/2 transform rounded-2xl border border-white/10 bg-gradient-to-br from-[#050107] to-[#0a0510] p-6 shadow-2xl">
+                <div className="mb-4">
+                    <h3 className="text-lg font-bold text-white">Confirmar Preço</h3>
+                    <p className="text-sm text-white/60 mt-1">Produto: {produto.nome}</p>
+                </div>
+
+                <div className="space-y-3">
+                    <div className="flex items-center gap-3">
+                        <button
+                            className="rounded-lg border border-white/10 px-3 py-2 text-sm text-white/90 hover:bg-white/5"
+                            onClick={() => setPrecoInput(productPrice(produto.precoVenda))}
+                        >
+                            Preço Venda: R$ {produto.precoVenda.toFixed(2)}
+                        </button>
+                        {produto.precoPromocional !== undefined && (
+                            <button
+                                className="rounded-lg border border-white/10 px-3 py-2 text-sm text-white/90 hover:bg-white/5"
+                                onClick={() => setPrecoInput(productPrice(produto.precoPromocional || 0))}
+                            >
+                                Promoção: R$ {(produto.precoPromocional || 0).toFixed(2)}
+                            </button>
+                        )}
+                    </div>
+
+                    <div>
+                        <label className="mb-1 block text-xs font-semibold text-white/70">Editar Preço</label>
+                        <input
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            value={precoInput}
+                            onChange={(e) => setPrecoInput(Number(e.target.value) || 0)}
+                            className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white"
+                        />
+                    </div>
+
+                    <div className="flex gap-3 pt-4 justify-end">
+                        <button onClick={onCancel} className="rounded-lg border border-white/10 px-4 py-2 text-sm text-white/70 hover:bg-white/5">Cancelar</button>
+                        <button onClick={onConfirm} className="rounded-lg bg-gradient-to-r from-green-600 to-green-700 px-4 py-2 text-sm font-semibold text-white">Confirmar</button>
+                    </div>
+                </div>
+            </div>
+            {/* Price confirmation modal */}
+            <PriceModalFragment
+                open={priceModalOpen}
+                produto={priceModalProduto}
+                precoInput={priceInput}
+                setPrecoInput={setPriceInput}
+                onConfirm={handleConfirmPrice}
+                onCancel={handleCancelPrice}
+            />
+        </>
+    );
+}
+
+function productPrice(v: number) {
+    return Number(v || 0);
+}
+
 interface ItemForm {
     id: number;
     produtoId: number;
@@ -39,6 +111,11 @@ export default function NovaVendaModal({
     const [itens, setItens] = useState<ItemForm[]>([]);
     const [produtos, setProdutos] = useState<Produto[]>([]);
     const [erros, setErros] = useState<string[]>([]);
+    // Price confirmation modal state
+    const [priceModalOpen, setPriceModalOpen] = useState(false);
+    const [priceModalItemId, setPriceModalItemId] = useState<number | null>(null);
+    const [priceModalProduto, setPriceModalProduto] = useState<Produto | null>(null);
+    const [priceInput, setPriceInput] = useState<number>(0);
 
     // Load produtos when modal opens
     useEffect(() => {
@@ -77,24 +154,72 @@ export default function NovaVendaModal({
 
     const handleChangeProduto = useCallback(
         (itemId: number, produtoId: number) => {
+            const prod = produtos.find((p) => p.id === produtoId) || null;
             setItens((prev) =>
                 prev.map((item) => {
                     if (item.id === itemId) {
-                        const prod = produtos.find((p) => p.id === produtoId);
                         return {
                             ...item,
                             produtoId,
                             produtoNome: prod?.nome || "",
-                            precoUnit: prod?.precoVenda || 0,
-                            total: item.quantidade * (prod?.precoVenda || 0),
+                            precoUnit: 0,
+                            total: 0,
                         };
                     }
                     return item;
                 })
             );
+
+            if (prod) {
+                setPriceModalProduto(prod);
+                setPriceInput(prod.precoVenda ?? 0);
+                setPriceModalItemId(itemId);
+                setPriceModalOpen(true);
+            }
         },
         [produtos]
     );
+
+    const handleConfirmPrice = useCallback(() => {
+        if (priceModalItemId == null || !priceModalProduto) return;
+        const preco = Number(priceInput || 0);
+        setItens((prev) =>
+            prev.map((item) => {
+                if (item.id === priceModalItemId) {
+                    return {
+                        ...item,
+                        precoUnit: preco,
+                        total: item.quantidade * preco,
+                    };
+                }
+                return item;
+            })
+        );
+        setPriceModalOpen(false);
+        setPriceModalItemId(null);
+        setPriceModalProduto(null);
+    }, [priceModalItemId, priceModalProduto, priceInput]);
+
+    const handleCancelPrice = useCallback(() => {
+        if (priceModalItemId == null) return;
+        setItens((prev) =>
+            prev.map((item) => {
+                if (item.id === priceModalItemId) {
+                    return {
+                        ...item,
+                        produtoId: 0,
+                        produtoNome: "",
+                        precoUnit: 0,
+                        total: 0,
+                    };
+                }
+                return item;
+            })
+        );
+        setPriceModalOpen(false);
+        setPriceModalItemId(null);
+        setPriceModalProduto(null);
+    }, [priceModalItemId]);
 
     const handleChangeQuantidade = useCallback((itemId: number, quantidade: number) => {
         setItens((prev) =>

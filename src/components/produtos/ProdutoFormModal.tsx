@@ -21,6 +21,7 @@ interface FormData {
     precoCompra: string;
     precoPromocional: string;
     imagem: string;
+    estoque: string;
     ativo: boolean;
 }
 
@@ -44,6 +45,7 @@ export default function ProdutoFormModal({
         precoCompra: initialData?.precoCompra?.toString() || "",
         precoPromocional: initialData?.precoPromocional?.toString() || "",
         imagem: initialData?.imagem || "",
+        estoque: initialData?.estoque?.toString() || "",
         ativo: initialData?.ativo ?? true,
     });
 
@@ -75,6 +77,11 @@ export default function ProdutoFormModal({
 
         if (formData.precoPromocional && precoPromocional > precoVenda) {
             newErrors.precoPromocional = "Preço promocional não pode ser maior que preço de venda";
+        }
+
+        const estoque = parseFloat(formData.estoque);
+        if (!formData.estoque || isNaN(estoque) || estoque < 0) {
+            newErrors.estoque = "Estoque é obrigatório e deve ser maior ou igual a 0";
         }
 
         setErrors(newErrors);
@@ -111,7 +118,7 @@ export default function ProdutoFormModal({
             precoPromocional: formData.precoPromocional ? parseFloat(formData.precoPromocional) : undefined,
             imagem: formData.imagem || undefined,
             ativo: formData.ativo,
-            estoque: initialData?.estoque || 0,
+            estoque: parseFloat(formData.estoque),
             usuarioId: initialData?.usuarioId,
             categoria: initialData?.categoria,
         });
@@ -124,6 +131,7 @@ export default function ProdutoFormModal({
             precoCompra: "",
             precoPromocional: "",
             imagem: "",
+            estoque: "",
             ativo: true,
         });
         setImagePreview("");
@@ -139,6 +147,7 @@ export default function ProdutoFormModal({
             precoCompra: "",
             precoPromocional: "",
             imagem: "",
+            estoque: "",
             ativo: true,
         });
         setImagePreview("");

@@ -42,7 +42,7 @@ export default function ExtratoTable({
     let saldoAcumulado = 0;
     const movimentacoesComSaldo = paginatedItems.map((mov) => {
         const valorNum = typeof mov.valor === "number" ? mov.valor : Number(mov.valor || 0);
-        saldoAcumulado += mov.tipo === "entrada" ? valorNum : -valorNum;
+        saldoAcumulado += mov.entrada === true ? valorNum : -valorNum;
         return { ...mov, valor: valorNum, saldoApos: saldoAcumulado };
     });
 
@@ -93,7 +93,7 @@ export default function ExtratoTable({
                                     </td>
                                     <td className="px-6 py-4">
                                         <span className="inline-flex items-center gap-2 rounded-lg bg-white/10 px-3 py-1 text-xs font-semibold text-white">
-                                            {mov.tipo === "entrada" ? (
+                                            {mov.entrada === true ? (
                                                 <>
                                                     <ArrowUpRight className="h-4 w-4 text-green-400" />
                                                     Entrada
@@ -111,18 +111,16 @@ export default function ExtratoTable({
                                             <p className="font-medium text-white">
                                                 {mov.descricao}
                                             </p>
-                                            <p className="text-xs text-white/50">{mov.categoria}</p>
                                         </div>
                                     </td>
                                     <td className="px-6 py-4 text-right">
                                         <span
-                                            className={`font-semibold ${mov.tipo === "entrada"
+                                            className={`text-lg font-bold ${mov.entrada === true
                                                 ? "text-green-400"
                                                 : "text-red-400"
                                                 }`}
                                         >
-                                            {mov.tipo === "entrada" ? "+" : "-"}R${" "}
-                                            {mov.valor.toFixed(2)}
+                                            {mov.entrada === true ? "+" : "-"} R$ {mov.valor.toFixed(2)}
                                         </span>
                                     </td>
                                     <td className="px-6 py-4 text-right">

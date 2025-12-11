@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useEffect, useState } from "react";
 import {
     Wallet2,
     TrendingUp,
@@ -11,11 +11,78 @@ import DashboardChartArea from "../components/dashboard/DashboardChartArea";
 import DashboardChartPie from "../components/dashboard/DashboardChartPie";
 import DashboardMovementsList from "../components/dashboard/DashboardMovementsList";
 import DashboardAlerts from "../components/dashboard/DashboardAlerts";
-import { dashboardMock } from "../mocks/dashboardData";
+import { getDashboardResumo } from "../lib/movimentacao";
 
 export default function Home() {
-    // Simulando busca de dados com delay
-    const data = useMemo(() => dashboardMock, []);
+    const [data, setData] = useState<any | null>(null);
+
+    useEffect(() => {
+        let mounted = true;
+        (async () => {
+            try {
+                const resumo = await getDashboardResumo();
+                if (!mounted) return;
+
+                // Mapear resposta do backend para o formato esperado pelos componentes
+                const totalEntradas = resumo.totalEntradas ?? 0;
+                const totalSaidas = resumo.totalSaidas ?? 0;
+                const saldoAtual = resumo.saldoAtual ?? 0;
+                const lucro = resumo.lucro ?? (totalEntradas - totalSaidas);
+
+                // gerar séries simples para o gráfico (últimos 7 dias usando movimentacoesRecentes quando disponível)
+                const movimentacoesRecentes = resumo.movimentacoesRecentes || [];
+
+                const receitasDespesas: Array<any> = [];
+                // tentar agrupar por data a partir das movimentacoesRecentes
+                const grouped: Record<string, { receitas: number; despesas: number }> = {};
+                (movimentacoesRecentes as any[]).forEach((m) => {
+                    const day = new Date(m.data).toLocaleDateString("pt-BR");
+                    const valor = typeof m.valor === "number" ? m.valor : Number(m.valor || 0);
+                    if (!grouped[day]) grouped[day] = { receitas: 0, despesas: 0 };
+                    if (m.entrada) grouped[day].receitas += valor;
+                    else grouped[day].despesas += valor;
+                });
+
+                // converter grouped em array ordenado (máximo 7 dias)
+                Object.keys(grouped)
+                    .sort((a, b) => new Date(a).getTime() - new Date(b).getTime())
+                    .slice(-7)
+                    .forEach((day) => {
+                        receitasDespesas.push({ data: day, receitas: grouped[day].receitas, despesas: grouped[day].despesas });
+                    });
+
+                // fallback se não houver dados agrupados
+                if (receitasDespesas.length === 0) {
+                    receitasDespesas.push({ data: new Date().toLocaleDateString("pt-BR"), receitas: totalEntradas, despesas: totalSaidas });
+                }
+
+                // distribuição de entradas por tipo (transformar em porcentagem)
+                const entradasPorTipo = resumo.entradasPorTipo || {};
+                const distribEntradasArr = Object.entries(entradasPorTipo).map(([name, value]: any) => ({ name, value: Number(value) }));
+                const totalEntradasVal = distribEntradasArr.reduce((s, it) => s + it.value, 0) || 1;
+                const distribuicaoEntradas = distribEntradasArr.map((it) => ({ name: it.name, value: Math.round((it.value / totalEntradasVal) * 100) }));
+
+                // alertas simples
+                const alerts: any[] = [];
+                if (totalSaidas > totalEntradas) {
+                    alerts.push({ id: "1", tipo: "aviso", titulo: "Despesas maiores que receitas", descricao: "As despesas deste mês superam as receitas.", icone: "AlertCircle" });
+                }
+
+                setData({
+                    cards: { saldoAtual, receitasMes: totalEntradas, despesasMes: totalSaidas, lucroMes: lucro },
+                    receitasDespesas,
+                    distribuicaoEntradas,
+                    movimentacoesRecentes: (movimentacoesRecentes || []).map((m: any) => ({ id: String(m.id), tipo: m.entrada ? "entrada" : "saida", descricao: m.descricao || m.tipo, valor: typeof m.valor === "number" ? m.valor : Number(m.valor || 0), data: m.data })),
+                    alertas: alerts,
+                });
+            } catch (err) {
+                console.error(err);
+            }
+        })();
+        return () => {
+            mounted = false;
+        };
+    }, []);
 
     return (
         <div className="space-y-8 pb-6">
@@ -29,53 +96,29 @@ export default function Home() {
 
             {/* Cards de Indicadores */}
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 animate-fade-in">
-                <DashboardCard
-                    icon={Wallet2}
-                    title="Saldo Atual"
-                    value={data.cards.saldoAtual}
-                    variation={data.cards.variacao.saldo}
-                    format="currency"
-                />
-                <DashboardCard
-                    icon={TrendingUp}
-                    title="Receitas do Mês"
-                    value={data.cards.receitasMes}
-                    variation={data.cards.variacao.receitas}
-                    format="currency"
-                />
-                <DashboardCard
-                    icon={TrendingDown}
-                    title="Despesas do Mês"
-                    value={data.cards.despesasMes}
-                    variation={data.cards.variacao.despesas}
-                    format="currency"
-                />
-                <DashboardCard
-                    icon={Target}
-                    title="Lucro / Resultado"
-                    value={data.cards.lucroMes}
-                    variation={data.cards.variacao.lucro}
-                    format="currency"
-                />
+                <DashboardCard icon={Wallet2} title="Saldo Atual" value={data?.cards.saldoAtual ?? 0} variation={0} format="currency" />
+                <DashboardCard icon={TrendingUp} title="Receitas do Mês" value={data?.cards.receitasMes ?? 0} variation={0} format="currency" />
+                <DashboardCard icon={TrendingDown} title="Despesas do Mês" value={data?.cards.despesasMes ?? 0} variation={0} format="currency" />
+                <DashboardCard icon={Target} title="Lucro / Resultado" value={data?.cards.lucroMes ?? 0} variation={0} format="currency" />
             </div>
 
             {/* Gráficos */}
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 animate-fade-in">
                 <div className="lg:col-span-2">
-                    <DashboardChartArea data={data.receitasDespesas} />
+                    <DashboardChartArea data={data?.receitasDespesas ?? []} />
                 </div>
                 <div>
-                    <DashboardChartPie data={data.distribuicaoEntradas} />
+                    <DashboardChartPie data={data?.distribuicaoEntradas ?? []} />
                 </div>
             </div>
 
             {/* Movimentações + Alertas */}
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 animate-fade-in">
                 <div className="lg:col-span-2">
-                    <DashboardMovementsList movimentos={data.movimentacoesRecentes} />
+                    <DashboardMovementsList movimentos={data?.movimentacoesRecentes ?? []} />
                 </div>
                 <div>
-                    <DashboardAlerts alertas={data.alertas} />
+                    <DashboardAlerts alertas={data?.alertas ?? []} />
                 </div>
             </div>
 

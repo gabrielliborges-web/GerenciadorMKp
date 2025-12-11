@@ -42,9 +42,7 @@ export const listEntradas = async (
     if (filtros?.dataFim) params.append("dataFim", filtros.dataFim);
     if (filtros?.tipo) params.append("tipo", filtros.tipo);
 
-    const response = await api.get(
-      `/entradas-financeiras?${params.toString()}`
-    );
+    const response = await api.get(`/entradas?${params.toString()}`);
     return response.data;
   } catch (error: any) {
     const apiError = error.response?.data;
@@ -57,7 +55,7 @@ export const getEntradaById = async (
   id: number
 ): Promise<EntradaFinanceira> => {
   try {
-    const response = await api.get(`/entradas-financeiras/${id}`);
+    const response = await api.get(`/entradas/${id}`);
     return response.data;
   } catch (error: any) {
     const apiError = error.response?.data;
@@ -73,7 +71,7 @@ export const createEntrada = async (
   data: CreateEntradaFinanceiraRequest
 ): Promise<EntradaFinanceira> => {
   try {
-    const response = await api.post("/entradas-financeiras", data);
+    const response = await api.post("/entradas", data);
     return response.data;
   } catch (error: any) {
     const apiError = error.response?.data;
@@ -90,7 +88,7 @@ export const updateEntrada = async (
   data: UpdateEntradaFinanceiraRequest
 ): Promise<EntradaFinanceira> => {
   try {
-    const response = await api.put(`/entradas-financeiras/${id}`, data);
+    const response = await api.put(`/entradas/${id}`, data);
     return response.data;
   } catch (error: any) {
     const apiError = error.response?.data;
@@ -105,7 +103,7 @@ export const updateEntrada = async (
 
 export const deleteEntrada = async (id: number): Promise<any> => {
   try {
-    const response = await api.delete(`/entradas-financeiras/${id}`);
+    const response = await api.delete(`/entradas/${id}`);
     return response.data;
   } catch (error: any) {
     const apiError = error.response?.data;
