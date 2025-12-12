@@ -86,15 +86,15 @@ export default function CategoriaForm({
                 <button
                     onClick={handleClose}
                     disabled={isLoading}
-                    className="p-2 rounded-lg transition-all duration-300 hover:bg-white/10 disabled:opacity-50"
+                    className="p-2 rounded-lg transition-all duration-300 hover:bg-mauve-light-3 dark:hover:bg-white/10 disabled:opacity-50"
                 >
-                    <ArrowLeft className="h-5 w-5 text-white/60 hover:text-white" />
+                    <ArrowLeft className="h-5 w-5 text-text-secondary-light dark:text-white/60 hover:text-text-primary-light dark:hover:text-white" />
                 </button>
                 <div>
-                    <h1 className="text-3xl font-bold text-white">
+                    <h1 className="text-3xl font-bold text-text-primary-light dark:text-white">
                         {initialData ? "Editar Categoria" : "Nova Categoria"}
                     </h1>
-                    <p className="mt-1 text-sm text-white/50">
+                    <p className="mt-1 text-sm text-text-secondary-light dark:text-white/50">
                         {initialData ? "Atualize os detalhes da categoria" : "Crie uma nova categoria para o seu estoque"}
                     </p>
                 </div>
@@ -104,8 +104,8 @@ export default function CategoriaForm({
             <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Nome */}
                 <div>
-                    <label className="mb-2 block text-sm font-semibold text-white">
-                        Nome <span className="text-rose-400">*</span>
+                    <label className="mb-2 block text-sm font-semibold text-text-primary-light dark:text-white">
+                        Nome <span className="text-red-500 dark:text-rose-400">*</span>
                     </label>
                     <Input
                         name="nome"
@@ -119,13 +119,13 @@ export default function CategoriaForm({
                         className={errors.nome ? "border-red-500" : ""}
                     />
                     {errors.nome && (
-                        <p className="mt-1 text-xs text-red-400">{errors.nome}</p>
+                        <p className="mt-1 text-xs text-red-600 dark:text-red-400">{errors.nome}</p>
                     )}
                 </div>
 
                 {/* Descrição */}
                 <div>
-                    <label className="mb-2 block text-sm font-semibold text-white">
+                    <label className="mb-2 block text-sm font-semibold text-text-primary-light dark:text-white">
                         Descrição
                     </label>
                     <Textarea
@@ -141,7 +141,7 @@ export default function CategoriaForm({
                 </div>
 
                 {/* Status */}
-                <div className="flex items-center gap-3 rounded-lg p-4 bg-white/5 border border-white/10">
+                <div className="flex items-center gap-3 rounded-lg p-4 bg-mauve-light-2 dark:bg-white/5 border border-mauve-light-6 dark:border-white/10">
                     <input
                         type="checkbox"
                         id="ativo"
@@ -150,11 +150,11 @@ export default function CategoriaForm({
                             setFormData({ ...formData, ativo: e.target.checked })
                         }
                         disabled={isLoading}
-                        className="h-4 w-4 cursor-pointer rounded border-rose-500/30 bg-rose-500/10 text-rose-500 transition-colors"
+                        className="h-4 w-4 cursor-pointer rounded border-rose-300 dark:border-rose-500/30 bg-rose-100 dark:bg-rose-500/10 text-rose-500 transition-colors"
                     />
                     <label
                         htmlFor="ativo"
-                        className="cursor-pointer text-sm font-medium text-white"
+                        className="cursor-pointer text-sm font-medium text-text-primary-light dark:text-white"
                     >
                         Categoria Ativa
                     </label>
@@ -166,7 +166,7 @@ export default function CategoriaForm({
                         type="button"
                         onClick={handleClose}
                         disabled={isLoading}
-                        className="flex-1 rounded-lg py-3 font-semibold text-white hover:bg-white/10 transition-all duration-300 disabled:opacity-50"
+                        className="flex-1 rounded-lg py-3 font-semibold text-text-primary-light dark:text-white hover:bg-mauve-light-3 dark:hover:bg-white/10 transition-all duration-300 disabled:opacity-50"
                     >
                         Cancelar
                     </button>
