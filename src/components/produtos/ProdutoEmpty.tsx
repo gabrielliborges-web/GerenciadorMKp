@@ -6,17 +6,17 @@ interface ProdutoEmptyProps {
 
 export default function ProdutoEmpty({ onCreateClick }: ProdutoEmptyProps) {
     return (
-        <div className="flex flex-col items-center justify-center rounded-3xl border-2 border-dashed px-6 py-16 text-center backdrop-blur-sm dark:border-rose-500/20 dark:bg-gradient-to-br dark:from-rose-500/5 dark:to-rose-600/5 light:border-rose-200/50 light:bg-rose-50/30">
+        <div className="flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-rose-200/50 dark:border-rose-500/20 bg-rose-50/30 dark:bg-gradient-to-br dark:from-rose-500/5 dark:to-rose-600/5 px-6 py-16 text-center backdrop-blur-sm">
             {/* Icon */}
-            <div className="mb-4 rounded-full p-6 dark:bg-rose-500/10 light:bg-rose-100">
+            <div className="mb-4 rounded-full bg-rose-100 dark:bg-rose-500/10 p-6">
                 <span className="text-6xl">📦</span>
             </div>
 
             {/* Text */}
-            <h3 className="mb-2 text-2xl font-bold dark:text-white light:text-gray-900">
+            <h3 className="mb-2 text-2xl font-bold text-gray-900 dark:text-white">
                 Nenhum Produto Encontrado
             </h3>
-            <p className="mb-6 dark:text-white/60 light:text-gray-600">
+            <p className="mb-6 text-gray-600 dark:text-white/60">
                 Comece adicionando seu primeiro produto ao catálogo.
             </p>
 

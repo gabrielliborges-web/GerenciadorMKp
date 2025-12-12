@@ -284,7 +284,7 @@ export default function ProdutosPage() {
                             <div className="absolute inset-4 dark:bg-[#13081a] bg-white rounded-full"></div>
                         </div>
                     </div>
-                    <p className="text-white/60 dark:text-white/60">Carregando produtos...</p>
+                    <p className="text-text-secondary-light dark:text-white/60">Carregando produtos...</p>
                 </div>
             </div>
         );
@@ -316,8 +316,8 @@ export default function ProdutosPage() {
             {/* Header */}
             <div className="mb-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
                 <div>
-                    <h1 className="text-3xl font-bold text-white lg:text-4xl">Produtos</h1>
-                    <p className="mt-2 text-white/60">
+                    <h1 className="text-3xl font-bold text-text-primary-light dark:text-white lg:text-4xl">Produtos</h1>
+                    <p className="mt-2 text-text-secondary-light dark:text-white/60">
                         {filteredProdutos.length} produto{filteredProdutos.length !== 1 ? "s" : ""}{" "}
                         encontrado{filteredProdutos.length !== 1 ? "s" : ""}
                     </p>
@@ -326,7 +326,7 @@ export default function ProdutosPage() {
                     <button
                         onClick={handleRefresh}
                         disabled={isLoading}
-                        className="flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 font-semibold text-white/70 transition-all duration-300 hover:bg-white/5 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="flex items-center gap-2 rounded-xl border border-mauve-light-6 dark:border-white/10 bg-mauve-light-2 dark:bg-transparent px-4 py-2 font-semibold text-text-secondary-light dark:text-white/70 transition-all duration-300 hover:bg-mauve-light-3 dark:hover:bg-white/5 hover:text-text-primary-light dark:hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         <RefreshCw className="h-4 w-4" />
                         <span className="hidden sm:inline">Recarregar</span>

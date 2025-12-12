@@ -164,15 +164,15 @@ export default function ProdutoForm({
                 <button
                     onClick={handleClose}
                     disabled={isLoading}
-                    className="p-2 rounded-lg transition-all duration-300 hover:bg-white/10 disabled:opacity-50"
+                    className="p-2 rounded-lg transition-all duration-300 hover:bg-mauve-light-3 dark:hover:bg-white/10 disabled:opacity-50"
                 >
-                    <ArrowLeft className="h-5 w-5 text-white/60 hover:text-white" />
+                    <ArrowLeft className="h-5 w-5 text-text-secondary-light dark:text-white/60 hover:text-text-primary-light dark:hover:text-white" />
                 </button>
                 <div>
-                    <h1 className="text-3xl font-bold text-white">
+                    <h1 className="text-3xl font-bold text-text-primary-light dark:text-white">
                         {initialData ? "Editar Produto" : "Novo Produto"}
                     </h1>
-                    <p className="mt-1 text-sm text-white/50">
+                    <p className="mt-1 text-sm text-text-secondary-light dark:text-white/50">
                         {initialData ? "Atualize os detalhes do produto" : "Crie um novo produto no seu catálogo"}
                     </p>
                 </div>
@@ -182,12 +182,12 @@ export default function ProdutoForm({
             <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Image Upload */}
                 <div>
-                    <label className="mb-2 block text-sm font-semibold text-white">
+                    <label className="mb-2 block text-sm font-semibold text-text-primary-light dark:text-white">
                         Imagem do Produto
                     </label>
                     <div className="flex gap-4 flex-col sm:flex-row">
                         {/* Preview */}
-                        <div className="relative w-full sm:w-32 h-32 rounded-lg overflow-hidden bg-gradient-to-br from-blue-500/10 to-blue-600/5 flex items-center justify-center flex-shrink-0">
+                        <div className="relative w-full sm:w-32 h-32 rounded-lg overflow-hidden bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-500/10 dark:to-blue-600/5 flex items-center justify-center flex-shrink-0">
                             {imagePreview ? (
                                 <img
                                     src={imagePreview}
@@ -195,7 +195,7 @@ export default function ProdutoForm({
                                     className="w-full h-full object-cover"
                                 />
                             ) : (
-                                <ImageIcon className="h-8 w-8 text-white/30" />
+                                <ImageIcon className="h-8 w-8 text-gray-400 dark:text-white/30" />
                             )}
                         </div>
 
@@ -213,12 +213,12 @@ export default function ProdutoForm({
                                 type="button"
                                 onClick={handleImageUpload}
                                 disabled={isLoading}
-                                className="flex items-center justify-center gap-2 rounded-lg py-3 px-4 font-semibold transition-all duration-300 bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 disabled:opacity-50"
+                                className="flex items-center justify-center gap-2 rounded-lg py-3 px-4 font-semibold transition-all duration-300 bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-500/30 disabled:opacity-50"
                             >
                                 <Upload className="h-4 w-4" />
                                 Fazer Upload
                             </button>
-                            <p className="text-xs text-white/50 mt-2">
+                            <p className="text-xs text-text-secondary-light dark:text-white/50 mt-2">
                                 PNG, JPG até 5MB
                             </p>
                         </div>
@@ -227,8 +227,8 @@ export default function ProdutoForm({
 
                 {/* Nome */}
                 <div>
-                    <label className="mb-2 block text-sm font-semibold text-white">
-                        Nome <span className="text-blue-400">*</span>
+                    <label className="mb-2 block text-sm font-semibold text-text-primary-light dark:text-white">
+                        Nome <span className="text-blue-600 dark:text-blue-400">*</span>
                     </label>
                     <Input
                         name="nome"
@@ -248,7 +248,7 @@ export default function ProdutoForm({
 
                 {/* Descrição */}
                 <div>
-                    <label className="mb-2 block text-sm font-semibold text-white">
+                    <label className="mb-2 block text-sm font-semibold text-text-primary-light dark:text-white">
                         Descrição
                     </label>
                     <Textarea
@@ -265,7 +265,7 @@ export default function ProdutoForm({
 
                 {/* Categoria */}
                 <div>
-                    <label className="mb-2 block text-sm font-semibold text-white">
+                    <label className="mb-2 block text-sm font-semibold text-text-primary-light dark:text-white">
                         Categoria
                     </label>
                     <select
@@ -277,11 +277,11 @@ export default function ProdutoForm({
                             })
                         }
                         disabled={isLoading}
-                        className="w-full rounded-lg border border-blue-500/20 bg-blue-500/10 dark:text-gray/90 light:text-gray-900 py-2 px-3 text-sm transition-all duration-300 focus:border-blue-500/40 focus:outline-none"
+                        className="w-full rounded-lg border border-blue-300 dark:border-blue-500/20 bg-white dark:bg-blue-500/10 text-gray-900 dark:text-gray/90 py-2 px-3 text-sm transition-all duration-300 focus:border-blue-500 dark:focus:border-blue-500/40 focus:outline-none"
                     >
-                        <option className="text-gray-900 dark:text-gray/90" value="">Selecione uma categoria</option>
+                        <option value="">Selecione uma categoria</option>
                         {categorias.map((cat) => (
-                            <option className="text-gray-900 dark:text-gray/90" key={cat.id} value={cat.id}>
+                            <option key={cat.id} value={cat.id}>
                                 {cat.nome}
                             </option>
                         ))}
@@ -291,8 +291,8 @@ export default function ProdutoForm({
                 {/* Preços */}
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                     <div>
-                        <label className="mb-2 block text-sm font-semibold text-white">
-                            Preço de Venda <span className="text-blue-400">*</span>
+                        <label className="mb-2 block text-sm font-semibold text-text-primary-light dark:text-white">
+                            Preço de Venda <span className="text-blue-600 dark:text-blue-400">*</span>
                         </label>
                         <input
                             type="number"
@@ -305,7 +305,7 @@ export default function ProdutoForm({
                             }}
                             placeholder="0.00"
                             disabled={isLoading}
-                            className={`w-full rounded-lg border py-2 px-3 text-sm transition-all duration-300 border-blue-500/20 bg-blue-500/10 text-white focus:border-blue-500/40 focus:outline-none ${errors.precoVenda ? "border-red-500" : ""}`}
+                            className={`w-full rounded-lg border border-blue-300 dark:border-blue-500/20 bg-white dark:bg-blue-500/10 text-gray-900 dark:text-white py-2 px-3 text-sm transition-all duration-300 focus:border-blue-500 dark:focus:border-blue-500/40 focus:outline-none ${errors.precoVenda ? "border-red-500" : ""}`}
                         />
                         {errors.precoVenda && (
                             <p className="mt-1 text-xs text-red-400">{errors.precoVenda}</p>
@@ -313,7 +313,7 @@ export default function ProdutoForm({
                     </div>
 
                     <div>
-                        <label className="mb-2 block text-sm font-semibold text-white">
+                        <label className="mb-2 block text-sm font-semibold text-text-primary-light dark:text-white">
                             Preço de Compra
                         </label>
                         <input
@@ -327,7 +327,7 @@ export default function ProdutoForm({
                             }}
                             placeholder="0.00"
                             disabled={isLoading}
-                            className={`w-full rounded-lg border py-2 px-3 text-sm transition-all duration-300 border-blue-500/20 bg-blue-500/10 text-white focus:border-blue-500/40 focus:outline-none ${errors.precoCompra ? "border-red-500" : ""}`}
+                            className={`w-full rounded-lg border border-blue-300 dark:border-blue-500/20 bg-white dark:bg-blue-500/10 text-gray-900 dark:text-white py-2 px-3 text-sm transition-all duration-300 focus:border-blue-500 dark:focus:border-blue-500/40 focus:outline-none ${errors.precoCompra ? "border-red-500" : ""}`}
                         />
                         {errors.precoCompra && (
                             <p className="mt-1 text-xs text-red-400">{errors.precoCompra}</p>
@@ -335,7 +335,7 @@ export default function ProdutoForm({
                     </div>
 
                     <div>
-                        <label className="mb-2 block text-sm font-semibold text-white">
+                        <label className="mb-2 block text-sm font-semibold text-text-primary-light dark:text-white">
                             Preço Promocional
                         </label>
                         <input
@@ -349,7 +349,7 @@ export default function ProdutoForm({
                             }}
                             placeholder="0.00"
                             disabled={isLoading}
-                            className={`w-full rounded-lg border py-2 px-3 text-sm transition-all duration-300 border-blue-500/20 bg-blue-500/10 text-white focus:border-blue-500/40 focus:outline-none ${errors.precoPromocional ? "border-red-500" : ""}`}
+                            className={`w-full rounded-lg border border-blue-300 dark:border-blue-500/20 bg-white dark:bg-blue-500/10 text-gray-900 dark:text-white py-2 px-3 text-sm transition-all duration-300 focus:border-blue-500 dark:focus:border-blue-500/40 focus:outline-none ${errors.precoPromocional ? "border-red-500" : ""}`}
                         />
                         {errors.precoPromocional && (
                             <p className="mt-1 text-xs text-red-400">{errors.precoPromocional}</p>
@@ -359,8 +359,8 @@ export default function ProdutoForm({
 
                 {/* Estoque */}
                 <div>
-                    <label className="mb-2 block text-sm font-semibold text-white">
-                        Estoque <span className="text-blue-400">*</span>
+                    <label className="mb-2 block text-sm font-semibold text-text-primary-light dark:text-white">
+                        Estoque <span className="text-blue-600 dark:text-blue-400">*</span>
                     </label>
                     <input
                         type="number"
@@ -373,7 +373,7 @@ export default function ProdutoForm({
                         }}
                         placeholder="0"
                         disabled={isLoading}
-                        className={`w-full rounded-lg border py-2 px-3 text-sm transition-all duration-300 border-blue-500/20 bg-blue-500/10 text-white focus:border-blue-500/40 focus:outline-none ${errors.estoque ? "border-red-500" : ""}`}
+                        className={`w-full rounded-lg border border-blue-300 dark:border-blue-500/20 bg-white dark:bg-blue-500/10 text-gray-900 dark:text-white py-2 px-3 text-sm transition-all duration-300 focus:border-blue-500 dark:focus:border-blue-500/40 focus:outline-none ${errors.estoque ? "border-red-500" : ""}`}
                     />
                     {errors.estoque && (
                         <p className="mt-1 text-xs text-red-400">{errors.estoque}</p>
@@ -381,7 +381,7 @@ export default function ProdutoForm({
                 </div>
 
                 {/* Status */}
-                <div className="flex items-center gap-3 rounded-lg p-4 bg-white/5 border border-white/10">
+                <div className="flex items-center gap-3 rounded-lg p-4 bg-mauve-light-2 dark:bg-white/5 border border-mauve-light-6 dark:border-white/10">
                     <input
                         type="checkbox"
                         id="ativo"
@@ -390,11 +390,11 @@ export default function ProdutoForm({
                             setFormData({ ...formData, ativo: e.target.checked })
                         }
                         disabled={isLoading}
-                        className="h-4 w-4 cursor-pointer rounded border-blue-500/30 bg-blue-500/10 text-blue-500 transition-colors"
+                        className="h-4 w-4 cursor-pointer rounded border-blue-400 dark:border-blue-500/30 bg-blue-100 dark:bg-blue-500/10 text-blue-600 dark:text-blue-500 transition-colors"
                     />
                     <label
                         htmlFor="ativo"
-                        className="cursor-pointer text-sm font-medium text-white"
+                        className="cursor-pointer text-sm font-medium text-text-primary-light dark:text-white"
                     >
                         Produto Ativo
                     </label>
@@ -406,7 +406,7 @@ export default function ProdutoForm({
                         type="button"
                         onClick={handleClose}
                         disabled={isLoading}
-                        className="flex-1 rounded-lg py-3 font-semibold text-white hover:bg-white/10 transition-all duration-300 disabled:opacity-50"
+                        className="flex-1 rounded-lg py-3 font-semibold text-text-primary-light dark:text-white hover:bg-mauve-light-3 dark:hover:bg-white/10 transition-all duration-300 disabled:opacity-50"
                     >
                         Cancelar
                     </button>
