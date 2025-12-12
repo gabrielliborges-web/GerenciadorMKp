@@ -116,25 +116,25 @@ export default function AppLayout({ children }: AppLayoutProps) {
                             goTo(item.view);
                             setIsMobileSidebarOpen(false);
                         }}
-                        className={`group relative flex w-full items-center rounded-2xl px-2 py-2 text-left text-sm text-white dark:text-white transition-all duration-500 ${compact ? "justify-center" : "gap-3"
-                            } ${active ? "bg-white/12 dark:bg-white/12" : "bg-transparent hover:bg-white/5 dark:hover:bg-white/5"}`}
+                        className={`group relative flex w-full items-center rounded-2xl px-2 py-2 text-left text-sm text-text-primary-light dark:text-white transition-all duration-500 ${compact ? "justify-center" : "gap-3"
+                            } ${active ? "bg-primary-light-4 dark:bg-white/12" : "bg-transparent hover:bg-primary-light-3 dark:hover:bg-white/5"}`}
                     >
                         <span
                             className={`flex items-center justify-center ${compact
-                                ? "h-12 w-12 rounded-3xl bg-white/15 dark:bg-white/15 shadow-[0_20px_40px_-30px_rgba(255,255,255,0.9)] dark:shadow-[0_20px_40px_-30px_rgba(255,255,255,0.9)]"
-                                : "h-11 w-11 rounded-2xl bg-white/5 dark:bg-white/5"
+                                ? "h-12 w-12 rounded-3xl bg-primary-light-4 dark:bg-white/15 shadow-[0_20px_40px_-30px_rgba(142,78,198,0.3)] dark:shadow-[0_20px_40px_-30px_rgba(255,255,255,0.9)]"
+                                : "h-11 w-11 rounded-2xl bg-primary-light-3 dark:bg-white/5"
                                 }`}
                         >
                             <Icon
-                                className={`h-5 w-5 transition-transform duration-300 ${active ? "text-primary-light-9 dark:text-primary-dark-9 scale-110" : "text-white/80 dark:text-white/80"
+                                className={`h-5 w-5 transition-transform duration-300 ${active ? "text-primary-light-9 dark:text-primary-dark-9 scale-110" : "text-primary-light-11 dark:text-white/80"
                                     }`}
                             />
                         </span>
 
                         {!compact && (
                             <div className="flex flex-col">
-                                <span className="text-sm font-semibold text-white dark:text-white">{item.label}</span>
-                                <span className="text-xs text-white/70 dark:text-white/70">{item.description}</span>
+                                <span className="text-sm font-semibold text-text-primary-light dark:text-white">{item.label}</span>
+                                <span className="text-xs text-text-secondary-light dark:text-white/70">{item.description}</span>
                             </div>
                         )}
                     </button>
@@ -153,25 +153,25 @@ export default function AppLayout({ children }: AppLayoutProps) {
 
             <div className="relative z-10 mx-auto flex h-full max-w-[1700px] flex-col gap-6 px-4 py-6 lg:flex-row lg:gap-8 lg:px-10">
                 <aside
-                    className={`hidden lg:flex flex-col px-2 py-6 text-white transition-all duration-500 ${isSidebarCollapsed ? "w-0 opacity-0 overflow-hidden" : "w-[260px] opacity-100"} relative z-20 overflow-y-auto scrollbar scrollbar-track-transparent scrollbar-thumb-white/20 hover:scrollbar-thumb-white/30`}
+                    className={`hidden lg:flex flex-col px-2 py-6 rounded-2xl border border-mauve-light-6 dark:border-white/10 bg-gradient-to-b from-mauve-light-2/80 dark:from-white/5 to-mauve-light-1/80 dark:to-transparent backdrop-blur-xl text-text-primary-light dark:text-white transition-all duration-500 ${isSidebarCollapsed ? "w-0 opacity-0 overflow-hidden" : "w-[260px] opacity-100"} relative z-20 overflow-y-auto scrollbar scrollbar-track-transparent scrollbar-thumb-mauve-light-8 dark:scrollbar-thumb-white/20 hover:scrollbar-thumb-mauve-light-9 dark:hover:scrollbar-thumb-white/30`}
                 >
                     <div className="flex flex-col gap-4">
                         <div className="flex items-center justify-between">
                             <div
                                 className={`flex items-center gap-3 transition-opacity duration-300 ${isSidebarCollapsed ? "pointer-events-none opacity-0" : "opacity-100"}`}
                             >
-                                <div className="rounded-2xl bg-white/15 p-2 text-white">
+                                <div className="rounded-2xl bg-primary-light-3 dark:bg-white/15 p-2 text-primary-light-12 dark:text-white">
                                     <Sparkles className="h-5 w-5" />
                                 </div>
                                 <div>
-                                    <p className="text-lg font-semibold text-white">MKP Finanças</p>
+                                    <p className="text-lg font-semibold text-text-primary-light dark:text-white">MKP Finanças</p>
                                 </div>
                             </div>
                             <button
                                 type="button"
                                 onClick={() => setIsSidebarCollapsed((prev) => !prev)}
                                 aria-label={isSidebarCollapsed ? "Expandir menu" : "Recolher menu"}
-                                className="rounded-full bg-white/5 p-2 text-white transition-all duration-300 hover:bg-white/15 flex-shrink-0"
+                                className="rounded-full bg-primary-light-3 dark:bg-white/5 p-2 text-primary-light-12 dark:text-white transition-all duration-300 hover:bg-primary-light-4 dark:hover:bg-white/15 flex-shrink-0"
                             >
                                 {isSidebarCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
                             </button>
@@ -181,8 +181,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
                             <button
                                 type="button"
                                 onClick={toggleTheme}
-                                // disabled
-                                className="flex-1 flex items-center justify-center rounded-2xl bg-white/10 p-2.5 text-white transition-all duration-300 hover:bg-white/15"
+                                className="flex-1 flex items-center justify-center rounded-2xl bg-primary-light-3 dark:bg-white/10 p-2.5 text-primary-light-12 dark:text-white transition-all duration-300 hover:bg-primary-light-4 dark:hover:bg-white/15"
                             >
                                 {isDark ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
                             </button>
@@ -190,7 +189,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
                             <button
                                 type="button"
                                 onClick={handlePrimaryAction}
-                                className="flex-1 flex items-center justify-center rounded-2xl bg-white/10 p-2.5 text-white transition-all duration-300 hover:bg-white/15"
+                                className="flex-1 flex items-center justify-center rounded-2xl bg-primary-light-3 dark:bg-white/10 p-2.5 text-primary-light-12 dark:text-white transition-all duration-300 hover:bg-primary-light-4 dark:hover:bg-white/15"
                             >
                                 {isAuthenticated ? <LogOut className="h-5 w-5" /> : <LogIn className="h-5 w-5" />}
                             </button>
@@ -204,8 +203,8 @@ export default function AppLayout({ children }: AppLayoutProps) {
                 </aside>
 
                 <div className="flex-1 min-h-0 flex flex-col">
-                    <div className="relative flex flex-1 min-h-0 flex-col rounded-[36px] border border-white/15 bg-white/95 p-4 text-[#1a1027] shadow-[0_40px_160px_-140px_rgba(7,2,12,1)] backdrop-blur-xl dark:border-white/5 dark:bg-[#13081a]/95 dark:text-white">
-                        <section className="flex-1 min-h-0 overflow-y-auto rounded-[28px] bg-white/80 p-4 shadow-[0_25px_60px_-50px_rgba(10,5,20,1)] backdrop-blur-2xl dark:bg-white/5 scrollbar scrollbar-track-transparent scrollbar-thumb-black/20 dark:scrollbar-thumb-white/20 hover:scrollbar-thumb-black/30 dark:hover:scrollbar-thumb-white/30">
+                    <div className="relative flex flex-1 min-h-0 flex-col rounded-[36px] border border-mauve-light-6 dark:border-white/5 bg-white/95 dark:bg-[#13081a]/95 p-4 text-text-primary-light dark:text-white shadow-[0_40px_160px_-140px_rgba(142,78,198,0.1)] dark:shadow-[0_40px_160px_-140px_rgba(7,2,12,1)] backdrop-blur-xl">
+                        <section className="flex-1 min-h-0 overflow-y-auto rounded-[28px] bg-white/90 dark:bg-white/5 p-4 shadow-[0_25px_60px_-50px_rgba(142,78,198,0.05)] dark:shadow-[0_25px_60px_-50px_rgba(10,5,20,1)] backdrop-blur-2xl scrollbar scrollbar-track-transparent scrollbar-thumb-mauve-light-8 dark:scrollbar-thumb-white/20 hover:scrollbar-thumb-mauve-light-9 dark:hover:scrollbar-thumb-white/30">
                             {children}
                         </section>
                     </div>
@@ -216,7 +215,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
                 <button
                     type="button"
                     onClick={() => setIsSidebarCollapsed(false)}
-                    className="fixed top-4 left-4 z-40 hidden lg:flex rounded-2xl bg-white/10 p-2.5 text-white shadow-[0_10px_30px_-20px_rgba(0,0,0,0.5)] backdrop-blur-md transition hover:bg-white/15"
+                    className="fixed top-4 left-4 z-40 hidden lg:flex rounded-2xl bg-primary-light-3 dark:bg-white/10 p-2.5 text-primary-light-12 dark:text-white shadow-[0_10px_30px_-20px_rgba(142,78,198,0.2)] dark:shadow-[0_10px_30px_-20px_rgba(0,0,0,0.5)] backdrop-blur-md transition hover:bg-primary-light-4 dark:hover:bg-white/15"
                 >
                     <ChevronRight className="h-5 w-5" />
                 </button>
@@ -232,26 +231,26 @@ export default function AppLayout({ children }: AppLayoutProps) {
 
             {isMobileSidebarOpen && (
                 <div
-                    className="fixed inset-0 z-50 flex items-start justify-center bg-black/60 backdrop-blur-sm lg:hidden"
+                    className="fixed inset-0 z-50 flex items-start justify-center bg-black/40 dark:bg-black/60 backdrop-blur-sm lg:hidden"
                     onClick={() => setIsMobileSidebarOpen(false)}
                 >
                     <div
-                        className={`mt-16 w-[92%] max-h-[80vh] rounded-[32px] border p-5 shadow-[0_30px_80px_-50px_rgba(8,4,12,0.9)] overflow-y-auto scrollbar scrollbar-track-transparent ${isDark
+                        className={`mt-16 w-[92%] max-h-[80vh] rounded-[32px] border p-5 shadow-[0_30px_80px_-50px_rgba(142,78,198,0.2)] dark:shadow-[0_30px_80px_-50px_rgba(8,4,12,0.9)] overflow-y-auto scrollbar scrollbar-track-transparent ${isDark
                             ? "border-white/15 bg-gradient-to-b from-[#13081a]/95 via-[#1a0f2b]/95 to-[#0f061a]/95 text-white scrollbar-thumb-white/20 hover:scrollbar-thumb-white/30"
-                            : "border-white/20 bg-gradient-to-b from-white/95 via-[#f9ecff]/90 to-[#f6ddff]/80 text-[#1a0f29] scrollbar-thumb-black/20 hover:scrollbar-thumb-black/30"
+                            : "border-mauve-light-6 bg-gradient-to-b from-white/95 via-primary-light-2/90 to-primary-light-1/80 text-text-primary-light scrollbar-thumb-mauve-light-8 hover:scrollbar-thumb-mauve-light-9"
                             }`}
                         onClick={(e) => e.stopPropagation()}
                     >
                         <div className="mb-5 flex items-center justify-between">
                             <div>
-                                <p className={`text-lg font-semibold ${isDark ? "text-white" : "text-[#2a143c]"}`}>Controle elegante</p>
+                                <p className={`text-lg font-semibold ${isDark ? "text-white" : "text-text-primary-light"}`}>Controle elegante</p>
                             </div>
                             <button
                                 type="button"
                                 onClick={() => setIsMobileSidebarOpen(false)}
                                 className={`rounded-full border p-2 transition-colors ${isDark
                                     ? "border-white/20 bg-white/10 text-white hover:bg-white/15"
-                                    : "border-[#d8b6ef] bg-white/70 text-[#8e4ec6] hover:bg-white/80"
+                                    : "border-primary-light-6 bg-primary-light-3 text-primary-light-12 hover:bg-primary-light-4"
                                     }`}
                             >
                                 <X className="h-4 w-4" />
@@ -262,11 +261,11 @@ export default function AppLayout({ children }: AppLayoutProps) {
 
                         <div className="mt-6 flex flex-col gap-3">
                             {user && (
-                                <div className={`flex items-center gap-3 rounded-2xl px-3 py-3 ${isDark ? "bg-white/10 text-white" : "bg-white/60 text-[#2a143c]"
+                                <div className={`flex items-center gap-3 rounded-2xl px-3 py-3 ${isDark ? "bg-white/10 text-white" : "bg-primary-light-3 text-text-primary-light"
                                     }`}>
                                     <div>
                                         <p className="text-sm font-semibold">Alertas</p>
-                                        <p className={`text-xs ${isDark ? "text-white/70" : "text-[#7c547b]"}`}>Eventos e lembretes</p>
+                                        <p className={`text-xs ${isDark ? "text-white/70" : "text-text-secondary-light"}`}>Eventos e lembretes</p>
                                     </div>
                                 </div>
                             )}
@@ -277,7 +276,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
                                     setIsMobileSidebarOpen(false);
                                 }}
                                 disabled
-                                className={`flex items-center gap-3 rounded-2xl px-3 py-3 text-left transition-colors opacity-50 cursor-not-allowed ${isDark ? "bg-white/10 text-white" : "bg-white/60 text-[#2a143c]"
+                                className={`flex items-center gap-3 rounded-2xl px-3 py-3 text-left transition-colors opacity-50 cursor-not-allowed ${isDark ? "bg-white/10 text-white" : "bg-primary-light-3 text-text-primary-light"
                                     }`}
                             >
                                 {isDark ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
@@ -292,7 +291,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
                                     handlePrimaryAction();
                                     setIsMobileSidebarOpen(false);
                                 }}
-                                className={`flex items-center gap-3 rounded-2xl px-3 py-3 text-left transition-colors ${isDark ? "bg-white/10 text-white hover:bg-white/15" : "bg-white/60 text-[#2a143c] hover:bg-white/70"
+                                className={`flex items-center gap-3 rounded-2xl px-3 py-3 text-left transition-colors ${isDark ? "bg-white/10 text-white hover:bg-white/15" : "bg-primary-light-3 text-text-primary-light hover:bg-primary-light-4"
                                     }`}
                             >
                                 {isAuthenticated ? <LogOut className="h-5 w-5" /> : <LogIn className="h-5 w-5" />}
