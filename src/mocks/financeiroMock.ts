@@ -3,6 +3,7 @@ export interface Entrada {
   tipo: string;
   valor: number;
   data: string;
+  descricao?: string;
   observacao?: string;
   usuarioNome: string;
 }
@@ -96,7 +97,6 @@ export const mockDespesas: Despesa[] = [
     descricao: "Compra de bebidas premium",
     valor: 2350.0,
     data: "2025-11-20T11:00:00Z",
-    descricao: "Fornecedor Premium Ltda",
     usuarioNome: "João Silva",
   },
   {
@@ -105,7 +105,6 @@ export const mockDespesas: Despesa[] = [
     descricao: "Conta de água e energia",
     valor: 450.5,
     data: "2025-11-18T09:30:00Z",
-    descricao: "Mês de outubro",
     usuarioNome: "Maria Santos",
   },
   {
@@ -114,7 +113,6 @@ export const mockDespesas: Despesa[] = [
     descricao: "Geladeira nova para estoque",
     valor: 2800.0,
     data: "2025-11-15T14:00:00Z",
-    descricao: "Marca X - Premium",
     usuarioNome: "Carlos Oliveira",
   },
   {
@@ -123,7 +121,6 @@ export const mockDespesas: Despesa[] = [
     descricao: "Folha de pagamento",
     valor: 5000.0,
     data: "2025-11-10T16:45:00Z",
-    descricao: "Mês de outubro - 2 funcionários",
     usuarioNome: "Ana Costa",
   },
   {
@@ -132,7 +129,6 @@ export const mockDespesas: Despesa[] = [
     descricao: "Publicidade digital",
     valor: 350.0,
     data: "2025-11-08T10:30:00Z",
-    descricao: "Google Ads - Campanha outubro",
     usuarioNome: "João Silva",
   },
 ];

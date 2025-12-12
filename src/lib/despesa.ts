@@ -34,6 +34,16 @@ export interface FiltroListagemDespesa {
   valorMaximo?: number;
 }
 
+export interface DespesaType {
+  id: number;
+  tipo: string;
+  descricao?: string;
+  valor: number;
+  data: string;
+  observacao?: string;
+  usuarioNome?: string;
+}
+
 // API Calls
 export const listDespesas = async (
   filtros?: FiltroListagemDespesa

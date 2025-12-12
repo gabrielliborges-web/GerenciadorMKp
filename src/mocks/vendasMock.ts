@@ -18,6 +18,7 @@ export interface Venda {
   formaPagamento: "dinheiro" | "pix" | "débito" | "crédito" | "fiado";
   total: number;
   itens: ItemVenda[];
+  descricao?: string;
   observacao?: string;
 }
 

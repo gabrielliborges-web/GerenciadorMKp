@@ -74,15 +74,6 @@ function PriceModalFragment(props: {
                     </div>
                 </div>
             </div>
-            {/* Price confirmation modal */}
-            <PriceModalFragment
-                open={priceModalOpen}
-                produto={priceModalProduto}
-                precoInput={priceInput}
-                setPrecoInput={setPriceInput}
-                onConfirm={handleConfirmPrice}
-                onCancel={handleCancelPrice}
-            />
         </>
     );
 }
@@ -537,6 +528,14 @@ export default function NovaVendaModal({
                     </div>
                 </div>
             </div>
+            <PriceModalFragment
+                open={priceModalOpen}
+                produto={priceModalProduto}
+                precoInput={priceInput}
+                setPrecoInput={setPriceInput}
+                onConfirm={handleConfirmPrice}
+                onCancel={handleCancelPrice}
+            />
         </>
     );
 }

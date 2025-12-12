@@ -18,6 +18,9 @@ export interface DashboardResumo {
   totalEntradas: number;
   totalSaidas: number;
   saldoMes: number;
+  lucro?: number;
+  movimentacoesRecentes?: any[];
+  entradasPorTipo?: Record<string, number>;
 }
 
 export interface RegistrarAjusteRequest {

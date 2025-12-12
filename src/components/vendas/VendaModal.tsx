@@ -25,7 +25,7 @@ export default function VendaModal({
         "dinheiro" | "pix" | "débito" | "crédito" | "fiado"
     >("pix");
     const [itens, setItens] = useState<ItemVenda[]>([]);
-    const [observacao, setObservacao] = useState("");
+    const [descricao, setDescricao] = useState("");
 
     const total = useMemo(() => {
         return itens.reduce((sum, item) => sum + item.subtotal, 0);
@@ -40,12 +40,12 @@ export default function VendaModal({
         onRegistrar({
             formaPagamento,
             itens,
-            observacao,
+            descricao,
         });
 
         // Reset form
         setItens([]);
-        setObservacao("");
+        setDescricao("");
         setFormaPagamento("pix");
     };
 
@@ -117,8 +117,8 @@ export default function VendaModal({
                                 Observação (opcional)
                             </label>
                             <textarea
-                                value={observacao}
-                                onChange={(e) => setObservacao(e.target.value)}
+                                value={descricao}
+                                onChange={(e) => setDescricao(e.target.value)}
                                 disabled={isLoading}
                                 placeholder="Adicione uma nota sobre a venda..."
                                 className="min-h-20 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder-white/50 transition-colors focus:border-primary-600 focus:bg-white/10 focus:outline-none disabled:opacity-50"
