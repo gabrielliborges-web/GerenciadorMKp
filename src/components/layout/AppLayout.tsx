@@ -151,7 +151,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_#1a0f2b_0%,_#06020a_55%)] opacity-80" />
             </div>
 
-            <div className="relative z-10 mx-auto flex h-full w-full max-w-[1700px] flex-col gap-6 px-4 py-6 lg:flex-row lg:gap-8 lg:px-10">
+            <div className="relative z-10 mx-auto flex h-full max-w-[1700px] flex-col gap-6 px-4 py-6 lg:flex-row lg:gap-8 lg:px-10">
                 <aside
                     className={`hidden lg:flex flex-col px-2 py-6 text-white transition-all duration-500 ${isSidebarCollapsed ? "w-0 opacity-0 overflow-hidden" : "w-[260px] opacity-100"} relative z-20 overflow-y-auto scrollbar scrollbar-track-transparent scrollbar-thumb-white/20 hover:scrollbar-thumb-white/30`}
                 >
@@ -203,13 +203,11 @@ export default function AppLayout({ children }: AppLayoutProps) {
 
                 </aside>
 
-                <div className="flex-1">
-                    <div className="relative flex h-full flex-col rounded-[36px] border border-white/15 bg-white/95 p-4 text-[#1a1027] shadow-[0_40px_160px_-140px_rgba(7,2,12,1)] backdrop-blur-xl dark:border-white/5 dark:bg-[#13081a]/95 dark:text-white">
-                        <div className="relative flex min-h-0 flex-1 flex-col">
-                            <section className="flex-1 overflow-hidden rounded-[28px] bg-white/80 p-4 shadow-[0_25px_60px_-50px_rgba(10,5,20,1)] backdrop-blur-2xl dark:bg-white/5">
-                                <div className="h-full w-full overflow-y-auto scrollbar scrollbar-track-transparent scrollbar-thumb-black/20 dark:scrollbar-thumb-white/20 hover:scrollbar-thumb-black/30 dark:hover:scrollbar-thumb-white/30">{children}</div>
-                            </section>
-                        </div>
+                <div className="flex-1 min-h-0 flex flex-col">
+                    <div className="relative flex flex-1 min-h-0 flex-col rounded-[36px] border border-white/15 bg-white/95 p-4 text-[#1a1027] shadow-[0_40px_160px_-140px_rgba(7,2,12,1)] backdrop-blur-xl dark:border-white/5 dark:bg-[#13081a]/95 dark:text-white">
+                        <section className="flex-1 min-h-0 overflow-y-auto rounded-[28px] bg-white/80 p-4 shadow-[0_25px_60px_-50px_rgba(10,5,20,1)] backdrop-blur-2xl dark:bg-white/5 scrollbar scrollbar-track-transparent scrollbar-thumb-black/20 dark:scrollbar-thumb-white/20 hover:scrollbar-thumb-black/30 dark:hover:scrollbar-thumb-white/30">
+                            {children}
+                        </section>
                     </div>
                 </div>
             </div>
