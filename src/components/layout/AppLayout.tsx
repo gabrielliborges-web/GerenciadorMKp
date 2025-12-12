@@ -116,25 +116,25 @@ export default function AppLayout({ children }: AppLayoutProps) {
                             goTo(item.view);
                             setIsMobileSidebarOpen(false);
                         }}
-                        className={`group relative flex w-full items-center rounded-2xl px-2 py-2 text-left text-sm text-white transition-all duration-500 ${compact ? "justify-center" : "gap-3"
-                            } ${active ? "bg-white/12" : "bg-transparent hover:bg-white/5"}`}
+                        className={`group relative flex w-full items-center rounded-2xl px-2 py-2 text-left text-sm text-white dark:text-white transition-all duration-500 ${compact ? "justify-center" : "gap-3"
+                            } ${active ? "bg-white/12 dark:bg-white/12" : "bg-transparent hover:bg-white/5 dark:hover:bg-white/5"}`}
                     >
                         <span
                             className={`flex items-center justify-center ${compact
-                                ? "h-12 w-12 rounded-3xl bg-white/15 shadow-[0_20px_40px_-30px_rgba(255,255,255,0.9)]"
-                                : "h-11 w-11 rounded-2xl bg-white/5"
+                                ? "h-12 w-12 rounded-3xl bg-white/15 dark:bg-white/15 shadow-[0_20px_40px_-30px_rgba(255,255,255,0.9)] dark:shadow-[0_20px_40px_-30px_rgba(255,255,255,0.9)]"
+                                : "h-11 w-11 rounded-2xl bg-white/5 dark:bg-white/5"
                                 }`}
                         >
                             <Icon
-                                className={`h-5 w-5 transition-transform duration-300 ${active ? "text-primary-dark-9 scale-110" : "text-white/80"
+                                className={`h-5 w-5 transition-transform duration-300 ${active ? "text-primary-light-9 dark:text-primary-dark-9 scale-110" : "text-white/80 dark:text-white/80"
                                     }`}
                             />
                         </span>
 
                         {!compact && (
                             <div className="flex flex-col">
-                                <span className="text-sm font-semibold text-white">{item.label}</span>
-                                <span className="text-xs text-white/70">{item.description}</span>
+                                <span className="text-sm font-semibold text-white dark:text-white">{item.label}</span>
+                                <span className="text-xs text-white/70 dark:text-white/70">{item.description}</span>
                             </div>
                         )}
                     </button>
@@ -144,11 +144,11 @@ export default function AppLayout({ children }: AppLayoutProps) {
     );
 
     return (
-        <div className="relative h-screen overflow-hidden bg-[#06020a] text-text-primary-light transition-colors duration-500 dark:bg-[#050107] dark:text-text-primary-dark">
+        <div className="relative h-screen overflow-hidden bg-primary-light-1 dark:bg-[#050107] text-text-primary-light transition-colors duration-500 dark:text-text-primary-dark">
             <div className="pointer-events-none absolute inset-0">
                 <div className="absolute -left-24 top-[-80px] h-[420px] w-[420px] rounded-full bg-gradient-to-br from-[#f8d7ff]/40 via-[#f7c0e2]/30 to-transparent blur-[140px]" />
                 <div className="absolute bottom-[-120px] right-[-60px] h-[520px] w-[520px] rounded-full bg-gradient-to-bl from-[#d6c1ff]/35 via-[#f9e3ff]/25 to-transparent blur-[150px]" />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_#1a0f2b_0%,_#06020a_55%)] opacity-80" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_#f7edfe_0%,_#fefcfe_55%)] dark:bg-[radial-gradient(circle_at_top,_#1a0f2b_0%,_#06020a_55%)] opacity-80" />
             </div>
 
             <div className="relative z-10 mx-auto flex h-full max-w-[1700px] flex-col gap-6 px-4 py-6 lg:flex-row lg:gap-8 lg:px-10">

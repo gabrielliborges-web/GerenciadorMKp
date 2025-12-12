@@ -28,23 +28,32 @@ export function useTheme() {
     }
   }, [isDark]);
 
-  // Garante que dark seja aplicado na inicialização
   useEffect(() => {
     const root = document.documentElement;
-    const savedTheme = localStorage.getItem("theme");
-    const theme = savedTheme === "light" ? "light" : "dark";
-
-    if (theme === "dark") {
-      root.classList.add("dark");
-      localStorage.setItem("theme", "dark");
+    if (user?.theme) {
+      const isDarkTheme = user.theme === "DARK";
+      if (isDarkTheme) {
+        root.classList.add("dark");
+        localStorage.setItem("theme", "dark");
+      } else {
+        root.classList.remove("dark");
+        localStorage.setItem("theme", "light");
+      }
     } else {
-      root.classList.remove("dark");
+      const savedTheme = localStorage.getItem("theme");
+      const theme = savedTheme === "light" ? "light" : "dark";
+      if (theme === "dark") {
+        root.classList.add("dark");
+        localStorage.setItem("theme", "dark");
+      } else {
+        root.classList.remove("dark");
+        localStorage.setItem("theme", "light");
+      }
     }
-  }, []);
+  }, [user?.theme]);
 
   useEffect(() => {
-    // if (user?.theme) setIsDark(user?.theme === "DARK");
-    if (user?.theme) setIsDark(true);
+    if (user?.theme) setIsDark(user.theme === "DARK");
   }, [user?.theme]);
 
   const toggleTheme = async () => {

@@ -53,11 +53,11 @@ export default function DashboardAlerts({
     const getIcon = (iconeName: string) => {
         const icons = LucideIcons as unknown as Record<string, React.ComponentType>;
         return icons[iconeName] as React.ComponentType<{ className: string }> | undefined;
-    }; return (
-        <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-white/2 p-6 backdrop-blur-sm">
+    };     return (
+        <div className="rounded-2xl border border-mauve-light-6 dark:border-white/10 bg-gradient-to-br from-mauve-light-2 dark:from-white/5 to-mauve-light-1 dark:to-white/2 p-6 backdrop-blur-sm">
             <div className="mb-6">
-                <h3 className="text-lg font-semibold text-white">Alertas Inteligentes</h3>
-                <p className="mt-1 text-sm text-white/60">Notificações importantes</p>
+                <h3 className="text-lg font-semibold text-text-primary-light dark:text-text-primary-dark">Alertas Inteligentes</h3>
+                <p className="mt-1 text-sm text-text-secondary-light dark:text-text-secondary-dark">Notificações importantes</p>
             </div>
 
             <div className="space-y-3">
@@ -79,10 +79,10 @@ export default function DashboardAlerts({
                             </div>
 
                             <div className="flex-1 min-w-0">
-                                <p className="text-sm font-semibold text-white">
+                                <p className="text-sm font-semibold text-text-primary-light dark:text-text-primary-dark">
                                     {alerta.titulo}
                                 </p>
-                                <p className="mt-1 text-xs text-white/70">
+                                <p className="mt-1 text-xs text-text-secondary-light dark:text-white/70">
                                     {alerta.descricao}
                                 </p>
                             </div>

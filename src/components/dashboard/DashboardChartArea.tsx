@@ -8,6 +8,7 @@ import {
     Legend,
     ResponsiveContainer,
 } from "recharts";
+import { useTheme } from "../../hooks/useTheme";
 
 interface ChartDataPoint {
     data: string;
@@ -20,14 +21,16 @@ interface DashboardChartAreaProps {
 }
 
 export default function DashboardChartArea({ data }: DashboardChartAreaProps) {
+    const { isDark } = useTheme();
+    
     return (
-        <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-white/2 p-6 backdrop-blur-sm">
+        <div className="rounded-2xl border border-mauve-light-6 dark:border-white/10 bg-gradient-to-br from-mauve-light-2 dark:from-white/5 to-mauve-light-1 dark:to-white/2 p-6 backdrop-blur-sm">
             <div className="mb-6 flex items-center justify-between">
                 <div>
-                    <h3 className="text-lg font-semibold text-white">
+                    <h3 className="text-lg font-semibold text-text-primary-light dark:text-text-primary-dark">
                         Receitas vs Despesas
                     </h3>
-                    <p className="mt-1 text-sm text-white/60">Últimos 30 dias</p>
+                    <p className="mt-1 text-sm text-text-secondary-light dark:text-text-secondary-dark">Últimos 30 dias</p>
                 </div>
             </div>
 
@@ -48,35 +51,36 @@ export default function DashboardChartArea({ data }: DashboardChartAreaProps) {
                     </defs>
                     <CartesianGrid
                         strokeDasharray="3 3"
-                        stroke="rgba(255,255,255,0.1)"
+                        stroke={isDark ? "rgba(255,255,255,0.1)" : "rgba(142, 78, 198, 0.1)"}
                         vertical={false}
                     />
                     <XAxis
                         dataKey="data"
-                        stroke="rgba(255,255,255,0.5)"
+                        stroke={isDark ? "rgba(255,255,255,0.5)" : "rgba(142, 78, 198, 0.5)"}
                         style={{ fontSize: "12px" }}
                     />
                     <YAxis
-                        stroke="rgba(255,255,255,0.5)"
+                        stroke={isDark ? "rgba(255,255,255,0.5)" : "rgba(142, 78, 198, 0.5)"}
                         style={{ fontSize: "12px" }}
                     />
                     <Tooltip
                         contentStyle={{
-                            backgroundColor: "rgba(20, 20, 30, 0.95)",
-                            border: "1px solid rgba(255,255,255,0.2)",
+                            backgroundColor: isDark ? "rgba(20, 20, 30, 0.95)" : "rgba(255, 255, 255, 0.95)",
+                            border: isDark ? "1px solid rgba(255,255,255,0.2)" : "1px solid rgba(142, 78, 198, 0.2)",
                             borderRadius: "12px",
-                            boxShadow: "0 10px 40px rgba(0,0,0,0.3)",
+                            boxShadow: isDark ? "0 10px 40px rgba(0,0,0,0.3)" : "0 10px 40px rgba(0,0,0,0.1)",
+                            color: isDark ? "rgba(255,255,255,0.9)" : "#1A1523",
                         }}
                         formatter={(value) =>
                             `R$ ${Number(value).toLocaleString("pt-BR", { maximumFractionDigits: 0 })}`
                         }
-                        labelStyle={{ color: "rgba(255,255,255,0.7)" }}
+                        labelStyle={{ color: isDark ? "rgba(255,255,255,0.7)" : "#1A1523" }}
                     />
                     <Legend
                         wrapperStyle={{ paddingTop: "20px" }}
                         iconType="line"
                         formatter={(value) => (
-                            <span style={{ color: "rgba(255,255,255,0.8)", fontSize: "12px" }}>
+                            <span style={{ color: isDark ? "rgba(255,255,255,0.8)" : "#1A1523", fontSize: "12px" }}>
                                 {value === "receitas" ? "Receitas" : "Despesas"}
                             </span>
                         )}

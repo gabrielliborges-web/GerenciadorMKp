@@ -88,8 +88,8 @@ export default function Home() {
         <div className="space-y-8 pb-6">
             {/* Header */}
             <div className="animate-fade-in space-y-2">
-                <h1 className="text-3xl font-bold text-white">Dashboard</h1>
-                <p className="text-white/60">
+                <h1 className="text-3xl font-bold text-text-primary-light dark:text-text-primary-dark">Dashboard</h1>
+                <p className="text-text-secondary-light dark:text-text-secondary-dark">
                     Indicadores gerais e visão financeira em tempo real
                 </p>
             </div>
@@ -123,14 +123,14 @@ export default function Home() {
             </div>
 
             {/* Footer Info */}
-            <div className="flex flex-col gap-2 rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-white/2 p-6 backdrop-blur-sm md:flex-row md:items-center md:justify-between">
-                <div className="flex items-center gap-2 text-sm text-white/60">
+            <div className="flex flex-col gap-2 rounded-2xl border border-mauve-light-6 dark:border-white/10 bg-gradient-to-br from-mauve-light-2 dark:from-white/5 to-mauve-light-1 dark:to-white/2 p-6 backdrop-blur-sm md:flex-row md:items-center md:justify-between">
+                <div className="flex items-center gap-2 text-sm text-text-secondary-light dark:text-text-secondary-dark">
                     <RotateCcw className="h-4 w-4" />
                     <span>Última atualização há alguns segundos</span>
                 </div>
                 <button
                     type="button"
-                    className="inline-flex items-center gap-2 rounded-lg bg-white/10 px-4 py-2 text-sm font-medium text-white transition-all duration-300 hover:bg-white/15"
+                    className="inline-flex items-center gap-2 rounded-lg bg-primary-light-3 dark:bg-white/10 px-4 py-2 text-sm font-medium text-primary-light-12 dark:text-white transition-all duration-300 hover:bg-primary-light-4 dark:hover:bg-white/15"
                 >
                     <RotateCcw className="h-4 w-4" />
                     Atualizar
