@@ -71,13 +71,13 @@ export default function ResumoEstoqueDashboard({ produtos }: ResumoEstoqueDashbo
                 type="button"
                 aria-expanded={open}
                 onClick={() => setOpen((v) => !v)}
-                className="mb-4 w-full flex items-center justify-between gap-3 rounded-lg border border-mauve-light-6 dark:border-white/10 bg-mauve-light-2 dark:bg-white/3 px-4 py-3 text-left transition hover:bg-mauve-light-3 dark:hover:bg-white/5"
+                className="mb-4 w-full flex items-center justify-between gap-3 rounded-lg border border-white/10 dark:border-white/10 bg-white/5 dark:bg-white/3 px-4 py-3 text-left transition hover:bg-white/10 dark:hover:bg-white/5"
             >
                 <div>
-                    <p className="text-lg font-semibold text-text-primary-light dark:text-white">Resumo do Estoque</p>
-                    <p className="text-sm text-text-secondary-light dark:text-white/60 hidden sm:block">Clique para {open ? "ocultar" : "mostrar"} o resumo</p>
+                    <p className="text-lg font-semibold text-white dark:text-white">Resumo do Estoque</p>
+                    <p className="text-sm text-white/60 dark:text-white/60 hidden sm:block">Clique para {open ? "ocultar" : "mostrar"} o resumo</p>
                 </div>
-                <ChevronDown className={`h-5 w-5 text-text-primary-light dark:text-white transform transition-transform ${open ? "-rotate-180" : "rotate-0"}`} />
+                <ChevronDown className={`h-5 w-5 text-white dark:text-white transform transition-transform ${open ? "-rotate-180" : "rotate-0"}`} />
             </button>
 
             <div
@@ -86,48 +86,48 @@ export default function ResumoEstoqueDashboard({ produtos }: ResumoEstoqueDashbo
                 className="overflow-hidden transition-[max-height] duration-300 ease-in-out"
             >
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-                    <div className="rounded-xl border border-mauve-light-6 dark:border-white/10 bg-mauve-light-2 dark:bg-white/5 p-5">
-                        <p className="text-sm font-semibold text-text-secondary-light dark:text-slate-300">Vender todo o estoque (preço normal)</p>
-                        <p className="mt-3 text-2xl font-bold text-text-primary-light dark:text-white">{formatCurrency(totalVenderNormal)}</p>
-                        <p className="mt-2 text-sm text-text-secondary-light dark:text-white/60">Baseado em <span className="font-medium">{quantidadeItensEstoque}</span> itens em estoque</p>
+                    <div className="rounded-xl border border-white/10 dark:border-white/10 bg-white/5 dark:bg-white/5 p-5">
+                        <p className="text-sm font-semibold text-slate-300 dark:text-slate-300">Vender todo o estoque (preço normal)</p>
+                        <p className="mt-3 text-2xl font-bold text-white dark:text-white">{formatCurrency(totalVenderNormal)}</p>
+                        <p className="mt-2 text-sm text-white/60 dark:text-white/60">Baseado em <span className="font-medium">{quantidadeItensEstoque}</span> itens em estoque</p>
                     </div>
 
-                    <div className="rounded-xl border border-mauve-light-6 dark:border-white/10 bg-mauve-light-2 dark:bg-white/5 p-5">
-                        <p className="text-sm font-semibold text-text-secondary-light dark:text-slate-300">Vender todo o estoque (preço promocional)</p>
-                        <p className="mt-3 text-2xl font-bold text-text-primary-light dark:text-white">{formatCurrency(totalVenderPromocional)}</p>
-                        <p className="mt-2 text-sm text-text-secondary-light dark:text-white/60">Considera preço promocional quando disponível</p>
+                    <div className="rounded-xl border border-white/10 dark:border-white/10 bg-white/5 dark:bg-white/5 p-5">
+                        <p className="text-sm font-semibold text-slate-300 dark:text-slate-300">Vender todo o estoque (preço promocional)</p>
+                        <p className="mt-3 text-2xl font-bold text-white dark:text-white">{formatCurrency(totalVenderPromocional)}</p>
+                        <p className="mt-2 text-sm text-white/60 dark:text-white/60">Considera preço promocional quando disponível</p>
                     </div>
 
-                    <div className="rounded-xl border border-mauve-light-6 dark:border-white/10 bg-mauve-light-2 dark:bg-white/5 p-5">
-                        <p className="text-sm font-semibold text-text-secondary-light dark:text-slate-300">Desconto potencial</p>
-                        <p className="mt-3 text-2xl font-bold text-text-primary-light dark:text-white">{formatCurrency(diferencaPromocional)}</p>
-                        <p className="mt-2 text-sm text-text-secondary-light dark:text-white/60">{descontoPercentual > 0 ? `${descontoPercentual.toFixed(2)}% de desconto` : "Sem desconto"}</p>
+                    <div className="rounded-xl border border-white/10 dark:border-white/10 bg-white/5 dark:bg-white/5 p-5">
+                        <p className="text-sm font-semibold text-slate-300 dark:text-slate-300">Desconto potencial</p>
+                        <p className="mt-3 text-2xl font-bold text-white dark:text-white">{formatCurrency(diferencaPromocional)}</p>
+                        <p className="mt-2 text-sm text-white/60 dark:text-white/60">{descontoPercentual > 0 ? `${descontoPercentual.toFixed(2)}% de desconto` : "Sem desconto"}</p>
                     </div>
 
-                    <div className="rounded-xl border border-mauve-light-6 dark:border-white/10 bg-mauve-light-2 dark:bg-white/5 p-5">
-                        <p className="text-sm font-semibold text-text-secondary-light dark:text-slate-300">Produtos ativos / Itens</p>
-                        <p className="mt-3 text-2xl font-bold text-text-primary-light dark:text-white">{quantidadeProdutosAtivos} / {quantidadeItensEstoque}</p>
-                        <p className="mt-2 text-sm text-text-secondary-light dark:text-white/60">Produtos com estoque baixo: <span className="font-medium">{produtosEstoqueBaixo}</span></p>
+                    <div className="rounded-xl border border-white/10 dark:border-white/10 bg-white/5 dark:bg-white/5 p-5">
+                        <p className="text-sm font-semibold text-slate-300 dark:text-slate-300">Produtos ativos / Itens</p>
+                        <p className="mt-3 text-2xl font-bold text-white dark:text-white">{quantidadeProdutosAtivos} / {quantidadeItensEstoque}</p>
+                        <p className="mt-2 text-sm text-white/60 dark:text-white/60">Produtos com estoque baixo: <span className="font-medium">{produtosEstoqueBaixo}</span></p>
                     </div>
                 </div>
 
                 {/* Categoria summary */}
                 {totalPorCategoria.length > 0 && (
-                    <div className="mt-6 rounded-xl border border-mauve-light-6 dark:border-white/10 bg-mauve-light-2 dark:bg-white/5 p-5">
-                        <p className="text-sm font-semibold text-text-secondary-light dark:text-slate-300">Valor por categoria (preço normal)</p>
+                    <div className="mt-6 rounded-xl border border-white/10 dark:border-white/10 bg-white/5 dark:bg-white/5 p-5">
+                        <p className="text-sm font-semibold text-slate-300 dark:text-slate-300">Valor por categoria (preço normal)</p>
                         <div className="mt-4 space-y-3">
                             {totalPorCategoria.map((cat) => (
                                 <div key={cat.key} className="flex items-center gap-4">
-                                    <div className="w-44 text-sm text-text-secondary-light dark:text-white/80">{cat.nome}</div>
+                                    <div className="w-44 text-sm text-white/80 dark:text-white/80">{cat.nome}</div>
                                     <div className="flex-1">
-                                        <div className="h-3 w-full rounded bg-mauve-light-3 dark:bg-white/5 overflow-hidden">
+                                        <div className="h-3 w-full rounded bg-white/5 dark:bg-white/5 overflow-hidden">
                                             <div
                                                 className="h-3 rounded bg-gradient-to-r from-green-400 to-emerald-500"
                                                 style={{ width: `${maxCategoriaTotal > 0 ? (cat.total / maxCategoriaTotal) * 100 : 0}%` }}
                                             />
                                         </div>
                                     </div>
-                                    <div className="w-36 text-right text-sm font-medium text-text-primary-light dark:text-white">{formatCurrency(cat.total)}</div>
+                                    <div className="w-36 text-right text-sm font-medium text-white dark:text-white">{formatCurrency(cat.total)}</div>
                                 </div>
                             ))}
                         </div>
