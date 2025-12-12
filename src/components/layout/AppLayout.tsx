@@ -116,25 +116,45 @@ export default function AppLayout({ children }: AppLayoutProps) {
                             goTo(item.view);
                             setIsMobileSidebarOpen(false);
                         }}
-                        className={`group relative flex w-full items-center rounded-2xl px-2 py-2 text-left text-sm text-text-primary-light dark:text-white transition-all duration-500 ${compact ? "justify-center" : "gap-3"
-                            } ${active ? "bg-primary-light-4 dark:bg-white/12" : "bg-transparent hover:bg-primary-light-3 dark:hover:bg-white/5"}`}
+                        className={`group relative flex w-full items-center rounded-2xl px-2 py-2 text-left text-sm transition-all duration-500 ${compact ? "justify-center" : "gap-3"
+                            } ${active
+                                ? "bg-white dark:bg-white/10 text-primary-light-11 dark:text-primary-dark-9"
+                                : "bg-transparent hover:bg-primary-light-3 dark:hover:bg-white/5 text-text-primary-light dark:text-white"
+                            }`}
                     >
+                        {active && (
+                            <div className="absolute left-0 top-1/2 -translate-y-1/2 h-8 w-1 rounded-r-full bg-primary-light-11 dark:bg-primary-dark-9" />
+                        )}
                         <span
-                            className={`flex items-center justify-center ${compact
-                                ? "h-12 w-12 rounded-3xl bg-primary-light-4 dark:bg-white/15 shadow-[0_20px_40px_-30px_rgba(142,78,198,0.3)] dark:shadow-[0_20px_40px_-30px_rgba(255,255,255,0.9)]"
-                                : "h-11 w-11 rounded-2xl bg-primary-light-3 dark:bg-white/5"
+                            className={`flex items-center justify-center transition-all duration-300 ${compact
+                                ? `h-12 w-12 rounded-3xl ${active
+                                    ? "bg-primary-light-3 dark:bg-primary-dark-3"
+                                    : "bg-primary-light-3 dark:bg-white/5"
+                                }`
+                                : `h-11 w-11 rounded-2xl ${active
+                                    ? "bg-primary-light-3 dark:bg-primary-dark-3"
+                                    : "bg-primary-light-3 dark:bg-white/5"
+                                }`
                                 }`}
                         >
                             <Icon
-                                className={`h-5 w-5 transition-transform duration-300 ${active ? "text-primary-light-9 dark:text-primary-dark-9 scale-110" : "text-primary-light-11 dark:text-white/80"
+                                className={`h-5 w-5 transition-transform duration-300 ${active
+                                    ? "text-primary-light-11 dark:text-primary-dark-9 scale-110"
+                                    : "text-primary-light-11 dark:text-white/80 group-hover:scale-105"
                                     }`}
                             />
                         </span>
 
                         {!compact && (
                             <div className="flex flex-col">
-                                <span className="text-sm font-semibold text-text-primary-light dark:text-white">{item.label}</span>
-                                <span className="text-xs text-text-secondary-light dark:text-white/70">{item.description}</span>
+                                <span className={`text-sm font-semibold transition-colors ${active
+                                    ? "text-primary-light-11 dark:text-primary-dark-9"
+                                    : "text-text-primary-light dark:text-white"
+                                    }`}>{item.label}</span>
+                                <span className={`text-xs transition-colors ${active
+                                    ? "text-primary-light-10 dark:text-primary-dark-8"
+                                    : "text-text-secondary-light dark:text-white/70"
+                                    }`}>{item.description}</span>
                             </div>
                         )}
                     </button>
