@@ -35,28 +35,28 @@ export default function CompraDetailsDrawer({
         <>
             {/* Overlay */}
             <div
-                className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-opacity duration-300"
+                className="fixed inset-0 z-40 bg-black/20 dark:bg-black/50 backdrop-blur-sm transition-opacity duration-300"
                 onClick={onClose}
             />
 
             {/* Drawer */}
-            <div className="fixed right-0 top-0 z-50 h-screen w-full max-w-md overflow-y-auto border-l border-white/10 bg-gradient-to-br from-[#050107] to-[#0a0510] p-6 shadow-2xl">
+            <div className="fixed right-0 top-0 z-50 h-screen w-full max-w-md overflow-y-auto border-l border-mauve-light-6 dark:border-white/10 bg-gradient-to-br from-white dark:from-[#050107] to-primary-light-1 dark:to-[#0a0510] p-6 shadow-2xl">
                 {/* Header */}
                 <div className="mb-6 flex items-center justify-between">
-                    <h2 className="text-2xl font-bold text-white">Detalhes da Compra</h2>
+                    <h2 className="text-2xl font-bold text-text-primary-light dark:text-white">Detalhes da Compra</h2>
                     <button
                         onClick={onClose}
-                        className="rounded-lg p-2 transition-all duration-300 hover:bg-white/10"
+                        className="rounded-lg p-2 transition-all duration-300 hover:bg-mauve-light-3 dark:hover:bg-white/10"
                     >
-                        <X className="h-6 w-6 text-white/60 hover:text-white" />
+                        <X className="h-6 w-6 text-text-secondary-light dark:text-white/60 hover:text-text-primary-light dark:hover:text-white" />
                     </button>
                 </div>
 
                 {compra && (
                     <div className="space-y-6">
                         {/* Informações Gerais */}
-                        <div className="space-y-4 rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
-                            <h3 className="text-sm font-semibold uppercase tracking-wider text-white/60">
+                        <div className="space-y-4 rounded-xl border border-mauve-light-6 dark:border-white/10 bg-mauve-light-2 dark:bg-white/5 p-4 backdrop-blur-sm">
+                            <h3 className="text-sm font-semibold uppercase tracking-wider text-text-secondary-light dark:text-white/60">
                                 Informações Gerais
                             </h3>
 
@@ -64,10 +64,10 @@ export default function CompraDetailsDrawer({
                                 {/* Fornecedor */}
                                 {compra.fornecedor && (
                                     <div className="flex items-start gap-3">
-                                        <DollarSign className="mt-1 h-5 w-5 text-primary-400/60" />
+                                        <DollarSign className="mt-1 h-5 w-5 text-primary-light-9 dark:text-primary-400/60" />
                                         <div>
-                                            <p className="text-xs text-white/60">Fornecedor</p>
-                                            <p className="text-sm font-semibold text-white">
+                                            <p className="text-xs text-text-secondary-light dark:text-white/60">Fornecedor</p>
+                                            <p className="text-sm font-semibold text-text-primary-light dark:text-white">
                                                 {compra.fornecedor}
                                             </p>
                                         </div>
@@ -76,10 +76,10 @@ export default function CompraDetailsDrawer({
 
                                 {/* Data */}
                                 <div className="flex items-start gap-3">
-                                    <Calendar className="mt-1 h-5 w-5 text-primary-400/60" />
+                                    <Calendar className="mt-1 h-5 w-5 text-primary-light-9 dark:text-primary-400/60" />
                                     <div>
-                                        <p className="text-xs text-white/60">Data</p>
-                                        <p className="text-sm font-semibold text-white">
+                                        <p className="text-xs text-text-secondary-light dark:text-white/60">Data</p>
+                                        <p className="text-sm font-semibold text-text-primary-light dark:text-white">
                                             {formatarData(compra.data)}
                                         </p>
                                     </div>
@@ -87,10 +87,10 @@ export default function CompraDetailsDrawer({
 
                                 {/* Usuário */}
                                 <div className="flex items-start gap-3">
-                                    <User className="mt-1 h-5 w-5 text-primary-400/60" />
+                                    <User className="mt-1 h-5 w-5 text-primary-light-9 dark:text-primary-400/60" />
                                     <div>
-                                        <p className="text-xs text-white/60">Usuário</p>
-                                        <p className="text-sm font-semibold text-white">
+                                        <p className="text-xs text-text-secondary-light dark:text-white/60">Usuário</p>
+                                        <p className="text-sm font-semibold text-text-primary-light dark:text-white">
                                             {compra.usuarioNome}
                                         </p>
                                     </div>
@@ -99,10 +99,10 @@ export default function CompraDetailsDrawer({
                                 {/* Descrição */}
                                 {compra.descricao && (
                                     <div className="flex items-start gap-3">
-                                        <FileText className="mt-1 h-5 w-5 text-primary-400/60" />
+                                        <FileText className="mt-1 h-5 w-5 text-primary-light-9 dark:text-primary-400/60" />
                                         <div>
-                                            <p className="text-xs text-white/60">Descrição</p>
-                                            <p className="text-sm font-semibold text-white">
+                                            <p className="text-xs text-text-secondary-light dark:text-white/60">Descrição</p>
+                                            <p className="text-sm font-semibold text-text-primary-light dark:text-white">
                                                 {compra.descricao}
                                             </p>
                                         </div>
@@ -111,10 +111,10 @@ export default function CompraDetailsDrawer({
                             </div>
                         </div>
 
-                        <div className="space-y-3 rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
+                        <div className="space-y-3 rounded-xl border border-mauve-light-6 dark:border-white/10 bg-mauve-light-2 dark:bg-white/5 p-4 backdrop-blur-sm">
                             <div className="flex items-center gap-2">
-                                <Package className="h-5 w-5 text-primary-400/60" />
-                                <h3 className="text-sm font-semibold uppercase tracking-wider text-white/60">
+                                <Package className="h-5 w-5 text-primary-light-9 dark:text-primary-400/60" />
+                                <h3 className="text-sm font-semibold uppercase tracking-wider text-text-secondary-light dark:text-white/60">
                                     Itens ({compra.itens.length})
                                 </h3>
                             </div>
@@ -123,17 +123,17 @@ export default function CompraDetailsDrawer({
                                 {compra.itens.map((item) => (
                                     <div
                                         key={item.id}
-                                        className="flex justify-between rounded-lg bg-white/5 p-3 text-sm"
+                                        className="flex justify-between rounded-lg bg-mauve-light-3 dark:bg-white/5 p-3 text-sm"
                                     >
                                         <div>
-                                            <p className="font-semibold text-white">
+                                            <p className="font-semibold text-text-primary-light dark:text-white">
                                                 {item.produtoNome}
                                             </p>
-                                            <p className="text-xs text-white/60">
+                                            <p className="text-xs text-text-secondary-light dark:text-white/60">
                                                 Qtd: {item.quantidade} × {formatarMoeda(item.custoUnit)}
                                             </p>
                                         </div>
-                                        <p className="font-semibold text-primary-400">
+                                        <p className="font-semibold text-primary-light-9 dark:text-primary-400">
                                             {formatarMoeda(item.total)}
                                         </p>
                                     </div>
@@ -141,12 +141,12 @@ export default function CompraDetailsDrawer({
                             </div>
 
                             {/* Divisor */}
-                            <div className="border-t border-white/10" />
+                            <div className="border-t border-mauve-light-6 dark:border-white/10" />
 
                             {/* Total */}
                             <div className="flex justify-between pt-2">
-                                <p className="text-sm font-semibold text-white/80">Total:</p>
-                                <p className="text-lg font-bold text-primary-400">
+                                <p className="text-sm font-semibold text-text-secondary-light dark:text-white/80">Total:</p>
+                                <p className="text-lg font-bold text-primary-light-9 dark:text-primary-400">
                                     {formatarMoeda(compra.total)}
                                 </p>
                             </div>
@@ -155,7 +155,7 @@ export default function CompraDetailsDrawer({
                         {/* Ação */}
                         <button
                             onClick={onClose}
-                            className="w-full rounded-lg bg-gradient-to-r from-primary-600 to-primary-700 py-2 font-semibold text-white transition-all duration-300 hover:shadow-lg hover:shadow-primary-500/50"
+                            className="w-full rounded-lg bg-gradient-to-r from-primary-light-9 dark:from-primary-600 to-primary-light-10 dark:to-primary-700 py-2 font-semibold text-white transition-all duration-300 hover:shadow-lg hover:shadow-primary-light-9/50 dark:hover:shadow-primary-500/50"
                         >
                             Fechar
                         </button>

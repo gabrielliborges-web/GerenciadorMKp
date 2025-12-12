@@ -25,75 +25,75 @@ function somarQuantidades(itens: any[]): number {
 export default function ComprasTable({ compras, onDetails, onDelete }: ComprasTableProps) {
     if (compras.length === 0) {
         return (
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-12 text-center backdrop-blur-sm">
-                <p className="text-white/60">Nenhuma compra encontrada.</p>
+            <div className="rounded-2xl border border-mauve-light-6 dark:border-white/10 bg-mauve-light-2 dark:bg-white/5 p-12 text-center backdrop-blur-sm">
+                <p className="text-text-secondary-light dark:text-white/60">Nenhuma compra encontrada.</p>
             </div>
         );
     }
 
     return (
-        <div className="hidden overflow-x-auto rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-white/2 backdrop-blur-sm md:block">
+        <div className="hidden overflow-x-auto rounded-2xl border border-mauve-light-6 dark:border-white/10 bg-gradient-to-br from-mauve-light-2 dark:from-white/5 to-mauve-light-1 dark:to-white/2 backdrop-blur-sm md:block">
             <table className="w-full">
                 <thead>
-                    <tr className="border-b border-white/10">
-                        <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-white/60">
+                    <tr className="border-b border-mauve-light-6 dark:border-white/10">
+                        <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-text-secondary-light dark:text-white/60">
                             Data
                         </th>
-                        <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-white/60">
+                        <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-text-secondary-light dark:text-white/60">
                             Fornecedor
                         </th>
-                        <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-white/60">
+                        <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-text-secondary-light dark:text-white/60">
                             Total
                         </th>
-                        <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-white/60">
+                        <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-text-secondary-light dark:text-white/60">
                             Qtd. Itens
                         </th>
-                        <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-white/60">
+                        <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-text-secondary-light dark:text-white/60">
                             Usuário
                         </th>
-                        <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-white/60">
+                        <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-text-secondary-light dark:text-white/60">
                             Ações
                         </th>
                     </tr>
                 </thead>
-                <tbody className="divide-y divide-white/10">
+                <tbody className="divide-y divide-mauve-light-5 dark:divide-white/10">
                     {compras.map((compra) => (
                         <tr
                             key={compra.id}
-                            className="transition-all duration-300 hover:bg-white/5"
+                            className="transition-all duration-300 hover:bg-mauve-light-2 dark:hover:bg-white/5"
                         >
-                            <td className="px-6 py-4 text-sm font-medium text-white">
+                            <td className="px-6 py-4 text-sm font-medium text-text-primary-light dark:text-white">
                                 {formatarData(compra.data)}
                             </td>
-                            <td className="px-6 py-4 text-sm text-white/80">
+                            <td className="px-6 py-4 text-sm text-text-secondary-light dark:text-white/80">
                                 {compra.fornecedor || "-"}
                             </td>
-                            <td className="px-6 py-4 text-sm font-semibold text-primary-400">
+                            <td className="px-6 py-4 text-sm font-semibold text-primary-light-9 dark:text-primary-400">
                                 {formatarMoeda(compra.total)}
                             </td>
                             <td className="px-6 py-4">
-                                <span className="inline-flex rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-white">
+                                <span className="inline-flex rounded-full bg-primary-light-3 dark:bg-white/10 px-3 py-1 text-xs font-semibold text-text-primary-light dark:text-white">
                                     {somarQuantidades(compra.itens)}
                                 </span>
                             </td>
-                            <td className="px-6 py-4 text-sm text-white/80">
+                            <td className="px-6 py-4 text-sm text-text-secondary-light dark:text-white/80">
                                 {compra.usuarioNome}
                             </td>
                             <td className="px-6 py-4">
                                 <div className="flex items-center gap-2">
                                     <button
                                         onClick={() => onDetails(compra.id)}
-                                        className="rounded-lg p-2 transition-all duration-300 hover:bg-primary-500/20"
+                                        className="rounded-lg p-2 transition-all duration-300 hover:bg-primary-light-3 dark:hover:bg-primary-500/20"
                                         title="Detalhes"
                                     >
-                                        <Info className="h-4 w-4 text-primary-400" />
+                                        <Info className="h-4 w-4 text-primary-light-9 dark:text-primary-400" />
                                     </button>
                                     <button
                                         onClick={() => onDelete(compra.id)}
-                                        className="rounded-lg p-2 transition-all duration-300 hover:bg-red-500/20"
+                                        className="rounded-lg p-2 transition-all duration-300 hover:bg-red-100 dark:hover:bg-red-500/20"
                                         title="Excluir"
                                     >
-                                        <Trash2 className="h-4 w-4 text-red-400" />
+                                        <Trash2 className="h-4 w-4 text-red-600 dark:text-red-400" />
                                     </button>
                                 </div>
                             </td>

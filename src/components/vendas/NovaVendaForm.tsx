@@ -227,24 +227,24 @@ export default function NovaVendaForm({
                 <button
                     onClick={onClose}
                     disabled={isLoading}
-                    className="p-2 rounded-lg transition-all duration-300 hover:bg-white/10 disabled:opacity-50"
+                    className="p-2 rounded-lg transition-all duration-300 hover:bg-mauve-light-3 dark:bg-white/10 disabled:opacity-50"
                 >
-                    <ArrowLeft className="h-5 w-5 text-white/60 hover:text-white" />
+                    <ArrowLeft className="h-5 w-5 text-text-primary-light dark:text-text-secondary-light dark:text-white/60 hover:text-text-primary-light dark:text-white" />
                 </button>
                 <div>
-                    <h1 className="text-3xl font-bold text-white">Nova Venda</h1>
-                    <p className="mt-1 text-sm text-white/50">Registre uma nova venda</p>
+                    <h1 className="text-3xl font-bold text-text-primary-light dark:text-white">Nova Venda</h1>
+                    <p className="mt-1 text-sm text-text-primary-light dark:text-text-secondary-light dark:text-white/50">Registre uma nova venda</p>
                 </div>
             </div>
 
             <div className="space-y-6">
                 {/* Erros */}
                 {erros.length > 0 && (
-                    <div className="mb-6 rounded-lg border border-red-500/30 bg-red-500/10 p-4">
-                        <p className="mb-2 text-sm font-semibold text-red-400">Erros encontrados:</p>
+                    <div className="mb-6 rounded-lg border border-red-300 dark:border-red-500/30 bg-red-100 dark:bg-red-500/10 p-4">
+                        <p className="mb-2 text-sm font-semibold text-red-600 dark:text-red-400">Erros encontrados:</p>
                         <ul className="space-y-1">
                             {erros.map((erro, idx) => (
-                                <li key={idx} className="text-sm text-red-400">
+                                <li key={idx} className="text-sm text-red-600 dark:text-red-400">
                                     • {erro}
                                 </li>
                             ))}
@@ -253,28 +253,28 @@ export default function NovaVendaForm({
                 )}
 
                 {/* Seção 1 - Dados Gerais */}
-                <div className="space-y-4 rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
-                    <h3 className="text-sm font-semibold uppercase tracking-wider text-white/60">
+                <div className="space-y-4 rounded-xl border border-mauve-light-6 dark:border-white/10 bg-mauve-light-2 dark:bg-white/5 p-4 backdrop-blur-sm">
+                    <h3 className="text-sm font-semibold uppercase tracking-wider text-text-primary-light dark:text-text-secondary-light dark:text-white/60">
                         Dados Gerais
                     </h3>
 
                     <div className="grid gap-4 md:grid-cols-2">
                         {/* Forma de Pagamento */}
                         <div>
-                            <label className="mb-2 block text-sm font-semibold text-white/80">
+                            <label className="mb-2 block text-sm font-semibold text-text-primary-light dark:text-white/80">
                                 Forma de Pagamento *
                             </label>
                             <select
                                 value={formaPagamento}
                                 onChange={(e) => setFormaPagamento(e.target.value)}
                                 disabled={isLoading}
-                                className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 dark:text-gray/90 light:text-gray-900 transition-all duration-300 hover:border-white/20 focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/10 disabled:opacity-50"
+                                className="w-full rounded-lg border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-white/5 px-3 py-2 text-text-primary-light dark:text-white transition-all duration-300 hover:border-mauve-light-8 dark:hover:border-white/20 focus:border-green-600 dark:focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-green-600/20 dark:focus:ring-white/10 disabled:opacity-50"
                             >
-                                <option className="text-gray-900 dark:text-gray/90" value="dinheiro">💵 Dinheiro</option>
-                                <option className="text-gray-900 dark:text-gray/90" value="pix">📱 Pix</option>
-                                <option className="text-gray-900 dark:text-gray/90" value="débito">🏧 Débito</option>
-                                <option className="text-gray-900 dark:text-gray/90" value="crédito">💳 Crédito</option>
-                                <option className="text-gray-900 dark:text-gray/90" value="fiado">📝 Fiado</option>
+                                <option className="text-text-primary-light dark:text-white" value="dinheiro">💵 Dinheiro</option>
+                                <option className="text-text-primary-light dark:text-white" value="pix">📱 Pix</option>
+                                <option className="text-text-primary-light dark:text-white" value="débito">🏧 Débito</option>
+                                <option className="text-text-primary-light dark:text-white" value="crédito">💳 Crédito</option>
+                                <option className="text-text-primary-light dark:text-white" value="fiado">📝 Fiado</option>
                             </select>
                         </div>
 
@@ -283,7 +283,7 @@ export default function NovaVendaForm({
 
                     {/* Descrição */}
                     <div>
-                        <label className="mb-2 block text-sm font-semibold text-white/80">
+                        <label className="mb-2 block text-sm font-semibold text-text-primary-light dark:text-white/80">
                             Descrição
                         </label>
                         <textarea
@@ -292,21 +292,21 @@ export default function NovaVendaForm({
                             placeholder="Adicione uma descrição (opcional)"
                             disabled={isLoading}
                             rows={3}
-                            className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-white placeholder:text-white/40 transition-all duration-300 hover:border-white/20 focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/10 disabled:opacity-50 resize-none"
+                            className="w-full rounded-lg border border-mauve-light-6 dark:border-white/10 bg-mauve-light-2 dark:bg-white/5 px-3 py-2 text-text-primary-light dark:text-white placeholder:text-text-primary-light dark:text-white/40 transition-all duration-300 hover:border-white/20 focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/10 disabled:opacity-50 resize-none"
                         />
                     </div>
                 </div>
 
                 {/* Seção 2 - Itens da Venda */}
-                <div className="space-y-4 rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
+                <div className="space-y-4 rounded-xl border border-mauve-light-6 dark:border-white/10 bg-mauve-light-2 dark:bg-white/5 p-4 backdrop-blur-sm">
                     <div className="flex items-center justify-between">
-                        <h3 className="text-sm font-semibold uppercase tracking-wider text-white/60">
+                        <h3 className="text-sm font-semibold uppercase tracking-wider text-text-primary-light dark:text-text-secondary-light dark:text-white/60">
                             Itens da Venda
                         </h3>
                         <button
                             onClick={handleAddItem}
                             disabled={isLoading}
-                            className="flex items-center gap-2 rounded-lg bg-green-600/20 px-3 py-2 text-sm font-semibold text-green-400 transition-all duration-300 hover:bg-green-600/30 disabled:opacity-50"
+                            className="flex items-center gap-2 rounded-lg bg-green-100 dark:bg-green-600/20 px-3 py-2 text-sm font-semibold text-green-600 dark:text-green-400 transition-all duration-300 hover:bg-green-200 dark:hover:bg-green-600/30 disabled:opacity-50"
                         >
                             <Plus className="h-4 w-4" />
                             <span>Adicionar Item</span>
@@ -314,26 +314,26 @@ export default function NovaVendaForm({
                     </div>
 
                     {itens.length === 0 ? (
-                        <div className="rounded-lg border-2 border-dashed border-white/10 py-8 text-center">
-                            <p className="text-white/60">Nenhum item adicionado ainda</p>
+                        <div className="rounded-lg border-2 border-dashed border-mauve-light-6 dark:border-white/10 py-8 text-center">
+                            <p className="text-text-primary-light dark:text-text-secondary-light dark:text-white/60">Nenhum item adicionado ainda</p>
                         </div>
                     ) : (
                         <div className="space-y-3">
                             {itens.map((item) => (
-                                <div key={item.id} className="grid gap-3 rounded-lg border border-white/10 bg-white/5 p-4 md:grid-cols-5 md:gap-2 md:p-3">
+                                <div key={item.id} className="grid gap-3 rounded-lg border border-mauve-light-6 dark:border-white/10 bg-mauve-light-2 dark:bg-white/5 p-4 md:grid-cols-5 md:gap-2 md:p-3">
                                     {/* Produto */}
                                     <div>
-                                        <label className="mb-1 block text-xs font-semibold text-white/70">
+                                        <label className="mb-1 block text-xs font-semibold text-text-primary-light dark:text-text-secondary-light dark:text-white/70">
                                             Produto
                                         </label>
                                         <select
                                             value={item.produtoId}
                                             onChange={(e) => handleChangeProduto(item.id, Number(e.target.value))}
-                                            className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm dark:text-gray/90 light:text-gray-900 transition-all duration-300 hover:border-white/20 focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/10"
+                                            className="w-full rounded-lg border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-white/5 px-3 py-2 text-sm text-text-primary-light dark:text-white transition-all duration-300 hover:border-mauve-light-8 dark:hover:border-white/20 focus:border-green-600 dark:focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-green-600/20 dark:focus:ring-white/10"
                                         >
-                                            <option className="text-gray-900 dark:text-gray/90" value="">Selecionar...</option>
+                                            <option className="text-text-primary-light dark:text-white" value="">Selecionar...</option>
                                             {produtos.map((prod) => (
-                                                <option className="text-gray-900 dark:text-gray/90" key={prod.id} value={prod.id}>
+                                                <option className="text-text-primary-light dark:text-white" key={prod.id} value={prod.id}>
                                                     {prod.nome} (Est: {prod.estoque})
                                                 </option>
                                             ))}
@@ -342,7 +342,7 @@ export default function NovaVendaForm({
 
                                     {/* Quantidade */}
                                     <div>
-                                        <label className="mb-1 block text-xs font-semibold text-white/70">
+                                        <label className="mb-1 block text-xs font-semibold text-text-primary-light dark:text-text-secondary-light dark:text-white/70">
                                             Qtd
                                         </label>
                                         <input
@@ -351,14 +351,14 @@ export default function NovaVendaForm({
                                             step="1"
                                             value={item.quantidade}
                                             onChange={(e) => handleChangeQuantidade(item.id, Number(e.target.value) || 0)}
-                                            className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white transition-all duration-300 hover:border-white/20 focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/10"
+                                            className="w-full rounded-lg border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-white/5 px-3 py-2 text-sm text-text-primary-light dark:text-white transition-all duration-300 hover:border-mauve-light-8 dark:hover:border-white/20 focus:border-green-600 dark:focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-green-600/20 dark:focus:ring-white/10"
                                             placeholder="0"
                                         />
                                     </div>
 
                                     {/* Preço Unitário */}
                                     <div>
-                                        <label className="mb-1 block text-xs font-semibold text-white/70">
+                                        <label className="mb-1 block text-xs font-semibold text-text-primary-light dark:text-text-secondary-light dark:text-white/70">
                                             Preço
                                         </label>
                                         <input
@@ -367,17 +367,17 @@ export default function NovaVendaForm({
                                             step="0.01"
                                             value={item.precoUnit}
                                             onChange={(e) => handleChangePreco(item.id, Number(e.target.value) || 0)}
-                                            className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white transition-all duration-300 hover:border-white/20 focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/10"
+                                            className="w-full rounded-lg border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-white/5 px-3 py-2 text-sm text-text-primary-light dark:text-white transition-all duration-300 hover:border-mauve-light-8 dark:hover:border-white/20 focus:border-green-600 dark:focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-green-600/20 dark:focus:ring-white/10"
                                             placeholder="0.00"
                                         />
                                     </div>
 
                                     {/* Subtotal */}
                                     <div>
-                                        <label className="mb-1 block text-xs font-semibold text-white/70">
+                                        <label className="mb-1 block text-xs font-semibold text-text-primary-light dark:text-text-secondary-light dark:text-white/70">
                                             Subtotal
                                         </label>
-                                        <div className="flex items-center rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm font-semibold text-green-400">
+                                        <div className="flex items-center rounded-lg border border-mauve-light-6 dark:border-white/10 bg-mauve-light-2 dark:bg-white/5 px-3 py-2 text-sm font-semibold text-green-600 dark:text-green-400">
                                             R$ {item.total.toFixed(2)}
                                         </div>
                                     </div>
@@ -389,7 +389,7 @@ export default function NovaVendaForm({
                                             className="rounded-lg p-2 transition-all duration-300 hover:bg-red-500/20"
                                             title="Remover item"
                                         >
-                                            <X className="h-5 w-5 text-red-400" />
+                                            <X className="h-5 w-5 text-red-600 dark:text-red-400" />
                                         </button>
                                     </div>
                                 </div>
@@ -400,21 +400,21 @@ export default function NovaVendaForm({
 
                 {/* Resumo */}
                 {itens.length > 0 && (
-                    <div className="rounded-xl border border-white/10 bg-gradient-to-br from-green-600/20 to-green-500/10 p-4 backdrop-blur-sm">
+                    <div className="rounded-xl border border-mauve-light-6 dark:border-white/10 bg-gradient-to-br from-green-100 dark:from-green-600/20 to-green-200 dark:to-green-500/10 p-4 backdrop-blur-sm">
                         <div className="grid gap-4 md:grid-cols-3">
                             <div>
-                                <p className="text-sm text-white/60">Qtd. Total de Itens</p>
-                                <p className="text-2xl font-bold text-green-400">{totalItens}</p>
+                                <p className="text-sm text-text-primary-light dark:text-text-secondary-light dark:text-white/60">Qtd. Total de Itens</p>
+                                <p className="text-2xl font-bold text-green-600 dark:text-green-400">{totalItens}</p>
                             </div>
                             <div>
-                                <p className="text-sm text-white/60">Total da Venda</p>
-                                <p className="text-2xl font-bold text-green-400">
+                                <p className="text-sm text-text-primary-light dark:text-text-secondary-light dark:text-white/60">Total da Venda</p>
+                                <p className="text-2xl font-bold text-green-600 dark:text-green-400">
                                     R$ {totalVenda.toFixed(2)}
                                 </p>
                             </div>
                             <div>
-                                <p className="text-sm text-white/60">Itens Adicionados</p>
-                                <p className="text-2xl font-bold text-white">{itens.length}</p>
+                                <p className="text-sm text-text-primary-light dark:text-text-secondary-light dark:text-white/60">Itens Adicionados</p>
+                                <p className="text-2xl font-bold text-text-primary-light dark:text-white">{itens.length}</p>
                             </div>
                         </div>
                     </div>
@@ -425,14 +425,14 @@ export default function NovaVendaForm({
                     <button
                         onClick={onClose}
                         disabled={isLoading}
-                        className="flex-1 rounded-lg border border-white/10 px-4 py-3 font-semibold text-white/70 transition-all duration-300 hover:border-white/20 hover:bg-white/5 hover:text-white disabled:opacity-50"
+                        className="flex-1 rounded-lg border border-mauve-light-6 dark:border-white/10 px-4 py-3 font-semibold text-text-primary-light dark:text-text-secondary-light dark:text-white/70 transition-all duration-300 hover:border-white/20 hover:bg-mauve-light-2 dark:bg-white/5 hover:text-text-primary-light dark:text-white disabled:opacity-50"
                     >
                         Cancelar
                     </button>
                     <button
                         onClick={handleSalvar}
                         disabled={isLoading || itens.length === 0}
-                        className="flex-1 rounded-lg bg-gradient-to-r from-green-600 to-green-700 px-4 py-3 font-semibold text-white transition-all duration-300 hover:shadow-lg hover:shadow-green-500/50 disabled:opacity-50"
+                        className="flex-1 rounded-lg bg-gradient-to-r from-green-600 dark:from-green-600 to-green-700 dark:to-green-700 px-4 py-3 font-semibold text-text-primary-light dark:text-white transition-all duration-300 hover:shadow-lg hover:shadow-green-600/50 dark:hover:shadow-green-500/50 disabled:opacity-50"
                     >
                         {isLoading ? "Salvando..." : "Salvar Venda"}
                     </button>
@@ -464,24 +464,24 @@ function PriceModalFragment(props: {
     if (!open || !produto) return null;
     return (
         <>
-            <div className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm" onClick={onCancel} />
-            <div className="fixed left-1/2 top-1/2 z-50 w-full max-w-xl -translate-x-1/2 -translate-y-1/2 transform rounded-2xl border border-white/10 bg-gradient-to-br from-[#050107] to-[#0a0510] p-6 shadow-2xl">
+            <div className="fixed inset-0 z-40 bg-black/30 dark:bg-black/50 backdrop-blur-sm" onClick={onCancel} />
+            <div className="fixed left-1/2 top-1/2 z-50 w-full max-w-xl -translate-x-1/2 -translate-y-1/2 transform rounded-2xl border border-mauve-light-6 dark:border-white/10 bg-gradient-to-br from-white dark:from-[#050107] to-mauve-light-1 dark:to-[#0a0510] p-6 shadow-2xl">
                 <div className="mb-4">
-                    <h3 className="text-lg font-bold text-white">Confirmar Preço</h3>
-                    <p className="text-sm text-white/60 mt-1">Produto: {produto.nome}</p>
+                    <h3 className="text-lg font-bold text-text-primary-light dark:text-white">Confirmar Preço</h3>
+                    <p className="text-sm text-text-primary-light dark:text-text-secondary-light dark:text-white/60 mt-1">Produto: {produto.nome}</p>
                 </div>
 
                 <div className="space-y-3">
                     <div className="flex items-center gap-3">
                         <button
-                            className="rounded-lg border border-white/10 px-3 py-2 text-sm text-white/90 hover:bg-white/5"
+                            className="rounded-lg border border-mauve-light-6 dark:border-white/10 px-3 py-2 text-sm text-text-primary-light dark:text-text-primary-light dark:text-white/90 hover:bg-mauve-light-2 dark:bg-white/5"
                             onClick={() => setPrecoInput(productPrice(produto.precoVenda))}
                         >
                             Preço Venda: R$ {produto.precoVenda.toFixed(2)}
                         </button>
                         {produto.precoPromocional !== undefined && (
                             <button
-                                className="rounded-lg border border-white/10 px-3 py-2 text-sm text-white/90 hover:bg-white/5"
+                                className="rounded-lg border border-mauve-light-6 dark:border-white/10 px-3 py-2 text-sm text-text-primary-light dark:text-text-primary-light dark:text-white/90 hover:bg-mauve-light-2 dark:bg-white/5"
                                 onClick={() => setPrecoInput(productPrice(produto.precoPromocional || 0))}
                             >
                                 Promoção: R$ {(produto.precoPromocional || 0).toFixed(2)}
@@ -490,20 +490,20 @@ function PriceModalFragment(props: {
                     </div>
 
                     <div>
-                        <label className="mb-1 block text-xs font-semibold text-white/70">Editar Preço</label>
+                        <label className="mb-1 block text-xs font-semibold text-text-primary-light dark:text-text-secondary-light dark:text-white/70">Editar Preço</label>
                         <input
                             type="number"
                             min="0"
                             step="0.01"
                             value={precoInput}
                             onChange={(e) => setPrecoInput(Number(e.target.value) || 0)}
-                            className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white"
+                            className="w-full rounded-lg border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-white/5 px-3 py-2 text-sm text-text-primary-light dark:text-white"
                         />
                     </div>
 
                     <div className="flex gap-3 pt-4 justify-end">
-                        <button onClick={onCancel} className="rounded-lg border border-white/10 px-4 py-2 text-sm text-white/70 hover:bg-white/5">Cancelar</button>
-                        <button onClick={onConfirm} className="rounded-lg bg-gradient-to-r from-green-600 to-green-700 px-4 py-2 text-sm font-semibold text-white">Confirmar</button>
+                        <button onClick={onCancel} className="rounded-lg border border-mauve-light-6 dark:border-white/10 px-4 py-2 text-sm text-text-primary-light dark:text-text-secondary-light dark:text-white/70 hover:bg-mauve-light-2 dark:bg-white/5">Cancelar</button>
+                        <button onClick={onConfirm} className="rounded-lg bg-gradient-to-r from-green-600 dark:from-green-600 to-green-700 dark:to-green-700 px-4 py-2 text-sm font-semibold text-text-primary-light dark:text-white">Confirmar</button>
                     </div>
                 </div>
             </div>

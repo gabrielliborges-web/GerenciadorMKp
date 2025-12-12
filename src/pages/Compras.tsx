@@ -206,9 +206,9 @@ export default function Compras() {
         <div className="min-h-screen p-2 lg:p-8">
             {/* Loading Spinner */}
             {isLoading && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black/40 dark:bg-black/50 backdrop-blur-sm z-50">
+                <div className="fixed inset-0 flex items-center justify-center bg-black/30 dark:bg-black/50 backdrop-blur-sm z-50">
                     <div className="text-center">
-                        <Loader className="h-12 w-12 animate-spin text-primary-600 dark:text-primary-400 mx-auto mb-4" />
+                        <Loader className="h-12 w-12 animate-spin text-primary-light-9 dark:text-primary-400 mx-auto mb-4" />
                         <p className="text-text-primary-light dark:text-white font-semibold">Carregando compras...</p>
                     </div>
                 </div>
@@ -218,18 +218,18 @@ export default function Compras() {
             <div className="mb-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
                 <div>
                     <div className="mb-2 flex items-center gap-3">
-                        <div className="rounded-xl bg-gradient-to-br from-primary-light-3 dark:from-primary-500/30 to-primary-light-4 dark:to-primary-600/20 p-2.5">
+                        <div className="rounded-xl bg-gradient-to-br from-primary-light-3 dark:from-primary-500/30 to-primary-light-2 dark:to-primary-600/20 p-2.5">
                             <Package className="h-6 w-6 text-primary-light-9 dark:text-primary-400" />
                         </div>
                         <h1 className="text-3xl font-bold text-text-primary-light dark:text-white lg:text-4xl">Compras</h1>
                     </div>
-                    <p className="mt-2 text-text-secondary-light dark:text-text-secondary-dark">Gerencie suas compras e estoque</p>
+                    <p className="mt-2 text-text-secondary-light dark:text-white/60">Gerencie suas compras e estoque</p>
                 </div>
                 <div className="flex w-full gap-3 sm:w-auto">
                     <button
                         onClick={handleRefresh}
                         disabled={isLoading}
-                        className="flex items-center gap-2 rounded-xl border border-mauve-light-6 dark:border-white/20 bg-primary-light-3 dark:bg-white/5 px-4 py-2.5 font-medium text-text-primary-light dark:text-white transition-all hover:bg-primary-light-4 dark:hover:bg-white/10 disabled:opacity-50"
+                        className="flex items-center gap-2 rounded-xl border border-mauve-light-6 dark:border-white/20 bg-mauve-light-2 dark:bg-white/5 px-4 py-2.5 font-medium text-text-primary-light dark:text-white transition-all hover:bg-mauve-light-3 dark:hover:bg-white/10 disabled:opacity-50"
                     >
                         <RefreshCw className="h-4 w-4" />
                         <span className="hidden sm:inline">Atualizar</span>
@@ -237,7 +237,7 @@ export default function Compras() {
                     <button
                         onClick={handleNovaCompra}
                         disabled={isLoading}
-                        className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-primary-600 to-primary-700 px-4 py-2.5 font-medium text-white shadow-lg transition-all hover:shadow-xl hover:scale-[1.01] active:scale-95 disabled:opacity-50"
+                        className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-primary-light-9 dark:from-primary-600 to-primary-light-10 dark:to-primary-700 px-4 py-2.5 font-medium text-white shadow-lg transition-all hover:shadow-xl hover:scale-[1.01] active:scale-95 disabled:opacity-50"
                     >
                         <Plus className="h-4 w-4" />
                         <span className="hidden sm:inline">Nova Compra</span>
@@ -253,7 +253,7 @@ export default function Compras() {
                     <p className="mt-2 text-xs text-text-secondary-light dark:text-white/50">neste período</p>
                 </div>
 
-                <div className="rounded-2xl border border-primary-light-6 dark:border-primary-600/30 bg-gradient-to-br from-primary-light-3 dark:from-primary-600/10 to-primary-light-2 dark:to-primary-700/5 p-4 backdrop-blur-sm">
+                <div className="rounded-2xl border border-primary-light-8 dark:border-primary-600/30 bg-gradient-to-br from-primary-light-3 dark:from-primary-600/10 to-primary-light-2 dark:to-primary-700/5 p-4 backdrop-blur-sm">
                     <p className="text-sm font-medium text-text-secondary-light dark:text-white/70">Total Investido</p>
                     <p className="text-3xl font-bold text-primary-light-9 dark:text-primary-400">
                         R$ {totalValor.toFixed(2)}
@@ -282,12 +282,12 @@ export default function Compras() {
                         <ShoppingCart className="h-8 w-8 text-primary-light-9 dark:text-primary-400" />
                     </div>
                     <p className="text-lg font-semibold text-text-primary-light dark:text-white">Nenhuma compra encontrada</p>
-                    <p className="mt-2 text-text-secondary-light dark:text-text-secondary-dark">
+                    <p className="mt-2 text-text-secondary-light dark:text-white/60">
                         Tente ajustar os filtros ou adicionar uma nova compra
                     </p>
                     <button
                         onClick={handleNovaCompra}
-                        className="mt-6 inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-primary-600 to-primary-700 px-6 py-2 font-semibold text-white transition-all duration-300 hover:shadow-lg hover:shadow-primary-500/50"
+                        className="mt-6 inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-primary-light-9 dark:from-primary-600 to-primary-light-10 dark:to-primary-700 px-6 py-2 font-semibold text-white transition-all duration-300 hover:shadow-lg hover:shadow-primary-light-9/50 dark:hover:shadow-primary-500/50"
                     >
                         <Plus className="h-4 w-4" />
                         Nova Compra
@@ -315,13 +315,13 @@ export default function Compras() {
                                     </p>
                                 </div>
                                 <div className="mb-3 space-y-1 text-sm">
-                                    <p className="text-text-primary-light dark:text-white/80">
+                                    <p className="text-text-secondary-light dark:text-white/80">
                                         <span className="text-text-secondary-light dark:text-white/60">Data:</span> {new Date(compra.data).toLocaleDateString("pt-BR")}
                                     </p>
-                                    <p className="text-text-primary-light dark:text-white/80">
+                                    <p className="text-text-secondary-light dark:text-white/80">
                                         <span className="text-text-secondary-light dark:text-white/60">Usuário:</span> {compra.usuarioNome}
                                     </p>
-                                    <p className="text-text-primary-light dark:text-white/80">
+                                    <p className="text-text-secondary-light dark:text-white/80">
                                         <span className="text-text-secondary-light dark:text-white/60">Itens:</span> {compra.itens.length}
                                     </p>
                                 </div>
@@ -334,7 +334,7 @@ export default function Compras() {
                                     </button>
                                     <button
                                         onClick={() => handleDelete(compra.id)}
-                                        className="flex-1 rounded-lg bg-red-500/20 py-2 text-sm font-semibold text-red-600 dark:text-red-400 transition-all duration-300 hover:bg-red-500/30 dark:hover:bg-red-500/30"
+                                        className="flex-1 rounded-lg bg-red-100 dark:bg-red-500/20 py-2 text-sm font-semibold text-red-600 dark:text-red-400 transition-all duration-300 hover:bg-red-200 dark:hover:bg-red-500/30"
                                     >
                                         Excluir
                                     </button>

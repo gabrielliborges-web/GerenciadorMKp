@@ -180,24 +180,24 @@ export default function NovaCompraForm({
                 <button
                     onClick={onClose}
                     disabled={isLoading}
-                    className="p-2 rounded-lg transition-all duration-300 hover:bg-white/10 disabled:opacity-50"
+                    className="p-2 rounded-lg transition-all duration-300 hover:bg-mauve-light-3 dark:bg-white/10 disabled:opacity-50"
                 >
-                    <ArrowLeft className="h-5 w-5 text-white/60 hover:text-white" />
+                    <ArrowLeft className="h-5 w-5 text-text-primary-light dark:text-text-secondary-light dark:text-white/60 hover:text-text-primary-light dark:text-white" />
                 </button>
                 <div>
-                    <h1 className="text-3xl font-bold text-white">Nova Compra</h1>
-                    <p className="mt-1 text-sm text-white/50">Adicione uma nova entrada de estoque</p>
+                    <h1 className="text-3xl font-bold text-text-primary-light dark:text-white">Nova Compra</h1>
+                    <p className="mt-1 text-sm text-text-primary-light dark:text-text-secondary-light dark:text-white/50">Adicione uma nova entrada de estoque</p>
                 </div>
             </div>
 
             <div className="space-y-6">
                 {/* Erros */}
                 {erros.length > 0 && (
-                    <div className="mb-6 rounded-lg border border-red-500/30 bg-red-500/10 p-4">
-                        <p className="mb-2 text-sm font-semibold text-red-400">Erros encontrados:</p>
+                    <div className="mb-6 rounded-lg border border-red-300 dark:border-red-500/30 bg-red-100 dark:bg-red-500/10 p-4">
+                        <p className="mb-2 text-sm font-semibold text-red-600 dark:text-red-400">Erros encontrados:</p>
                         <ul className="space-y-1">
                             {erros.map((erro, idx) => (
-                                <li key={idx} className="text-sm text-red-400">
+                                <li key={idx} className="text-sm text-red-600 dark:text-red-400">
                                     • {erro}
                                 </li>
                             ))}
@@ -206,15 +206,15 @@ export default function NovaCompraForm({
                 )}
 
                 {/* Seção 1 - Dados Gerais */}
-                <div className="space-y-4 rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
-                    <h3 className="text-sm font-semibold uppercase tracking-wider text-white/60">
+                <div className="space-y-4 rounded-xl border border-mauve-light-6 dark:border-white/10 bg-mauve-light-2 dark:bg-white/5 p-4 backdrop-blur-sm">
+                    <h3 className="text-sm font-semibold uppercase tracking-wider text-text-primary-light dark:text-text-secondary-light dark:text-white/60">
                         Dados Gerais
                     </h3>
 
                     <div className="grid gap-4 md:grid-cols-3">
                         {/* Fornecedor */}
                         <div>
-                            <label className="mb-2 block text-sm font-semibold text-white/80">
+                            <label className="mb-2 block text-sm font-semibold text-text-primary-light dark:text-text-primary-light dark:text-white/80">
                                 Fornecedor *
                             </label>
                             <input
@@ -223,13 +223,13 @@ export default function NovaCompraForm({
                                 onChange={(e) => setFornecedor(e.target.value)}
                                 placeholder="Nome do fornecedor"
                                 disabled={isLoading}
-                                className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-white placeholder:text-white/40 transition-all duration-300 hover:border-white/20 focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/10 disabled:opacity-50"
+                                className="w-full rounded-lg border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-white/5 px-3 py-2 text-text-primary-light dark:text-white placeholder:text-text-secondary-light dark:placeholder:text-white/40 transition-all duration-300 hover:border-mauve-light-8 dark:hover:border-white/20 focus:border-primary-light-9 dark:focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-primary-light-9/20 dark:focus:ring-white/10 disabled:opacity-50"
                             />
                         </div>
 
                         {/* Data */}
                         <div>
-                            <label className="mb-2 block text-sm font-semibold text-white/80">
+                            <label className="mb-2 block text-sm font-semibold text-text-primary-light dark:text-text-primary-light dark:text-white/80">
                                 Data *
                             </label>
                             <input
@@ -237,27 +237,27 @@ export default function NovaCompraForm({
                                 value={data}
                                 onChange={(e) => setData(e.target.value)}
                                 disabled={isLoading}
-                                className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-white transition-all duration-300 hover:border-white/20 focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/10 disabled:opacity-50"
+                                className="w-full rounded-lg border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-white/5 px-3 py-2 text-text-primary-light dark:text-white transition-all duration-300 hover:border-mauve-light-8 dark:hover:border-white/20 focus:border-primary-light-9 dark:focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-primary-light-9/20 dark:focus:ring-white/10 disabled:opacity-50"
                             />
                         </div>
 
                         {/* Usuário */}
                         <div>
-                            <label className="mb-2 block text-sm font-semibold text-white/80">
+                            <label className="mb-2 block text-sm font-semibold text-text-primary-light dark:text-text-primary-light dark:text-white/80">
                                 Usuário
                             </label>
                             <input
                                 type="text"
                                 value={user?.nome}
                                 disabled
-                                className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-white/60 transition-all duration-300 disabled:opacity-50"
+                                className="w-full rounded-lg border border-mauve-light-6 dark:border-white/10 bg-mauve-light-2 dark:bg-white/5 px-3 py-2 text-text-primary-light dark:text-text-secondary-light dark:text-white/60 transition-all duration-300 disabled:opacity-50"
                             />
                         </div>
                     </div>
 
                     {/* Descrição */}
                     <div>
-                        <label className="mb-2 block text-sm font-semibold text-white/80">
+                        <label className="mb-2 block text-sm font-semibold text-text-primary-light dark:text-text-primary-light dark:text-white/80">
                             Descrição
                         </label>
                         <textarea
@@ -266,21 +266,21 @@ export default function NovaCompraForm({
                             placeholder="Adicione uma descrição (opcional)"
                             disabled={isLoading}
                             rows={3}
-                            className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-white placeholder:text-white/40 transition-all duration-300 hover:border-white/20 focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/10 disabled:opacity-50 resize-none"
+                            className="w-full rounded-lg border border-mauve-light-6 dark:border-white/10 bg-mauve-light-2 dark:bg-white/5 px-3 py-2 text-text-primary-light dark:text-white placeholder:text-text-primary-light dark:text-white/40 transition-all duration-300 hover:border-white/20 focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/10 disabled:opacity-50 resize-none"
                         />
                     </div>
                 </div>
 
                 {/* Seção 2 - Itens */}
-                <div className="space-y-4 rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
+                <div className="space-y-4 rounded-xl border border-mauve-light-6 dark:border-white/10 bg-mauve-light-2 dark:bg-white/5 p-4 backdrop-blur-sm">
                     <div className="flex items-center justify-between">
-                        <h3 className="text-sm font-semibold uppercase tracking-wider text-white/60">
+                        <h3 className="text-sm font-semibold uppercase tracking-wider text-text-primary-light dark:text-text-secondary-light dark:text-white/60">
                             Itens da Compra
                         </h3>
                         <button
                             onClick={handleAddItem}
                             disabled={isLoading}
-                            className="flex items-center gap-2 rounded-lg bg-primary-600/20 px-3 py-2 text-sm font-semibold text-primary-400 transition-all duration-300 hover:bg-primary-600/30 disabled:opacity-50"
+                            className="flex items-center gap-2 rounded-lg bg-primary-light-3 dark:bg-primary-600/20 px-3 py-2 text-sm font-semibold text-primary-light-9 dark:text-primary-400 transition-all duration-300 hover:bg-primary-light-4 dark:hover:bg-primary-600/30 disabled:opacity-50"
                         >
                             <Plus className="h-4 w-4" />
                             <span>Adicionar Item</span>
@@ -288,8 +288,8 @@ export default function NovaCompraForm({
                     </div>
 
                     {itens.length === 0 ? (
-                        <div className="rounded-lg border-2 border-dashed border-white/10 py-8 text-center">
-                            <p className="text-white/60">Nenhum item adicionado ainda</p>
+                        <div className="rounded-lg border-2 border-dashed border-mauve-light-6 dark:border-white/10 py-8 text-center">
+                            <p className="text-text-primary-light dark:text-text-secondary-light dark:text-white/60">Nenhum item adicionado ainda</p>
                         </div>
                     ) : (
                         <div className="space-y-3">
@@ -310,21 +310,21 @@ export default function NovaCompraForm({
 
                 {/* Seção 3 - Resumo */}
                 {itens.length > 0 && (
-                    <div className="rounded-xl border border-white/10 bg-gradient-to-br from-primary-600/20 to-primary-500/10 p-4 backdrop-blur-sm">
+                    <div className="rounded-xl border border-mauve-light-6 dark:border-white/10 bg-gradient-to-br from-primary-light-3 dark:from-primary-600/20 to-primary-light-2 dark:to-primary-500/10 p-4 backdrop-blur-sm">
                         <div className="grid gap-4 md:grid-cols-3">
                             <div>
-                                <p className="text-sm text-white/60">Qtd. Total de Itens</p>
-                                <p className="text-2xl font-bold text-primary-400">{totalItens}</p>
+                                <p className="text-sm text-text-primary-light dark:text-text-secondary-light dark:text-white/60">Qtd. Total de Itens</p>
+                                <p className="text-2xl font-bold text-primary-light-9 dark:text-primary-400">{totalItens}</p>
                             </div>
                             <div>
-                                <p className="text-sm text-white/60">Total da Compra</p>
-                                <p className="text-2xl font-bold text-primary-400">
+                                <p className="text-sm text-text-primary-light dark:text-text-secondary-light dark:text-white/60">Total da Compra</p>
+                                <p className="text-2xl font-bold text-primary-light-9 dark:text-primary-400">
                                     R$ {totalCompra.toFixed(2)}
                                 </p>
                             </div>
                             <div>
-                                <p className="text-sm text-white/60">Itens Adicionados</p>
-                                <p className="text-2xl font-bold text-white">{itens.length}</p>
+                                <p className="text-sm text-text-primary-light dark:text-text-secondary-light dark:text-white/60">Itens Adicionados</p>
+                                <p className="text-2xl font-bold text-text-primary-light dark:text-white">{itens.length}</p>
                             </div>
                         </div>
                     </div>
@@ -335,14 +335,14 @@ export default function NovaCompraForm({
                     <button
                         onClick={onClose}
                         disabled={isLoading}
-                        className="flex-1 rounded-lg border border-white/10 px-4 py-3 font-semibold text-white/70 transition-all duration-300 hover:border-white/20 hover:bg-white/5 hover:text-white disabled:opacity-50"
+                        className="flex-1 rounded-lg border border-mauve-light-6 dark:border-white/10 px-4 py-3 font-semibold text-text-primary-light dark:text-text-secondary-light dark:text-white/70 transition-all duration-300 hover:border-white/20 hover:bg-mauve-light-2 dark:bg-white/5 hover:text-text-primary-light dark:text-white disabled:opacity-50"
                     >
                         Cancelar
                     </button>
                     <button
                         onClick={handleSalvar}
                         disabled={isLoading || itens.length === 0}
-                        className="flex-1 rounded-lg bg-gradient-to-r from-primary-600 to-primary-700 px-4 py-3 font-semibold text-white transition-all duration-300 hover:shadow-lg hover:shadow-primary-500/50 disabled:opacity-50"
+                        className="flex-1 rounded-lg bg-gradient-to-r from-primary-light-9 dark:from-primary-600 to-primary-light-10 dark:to-primary-700 px-4 py-3 font-semibold text-text-primary-light dark:text-white transition-all duration-300 hover:shadow-lg hover:shadow-primary-light-9/50 dark:hover:shadow-primary-500/50 disabled:opacity-50"
                     >
                         {isLoading ? "Salvando..." : "Salvar Compra"}
                     </button>
