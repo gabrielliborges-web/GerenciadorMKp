@@ -222,7 +222,7 @@ export default function Categorias() {
                             <div className="absolute inset-4 dark:bg-[#13081a] bg-white rounded-full"></div>
                         </div>
                     </div>
-                    <p className="text-white/60 dark:text-white/60">Carregando categorias...</p>
+                    <p className="text-text-secondary-light dark:text-text-secondary-dark">Carregando categorias...</p>
                 </div>
             </div>
         );
@@ -253,8 +253,8 @@ export default function Categorias() {
             {/* Header */}
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div className="min-w-0 flex-1">
-                    <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white break-words">Categorias</h1>
-                    <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-white/60">
+                    <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-text-primary-light dark:text-text-primary-dark break-words">Categorias</h1>
+                    <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-text-secondary-light dark:text-text-secondary-dark">
                         {filteredCategorias.length} categoria{filteredCategorias.length !== 1 ? "s" : ""}{" "}
                         encontrada{filteredCategorias.length !== 1 ? "s" : ""}
                     </p>
@@ -263,7 +263,7 @@ export default function Categorias() {
                     <button
                         onClick={handleRefresh}
                         disabled={isLoading}
-                        className="flex-1 sm:flex-initial flex items-center justify-center sm:justify-start gap-1 sm:gap-2 rounded-lg sm:rounded-xl border border-white/10 px-2 sm:px-4 py-2 text-xs sm:text-sm font-semibold text-white/70 transition-all duration-300 hover:bg-white/5 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="flex-1 sm:flex-initial flex items-center justify-center sm:justify-start gap-1 sm:gap-2 rounded-lg sm:rounded-xl border border-mauve-light-6 dark:border-white/10 px-2 sm:px-4 py-2 text-xs sm:text-sm font-semibold text-text-secondary-light dark:text-white/70 transition-all duration-300 hover:bg-primary-light-3 dark:hover:bg-white/5 hover:text-text-primary-light dark:hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         <RefreshCw className="h-3 sm:h-4 w-3 sm:w-4" />
                         <span className="hidden sm:inline">Recarregar</span>
