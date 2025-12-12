@@ -23,16 +23,10 @@ export default function ProdutoCard({
     const preco = Number(produto.precoPromocional || produto.precoVenda);
     const temPromocao = produto.precoPromocional && produto.precoPromocional < produto.precoVenda;
 
-    console.log({
-        preco,
-        temPromocao,
-        produto
-    })
-
     return (
-        <div className="group flex flex-col overflow-hidden rounded-2xl border border-rose-200/50 dark:border-rose-500/20 bg-gradient-to-br from-rose-50/30 to-white dark:from-white/5 dark:to-white/2 transition-all duration-300 hover:border-rose-300/50 hover:shadow-lg hover:shadow-rose-200/30 dark:hover:border-rose-500/40 dark:hover:shadow-lg dark:hover:shadow-rose-500/10">
+        <div className="group flex flex-col overflow-hidden rounded-2xl border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-white/5 transition-all duration-300 hover:border-mauve-light-8 dark:hover:border-white/20 hover:shadow-lg hover:shadow-primary-light-7/20 dark:hover:shadow-white/5">
             {/* Image */}
-            <div className="relative h-40 w-full overflow-hidden bg-gradient-to-br from-rose-100/40 to-rose-50/20 dark:from-rose-500/10 dark:to-rose-600/5">
+            <div className="relative h-40 w-full overflow-hidden bg-gradient-to-br from-mauve-light-2 dark:from-white/5 to-mauve-light-1 dark:to-white/2">
                 <img
                     src={produto.imagem}
                     alt={produto.nome}
@@ -45,7 +39,7 @@ export default function ProdutoCard({
                 {/* Badge - Status Ativo */}
                 {produto.ativo && (
                     <div className="absolute right-2 top-2">
-                        <span className="inline-flex rounded-full bg-rose-100 dark:bg-rose-500/20 px-3 py-1 text-xs font-semibold text-rose-600 dark:text-rose-400">
+                        <span className="inline-flex rounded-full bg-primary-light-3 dark:bg-primary-dark-3 px-3 py-1 text-xs font-semibold text-primary-light-11 dark:text-primary-dark-9">
                             Ativo
                         </span>
                     </div>
@@ -65,10 +59,10 @@ export default function ProdutoCard({
             {/* Content */}
             <div className="flex flex-1 flex-col gap-3 p-4">
                 <div>
-                    <h3 className="truncate text-sm font-semibold text-gray-900 dark:text-white">
+                    <h3 className="truncate text-sm font-semibold text-text-primary-light dark:text-white">
                         {produto.nome}
                     </h3>
-                    <p className="line-clamp-1 text-xs text-gray-500 dark:text-white/50">
+                    <p className="line-clamp-1 text-xs text-text-secondary-light dark:text-white/60">
                         {produto.categoria?.nome || "Sem categoria"}
                     </p>
                 </div>
@@ -76,18 +70,18 @@ export default function ProdutoCard({
                 {/* Prices */}
                 <div className="space-y-1">
                     {temPromocao && (
-                        <p className="text-xs line-through text-gray-400 dark:text-white/40">
+                        <p className="text-xs line-through text-text-secondary-light dark:text-white/40">
                             R$ {Number(produto?.precoVenda)?.toFixed(2)}
                         </p>
                     )}
-                    <p className="text-lg font-bold text-rose-600 dark:text-rose-400">
+                    <p className="text-lg font-bold text-primary-light-11 dark:text-primary-dark-9">
                         R$ {preco.toFixed(2)}
                     </p>
                 </div>
 
                 {/* Stock Badge */}
-                <div className="flex items-center justify-between rounded-lg bg-gray-100 dark:bg-white/5 px-3 py-2">
-                    <span className="text-xs font-semibold text-gray-600 dark:text-white/60">Estoque:</span>
+                <div className="flex items-center justify-between rounded-lg bg-mauve-light-2 dark:bg-white/5 px-3 py-2">
+                    <span className="text-xs font-semibold text-text-secondary-light dark:text-white/60">Estoque:</span>
                     <span className={`inline-flex rounded-full px-2 py-1 text-xs font-semibold ${getEstoqueColor(produto.estoque)}`}>
                         {produto.estoque}
                     </span>
@@ -97,7 +91,7 @@ export default function ProdutoCard({
                 <div className="mt-auto flex gap-2">
                     <button
                         onClick={() => onDetails(produto.id)}
-                        className="flex-1 flex items-center justify-center gap-2 rounded-lg bg-rose-100/50 dark:bg-white/10 text-gray-700 dark:text-white px-3 py-2 text-xs font-medium transition-all duration-300 hover:bg-rose-200 dark:hover:bg-rose-500/20 dark:hover:text-rose-300"
+                        className="flex-1 flex items-center justify-center gap-2 rounded-lg bg-mauve-light-2 dark:bg-white/10 text-text-primary-light dark:text-white px-3 py-2 text-xs font-medium transition-all duration-300 hover:bg-mauve-light-3 dark:hover:bg-white/15"
                         title="Detalhes"
                     >
                         <Info className="h-3.5 w-3.5" />
@@ -105,7 +99,7 @@ export default function ProdutoCard({
                     </button>
                     <button
                         onClick={() => onEdit(produto.id)}
-                        className="flex-1 flex items-center justify-center gap-2 rounded-lg bg-gray-100 dark:bg-white/10 text-gray-700 dark:text-white px-3 py-2 text-xs font-medium transition-all duration-300 hover:bg-rose-100 dark:hover:bg-rose-500/20"
+                        className="flex-1 flex items-center justify-center gap-2 rounded-lg bg-mauve-light-2 dark:bg-white/10 text-text-primary-light dark:text-white px-3 py-2 text-xs font-medium transition-all duration-300 hover:bg-mauve-light-3 dark:hover:bg-white/15"
                         title="Editar"
                     >
                         <Edit className="h-3.5 w-3.5" />
@@ -113,7 +107,7 @@ export default function ProdutoCard({
                     </button>
                     <button
                         onClick={() => onDelete(produto.id)}
-                        className="flex items-center justify-center rounded-lg bg-rose-100 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400 px-3 py-2 text-xs font-medium transition-all duration-300 hover:bg-rose-200 dark:hover:bg-rose-500/20"
+                        className="flex items-center justify-center rounded-lg bg-red-100 dark:bg-red-500/10 text-red-700 dark:text-red-400 px-3 py-2 text-xs font-medium transition-all duration-300 hover:bg-red-200 dark:hover:bg-red-500/20"
                         title="Excluir"
                     >
                         <Trash2 className="h-3.5 w-3.5" />

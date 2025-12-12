@@ -186,12 +186,12 @@ export default function FinanceiroPage() {
             <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                 <div>
                     <div className="mb-2 flex items-center gap-3">
-                        <div className="rounded-xl bg-gradient-to-br from-blue-500/30 to-blue-600/20 p-2.5">
-                            <DollarSign className="h-6 w-6 text-blue-400" />
+                        <div className="rounded-xl bg-primary-light-3 dark:bg-primary-dark-3 p-2.5">
+                            <DollarSign className="h-6 w-6 text-primary-light-11 dark:text-primary-dark-9" />
                         </div>
-                        <h1 className="text-3xl font-bold text-white">Financeiro</h1>
+                        <h1 className="text-3xl font-bold text-text-primary-light dark:text-white">Financeiro</h1>
                     </div>
-                    <p className="text-white/60">
+                    <p className="text-text-secondary-light dark:text-white/60">
                         Visão completa de entradas, despesas e fluxo de caixa
                     </p>
                 </div>
@@ -218,7 +218,7 @@ export default function FinanceiroPage() {
                     <button
                         type="button"
                         onClick={() => setIsAjusteModalOpen(true)}
-                        className="flex items-center gap-2 rounded-xl border border-white/20 bg-white/5 px-4 py-2.5 font-medium text-white transition-all hover:bg-white/10 active:scale-95"
+                        className="flex items-center gap-2 rounded-xl border border-mauve-light-6 dark:border-white/10 bg-mauve-light-2 dark:bg-white/5 px-4 py-2.5 font-medium text-text-primary-light dark:text-white transition-all hover:bg-mauve-light-3 dark:hover:bg-white/10 active:scale-95"
                     >
                         <Settings2 className="h-4 w-4" />
                         <span className="hidden sm:inline">Ajuste</span>
@@ -226,7 +226,7 @@ export default function FinanceiroPage() {
 
                     <button
                         type="button"
-                        className="flex items-center gap-2 rounded-xl border border-white/20 bg-white/5 px-4 py-2.5 font-medium text-white transition-all hover:bg-white/10 active:scale-95"
+                        className="flex items-center gap-2 rounded-xl border border-mauve-light-6 dark:border-white/10 bg-mauve-light-2 dark:bg-white/5 px-4 py-2.5 font-medium text-text-primary-light dark:text-white transition-all hover:bg-mauve-light-3 dark:hover:bg-white/10 active:scale-95"
                     >
                         <Download className="h-4 w-4" />
                         <span className="hidden sm:inline">Exportar</span>
