@@ -237,57 +237,57 @@ export default function FinanceiroPage() {
             {/* KPI Cards */}
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 {/* Saldo Atual */}
-                <div className="rounded-2xl border border-blue-600/30 bg-gradient-to-br from-blue-600/10 to-blue-700/5 p-4">
-                    <p className="text-sm font-medium text-blue-400">Saldo Atual</p>
-                    <p className="mt-2 text-3xl font-bold text-white">
+                <div className="rounded-2xl border border-primary-light-6 dark:border-primary-dark-6 bg-primary-light-2 dark:bg-primary-dark-2 p-4">
+                    <p className="text-sm font-medium text-primary-light-11 dark:text-primary-dark-9">Saldo Atual</p>
+                    <p className="mt-2 text-3xl font-bold text-text-primary-light dark:text-white">
                         R$ {((resumo && resumo.saldoAtual) || 0).toFixed(2)}
                     </p>
-                    <p className="mt-1 text-xs text-white/50">em caixa</p>
+                    <p className="mt-1 text-xs text-text-secondary-light dark:text-white/60">em caixa</p>
                 </div>
 
                 {/* Receitas do Mês */}
-                <div className="rounded-2xl border border-green-600/30 bg-gradient-to-br from-green-600/10 to-green-700/5 p-4">
+                <div className="rounded-2xl border border-green-600/30 dark:border-green-500/30 bg-green-50 dark:bg-green-500/10 p-4">
                     <div className="flex items-center gap-2">
-                        <p className="text-sm font-medium text-green-400">Receitas</p>
-                        <TrendingUp className="h-4 w-4 text-green-400" />
+                        <p className="text-sm font-medium text-green-700 dark:text-green-400">Receitas</p>
+                        <TrendingUp className="h-4 w-4 text-green-700 dark:text-green-400" />
                     </div>
-                    <p className="mt-2 text-3xl font-bold text-white">
+                    <p className="mt-2 text-3xl font-bold text-text-primary-light dark:text-white">
                         R$ {totalEntradas.toFixed(2)}
                     </p>
-                    <p className="mt-1 text-xs text-white/50">novembro</p>
+                    <p className="mt-1 text-xs text-text-secondary-light dark:text-white/60">novembro</p>
                 </div>
 
                 {/* Despesas do Mês */}
-                <div className="rounded-2xl border border-red-600/30 bg-gradient-to-br from-red-600/10 to-red-700/5 p-4">
+                <div className="rounded-2xl border border-red-600/30 dark:border-red-500/30 bg-red-50 dark:bg-red-500/10 p-4">
                     <div className="flex items-center gap-2">
-                        <p className="text-sm font-medium text-red-400">Despesas</p>
-                        <TrendingDown className="h-4 w-4 text-red-400" />
+                        <p className="text-sm font-medium text-red-700 dark:text-red-400">Despesas</p>
+                        <TrendingDown className="h-4 w-4 text-red-700 dark:text-red-400" />
                     </div>
-                    <p className="mt-2 text-3xl font-bold text-white">
+                    <p className="mt-2 text-3xl font-bold text-text-primary-light dark:text-white">
                         R$ {totalDespesas.toFixed(2)}
                     </p>
-                    <p className="mt-1 text-xs text-white/50">novembro</p>
+                    <p className="mt-1 text-xs text-text-secondary-light dark:text-white/60">novembro</p>
                 </div>
 
                 {/* Lucro */}
-                <div className={`rounded-2xl border-2 p-4 ${((resumo && resumo.lucro) || 0) >= 0 ? "border-green-600/30 bg-gradient-to-br from-green-600/10 to-green-700/5" : "border-red-600/30 bg-gradient-to-br from-red-600/10 to-red-700/5"}`}>
+                <div className={`rounded-2xl border-2 p-4 ${((resumo && resumo.lucro) || 0) >= 0 ? "border-green-600/30 dark:border-green-500/30 bg-green-50 dark:bg-green-500/10" : "border-red-600/30 dark:border-red-500/30 bg-red-50 dark:bg-red-500/10"}`}>
                     <p
                         className={`text-sm font-medium ${((resumo && resumo.lucro) || 0) >= 0
-                            ? "text-green-400"
-                            : "text-red-400"
+                            ? "text-green-700 dark:text-green-400"
+                            : "text-red-700 dark:text-red-400"
                             }`}
                     >
                         Lucro/Prejuízo
                     </p>
                     <p
                         className={`mt-2 text-3xl font-bold ${((resumo && resumo.lucro) || 0) >= 0
-                            ? "text-green-400"
-                            : "text-red-400"
+                            ? "text-green-700 dark:text-green-400"
+                            : "text-red-700 dark:text-red-400"
                             }`}
                     >
                         R$ {Math.abs(((resumo && resumo.lucro) || 0)).toFixed(2)}
                     </p>
-                    <p className="mt-1 text-xs text-white/50">
+                    <p className="mt-1 text-xs text-text-secondary-light dark:text-white/60">
                         {((resumo && resumo.lucro) || 0) >= 0 ? "lucro" : "prejuízo"}
                     </p>
                 </div>
@@ -295,11 +295,11 @@ export default function FinanceiroPage() {
 
             {/* Alerts */}
             {totalDespesas > totalEntradas && (
-                <div className="flex items-start gap-3 rounded-xl border border-yellow-600/30 bg-yellow-600/5 p-4">
-                    <AlertCircle className="h-5 w-5 flex-shrink-0 text-yellow-400 mt-0.5" />
+                <div className="flex items-start gap-3 rounded-xl border border-yellow-600/30 dark:border-yellow-500/30 bg-yellow-50 dark:bg-yellow-500/10 p-4">
+                    <AlertCircle className="h-5 w-5 flex-shrink-0 text-yellow-700 dark:text-yellow-400 mt-0.5" />
                     <div className="text-sm">
-                        <p className="font-semibold text-yellow-400">Atenção</p>
-                        <p className="text-white/70">
+                        <p className="font-semibold text-yellow-700 dark:text-yellow-400">Atenção</p>
+                        <p className="text-text-secondary-light dark:text-white/70">
                             Despesas excedem receitas este mês. Considere revisar gastos.
                         </p>
                     </div>
@@ -307,7 +307,7 @@ export default function FinanceiroPage() {
             )}
 
             {/* Tabs */}
-            <div className="flex gap-2 overflow-x-auto border-b border-white/10 pb-px">
+            <div className="flex gap-2 overflow-x-auto border-b border-mauve-light-6 dark:border-white/10 pb-px">
                 {(["resumo", "extrato", "entradas", "despesas", "dre"] as const).map(
                     (tab) => (
                         <button
@@ -318,8 +318,8 @@ export default function FinanceiroPage() {
                                 setCurrentPage(1);
                             }}
                             className={`whitespace-nowrap px-4 py-3 text-sm font-medium transition-all ${activeTab === tab
-                                ? "border-b-2 border-primary-600 text-primary-400"
-                                : "text-white/70 hover:text-white"
+                                ? "border-b-2 border-primary-light-11 dark:border-primary-dark-9 text-primary-light-11 dark:text-primary-dark-9"
+                                : "text-text-secondary-light dark:text-white/70 hover:text-text-primary-light dark:hover:text-white"
                                 }`}
                         >
                             {tab === "resumo" && "📊 Resumo"}
@@ -350,10 +350,10 @@ export default function FinanceiroPage() {
                 {activeTab === "extrato" && (
                     <div className="space-y-4">
                         {/* Filtros */}
-                        <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+                        <div className="rounded-xl border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-white/5 p-4">
                             <div className="grid gap-3 sm:grid-cols-3">
                                 <div>
-                                    <label className="mb-2 block text-sm font-medium text-white">
+                                    <label className="mb-2 block text-sm font-medium text-text-primary-light dark:text-white">
                                         Tipo
                                     </label>
                                     <select
@@ -362,16 +362,16 @@ export default function FinanceiroPage() {
                                             setFiltroExtratoTipo(e.target.value);
                                             setCurrentPage(1);
                                         }}
-                                        className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 dark:text-gray/90 light:text-gray-900 transition-colors focus:border-primary-600 focus:bg-white/10 focus:outline-none"
+                                        className="w-full rounded-lg border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-white/5 px-3 py-2 text-text-primary-light dark:text-white transition-colors focus:border-primary-light-6 dark:focus:border-primary-dark-6 focus:bg-mauve-light-2 dark:focus:bg-white/10 focus:outline-none"
                                     >
-                                        <option className="text-gray-900 dark:text-gray/90" value="">Todos</option>
-                                        <option className="text-gray-900 dark:text-gray/90" value="entrada">Entradas</option>
-                                        <option className="text-gray-900 dark:text-gray/90" value="saida">Saídas</option>
+                                        <option value="">Todos</option>
+                                        <option value="entrada">Entradas</option>
+                                        <option value="saida">Saídas</option>
                                     </select>
                                 </div>
 
                                 <div>
-                                    <label className="mb-2 block text-sm font-medium text-white">
+                                    <label className="mb-2 block text-sm font-medium text-text-primary-light dark:text-white">
                                         Data Início
                                     </label>
                                     <input
@@ -381,12 +381,12 @@ export default function FinanceiroPage() {
                                             setFiltroDataInicio(e.target.value);
                                             setCurrentPage(1);
                                         }}
-                                        className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-white transition-colors focus:border-primary-600 focus:bg-white/10 focus:outline-none"
+                                        className="w-full rounded-lg border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-white/5 px-3 py-2 text-text-primary-light dark:text-white transition-colors focus:border-primary-light-6 dark:focus:border-primary-dark-6 focus:bg-mauve-light-2 dark:focus:bg-white/10 focus:outline-none"
                                     />
                                 </div>
 
                                 <div>
-                                    <label className="mb-2 block text-sm font-medium text-white">
+                                    <label className="mb-2 block text-sm font-medium text-text-primary-light dark:text-white">
                                         Data Fim
                                     </label>
                                     <input
@@ -396,7 +396,7 @@ export default function FinanceiroPage() {
                                             setFiltroDataFim(e.target.value);
                                             setCurrentPage(1);
                                         }}
-                                        className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-white transition-colors focus:border-primary-600 focus:bg-white/10 focus:outline-none"
+                                        className="w-full rounded-lg border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-white/5 px-3 py-2 text-text-primary-light dark:text-white transition-colors focus:border-primary-light-6 dark:focus:border-primary-dark-6 focus:bg-mauve-light-2 dark:focus:bg-white/10 focus:outline-none"
                                     />
                                 </div>
                             </div>
@@ -415,30 +415,30 @@ export default function FinanceiroPage() {
 
                 {activeTab === "entradas" && (
                     <div className="space-y-4">
-                        <div className="rounded-xl border border-green-600/30 bg-green-600/5 p-4">
-                            <p className="text-sm font-medium text-green-400">
+                        <div className="rounded-xl border border-green-600/30 dark:border-green-500/30 bg-green-50 dark:bg-green-500/10 p-4">
+                            <p className="text-sm font-medium text-green-700 dark:text-green-400">
                                 Total de Entradas
                             </p>
-                            <p className="mt-2 text-3xl font-bold text-white">
+                            <p className="mt-2 text-3xl font-bold text-text-primary-light dark:text-white">
                                 R$ {totalEntradas.toFixed(2)}
                             </p>
                         </div>
 
-                        <div className="rounded-2xl border border-white/10 bg-white/5 overflow-hidden">
+                        <div className="rounded-2xl border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-white/5 overflow-hidden">
                             <div className="overflow-x-auto">
                                 <table className="w-full">
-                                    <thead className="border-b border-white/10 bg-white/5">
+                                    <thead className="border-b border-mauve-light-6 dark:border-white/10 bg-mauve-light-2 dark:bg-white/5">
                                         <tr>
-                                            <th className="px-6 py-4 text-left text-xs font-semibold text-white/70">
+                                            <th className="px-6 py-4 text-left text-xs font-semibold text-text-secondary-light dark:text-white/70">
                                                 Tipo
                                             </th>
-                                            <th className="px-6 py-4 text-left text-xs font-semibold text-white/70">
+                                            <th className="px-6 py-4 text-left text-xs font-semibold text-text-secondary-light dark:text-white/70">
                                                 Valor
                                             </th>
-                                            <th className="px-6 py-4 text-left text-xs font-semibold text-white/70">
+                                            <th className="px-6 py-4 text-left text-xs font-semibold text-text-secondary-light dark:text-white/70">
                                                 Data
                                             </th>
-                                            <th className="px-6 py-4 text-left text-xs font-semibold text-white/70">
+                                            <th className="px-6 py-4 text-left text-xs font-semibold text-text-secondary-light dark:text-white/70">
                                                 Usuário
                                             </th>
                                         </tr>
@@ -447,17 +447,17 @@ export default function FinanceiroPage() {
                                         {entradas.map((e, idx) => (
                                             <tr
                                                 key={e.id}
-                                                className={`border-t border-white/5 hover:bg-white/10 ${idx % 2 === 0 ? "bg-transparent" : "bg-white/[0.02]"
+                                                className={`border-t border-mauve-light-6 dark:border-white/5 hover:bg-mauve-light-2 dark:hover:bg-white/10 ${idx % 2 === 0 ? "bg-transparent" : "bg-mauve-light-1 dark:bg-white/[0.02]"
                                                     }`}
                                             >
-                                                <td className="px-6 py-4 text-sm text-white">{e.tipo}</td>
-                                                <td className="px-6 py-4 text-sm font-semibold text-green-400">
+                                                <td className="px-6 py-4 text-sm text-text-primary-light dark:text-white">{e.tipo}</td>
+                                                <td className="px-6 py-4 text-sm font-semibold text-green-700 dark:text-green-400">
                                                     +R$ {e.valor.toFixed(2)}
                                                 </td>
-                                                <td className="px-6 py-4 text-sm text-white/70">
+                                                <td className="px-6 py-4 text-sm text-text-secondary-light dark:text-white/70">
                                                     {new Date(e.data).toLocaleDateString("pt-BR")}
                                                 </td>
-                                                <td className="px-6 py-4 text-sm text-white/70">
+                                                <td className="px-6 py-4 text-sm text-text-secondary-light dark:text-white/70">
                                                     {e.usuarioId}
                                                 </td>
                                             </tr>
@@ -471,33 +471,33 @@ export default function FinanceiroPage() {
 
                 {activeTab === "despesas" && (
                     <div className="space-y-4">
-                        <div className="rounded-xl border border-red-600/30 bg-red-600/5 p-4">
-                            <p className="text-sm font-medium text-red-400">
+                        <div className="rounded-xl border border-red-600/30 dark:border-red-500/30 bg-red-50 dark:bg-red-500/10 p-4">
+                            <p className="text-sm font-medium text-red-700 dark:text-red-400">
                                 Total de Despesas
                             </p>
-                            <p className="mt-2 text-3xl font-bold text-white">
+                            <p className="mt-2 text-3xl font-bold text-text-primary-light dark:text-white">
                                 R$ {totalDespesas.toFixed(2)}
                             </p>
                         </div>
 
-                        <div className="rounded-2xl border border-white/10 bg-white/5 overflow-hidden">
+                        <div className="rounded-2xl border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-white/5 overflow-hidden">
                             <div className="overflow-x-auto">
                                 <table className="w-full">
-                                    <thead className="border-b border-white/10 bg-white/5">
+                                    <thead className="border-b border-mauve-light-6 dark:border-white/10 bg-mauve-light-2 dark:bg-white/5">
                                         <tr>
-                                            <th className="px-6 py-4 text-left text-xs font-semibold text-white/70">
+                                            <th className="px-6 py-4 text-left text-xs font-semibold text-text-secondary-light dark:text-white/70">
                                                 Tipo
                                             </th>
-                                            <th className="px-6 py-4 text-left text-xs font-semibold text-white/70">
+                                            <th className="px-6 py-4 text-left text-xs font-semibold text-text-secondary-light dark:text-white/70">
                                                 Descrição
                                             </th>
-                                            <th className="px-6 py-4 text-left text-xs font-semibold text-white/70">
+                                            <th className="px-6 py-4 text-left text-xs font-semibold text-text-secondary-light dark:text-white/70">
                                                 Valor
                                             </th>
-                                            <th className="px-6 py-4 text-left text-xs font-semibold text-white/70">
+                                            <th className="px-6 py-4 text-left text-xs font-semibold text-text-secondary-light dark:text-white/70">
                                                 Data
                                             </th>
-                                            <th className="px-6 py-4 text-left text-xs font-semibold text-white/70">
+                                            <th className="px-6 py-4 text-left text-xs font-semibold text-text-secondary-light dark:text-white/70">
                                                 Usuário
                                             </th>
                                         </tr>
@@ -506,20 +506,20 @@ export default function FinanceiroPage() {
                                         {despesas.map((d, idx) => (
                                             <tr
                                                 key={d.id}
-                                                className={`border-t border-white/5 hover:bg-white/10 ${idx % 2 === 0 ? "bg-transparent" : "bg-white/[0.02]"
+                                                className={`border-t border-mauve-light-6 dark:border-white/5 hover:bg-mauve-light-2 dark:hover:bg-white/10 ${idx % 2 === 0 ? "bg-transparent" : "bg-mauve-light-1 dark:bg-white/[0.02]"
                                                     }`}
                                             >
-                                                <td className="px-6 py-4 text-sm text-white">{d.tipo}</td>
-                                                <td className="px-6 py-4 text-sm text-white/70">
+                                                <td className="px-6 py-4 text-sm text-text-primary-light dark:text-white">{d.tipo}</td>
+                                                <td className="px-6 py-4 text-sm text-text-secondary-light dark:text-white/70">
                                                     {d.descricao || "-"}
                                                 </td>
-                                                <td className="px-6 py-4 text-sm font-semibold text-red-400">
+                                                <td className="px-6 py-4 text-sm font-semibold text-red-700 dark:text-red-400">
                                                     -R$ {d.valor.toFixed(2)}
                                                 </td>
-                                                <td className="px-6 py-4 text-sm text-white/70">
+                                                <td className="px-6 py-4 text-sm text-text-secondary-light dark:text-white/70">
                                                     {new Date(d.data).toLocaleDateString("pt-BR")}
                                                 </td>
-                                                <td className="px-6 py-4 text-sm text-white/70">
+                                                <td className="px-6 py-4 text-sm text-text-secondary-light dark:text-white/70">
                                                     {d.usuarioId}
                                                 </td>
                                             </tr>

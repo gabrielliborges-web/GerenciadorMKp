@@ -86,23 +86,23 @@ export default function FinanceiroDespesaModal({
         <>
             {/* Overlay */}
             <div
-                className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm"
+                className="fixed inset-0 z-40 bg-black/20 dark:bg-black/60 backdrop-blur-sm"
                 onClick={handleFechar}
             />
 
             {/* Modal */}
-            <div className="fixed left-1/2 top-1/2 z-50 w-full max-w-lg -translate-x-1/2 -translate-y-1/2 transform rounded-2xl border border-white/10 bg-gradient-to-br from-[#050107] to-[#0a0510] p-6 shadow-2xl">
+            <div className="fixed left-1/2 top-1/2 z-50 w-full max-w-lg -translate-x-1/2 -translate-y-1/2 transform rounded-2xl border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-[#13081a] p-6 shadow-2xl">
                 {/* Header */}
                 <div className="mb-6 flex items-center justify-between">
                     <div>
-                        <h2 className="text-2xl font-bold text-white">Nova Despesa</h2>
-                        <p className="text-sm text-white/60">Registre uma nova despesa</p>
+                        <h2 className="text-2xl font-bold text-text-primary-light dark:text-white">Nova Despesa</h2>
+                        <p className="text-sm text-text-secondary-light dark:text-white/60">Registre uma nova despesa</p>
                     </div>
                     <button
                         onClick={handleFechar}
-                        className="rounded-lg p-2 transition-all duration-300 hover:bg-white/10"
+                        className="rounded-lg p-2 transition-all duration-300 hover:bg-mauve-light-2 dark:hover:bg-white/10"
                     >
-                        <X className="h-6 w-6 text-white/60" />
+                        <X className="h-6 w-6 text-text-secondary-light dark:text-white/60" />
                     </button>
                 </div>
 
@@ -122,18 +122,18 @@ export default function FinanceiroDespesaModal({
                 <div className="space-y-4">
                     {/* Tipo */}
                     <div>
-                        <label className="mb-2 block text-sm font-semibold text-white/80">
+                        <label className="mb-2 block text-sm font-semibold text-text-primary-light dark:text-white/80">
                             Tipo de Despesa *
                         </label>
                         <select
                             value={formData.tipo}
                             onChange={(e) => setFormData({ ...formData, tipo: e.target.value })}
                             disabled={isLoading}
-                            className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 dark:text-gray/90 light:text-gray-900 transition-all duration-300 hover:border-white/20 focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/10 disabled:opacity-50"
+                            className="w-full rounded-lg border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-white/5 px-3 py-2 text-text-primary-light dark:text-white transition-all duration-300 hover:border-mauve-light-8 dark:hover:border-white/20 focus:border-primary-light-6 dark:focus:border-primary-dark-6 focus:outline-none focus:ring-2 focus:ring-primary-light-7/20 disabled:opacity-50"
                         >
-                            <option className="text-gray-900 dark:text-gray/90" value="">Selecionar...</option>
+                            <option value="">Selecionar...</option>
                             {tipos.map((tipo) => (
-                                <option className="text-gray-900 dark:text-gray/90" key={tipo.id} value={tipo.nome}>
+                                <option key={tipo.id} value={tipo.nome}>
                                     {tipo.nome}
                                 </option>
                             ))}
@@ -142,7 +142,7 @@ export default function FinanceiroDespesaModal({
 
                     {/* Descrição */}
                     <div>
-                        <label className="mb-2 block text-sm font-semibold text-white/80">
+                        <label className="mb-2 block text-sm font-semibold text-text-primary-light dark:text-white/80">
                             Descrição
                         </label>
                         <input
@@ -151,13 +151,13 @@ export default function FinanceiroDespesaModal({
                             onChange={(e) => setFormData({ ...formData, descricao: e.target.value })}
                             placeholder="Descrição da despesa"
                             disabled={isLoading}
-                            className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-white placeholder:text-white/40 transition-all duration-300 hover:border-white/20 focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/10 disabled:opacity-50"
+                            className="w-full rounded-lg border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-white/5 px-3 py-2 text-text-primary-light dark:text-white placeholder:text-text-secondary-light dark:placeholder:text-white/40 transition-all duration-300 hover:border-mauve-light-8 dark:hover:border-white/20 focus:border-primary-light-6 dark:focus:border-primary-dark-6 focus:outline-none focus:ring-2 focus:ring-primary-light-7/20 disabled:opacity-50"
                         />
                     </div>
 
                     {/* Valor */}
                     <div>
-                        <label className="mb-2 block text-sm font-semibold text-white/80">
+                        <label className="mb-2 block text-sm font-semibold text-text-primary-light dark:text-white/80">
                             Valor (R$) *
                         </label>
                         <input
@@ -168,13 +168,13 @@ export default function FinanceiroDespesaModal({
                             onChange={(e) => setFormData({ ...formData, valor: e.target.value })}
                             placeholder="0.00"
                             disabled={isLoading}
-                            className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-white placeholder:text-white/40 transition-all duration-300 hover:border-white/20 focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/10 disabled:opacity-50"
+                            className="w-full rounded-lg border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-white/5 px-3 py-2 text-text-primary-light dark:text-white placeholder:text-text-secondary-light dark:placeholder:text-white/40 transition-all duration-300 hover:border-mauve-light-8 dark:hover:border-white/20 focus:border-primary-light-6 dark:focus:border-primary-dark-6 focus:outline-none focus:ring-2 focus:ring-primary-light-7/20 disabled:opacity-50"
                         />
                     </div>
 
                     {/* Data */}
                     <div>
-                        <label className="mb-2 block text-sm font-semibold text-white/80">
+                        <label className="mb-2 block text-sm font-semibold text-text-primary-light dark:text-white/80">
                             Data *
                         </label>
                         <input
@@ -182,13 +182,13 @@ export default function FinanceiroDespesaModal({
                             value={formData.data}
                             onChange={(e) => setFormData({ ...formData, data: e.target.value })}
                             disabled={isLoading}
-                            className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-white transition-all duration-300 hover:border-white/20 focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/10 disabled:opacity-50"
+                            className="w-full rounded-lg border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-white/5 px-3 py-2 text-text-primary-light dark:text-white transition-all duration-300 hover:border-mauve-light-8 dark:hover:border-white/20 focus:border-primary-light-6 dark:focus:border-primary-dark-6 focus:outline-none focus:ring-2 focus:ring-primary-light-7/20 disabled:opacity-50"
                         />
                     </div>
 
                     {/* Observação */}
                     <div>
-                        <label className="mb-2 block text-sm font-semibold text-white/80">
+                        <label className="mb-2 block text-sm font-semibold text-text-primary-light dark:text-white/80">
                             Observação
                         </label>
                         <textarea
@@ -197,7 +197,7 @@ export default function FinanceiroDespesaModal({
                             placeholder="Adicione uma observação (opcional)"
                             rows={3}
                             disabled={isLoading}
-                            className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-white placeholder:text-white/40 transition-all duration-300 hover:border-white/20 focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/10 disabled:opacity-50 resize-none"
+                            className="w-full rounded-lg border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-white/5 px-3 py-2 text-text-primary-light dark:text-white placeholder:text-text-secondary-light dark:placeholder:text-white/40 transition-all duration-300 hover:border-mauve-light-8 dark:hover:border-white/20 focus:border-primary-light-6 dark:focus:border-primary-dark-6 focus:outline-none focus:ring-2 focus:ring-primary-light-7/20 disabled:opacity-50 resize-none"
                         />
                     </div>
 
@@ -206,14 +206,14 @@ export default function FinanceiroDespesaModal({
                         <button
                             onClick={handleFechar}
                             disabled={isLoading}
-                            className="flex-1 rounded-lg border border-white/10 px-4 py-2 font-semibold text-white/70 transition-all duration-300 hover:border-white/20 hover:bg-white/5 hover:text-white disabled:opacity-50"
+                            className="flex-1 rounded-lg border border-mauve-light-6 dark:border-white/10 px-4 py-2 font-semibold text-text-secondary-light dark:text-white/70 transition-all duration-300 hover:border-mauve-light-8 dark:hover:border-white/20 hover:bg-mauve-light-2 dark:hover:bg-white/5 hover:text-text-primary-light dark:hover:text-white disabled:opacity-50"
                         >
                             Cancelar
                         </button>
                         <button
                             onClick={handleSalvar}
                             disabled={isLoading}
-                            className="flex-1 rounded-lg bg-gradient-to-r from-primary-600 to-primary-700 px-4 py-2 font-semibold text-white transition-all duration-300 hover:shadow-lg hover:shadow-primary-500/50 disabled:opacity-50"
+                            className="flex-1 rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 px-4 py-2 font-semibold text-white transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/50 disabled:opacity-50"
                         >
                             {isLoading ? "Salvando..." : "Salvar Despesa"}
                         </button>

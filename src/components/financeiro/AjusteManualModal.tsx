@@ -73,17 +73,17 @@ export default function AjusteManualModal({
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 dark:bg-black/60 backdrop-blur-sm">
             <div
-                className="max-h-[95vh] w-[95%] max-w-lg overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-[#13081a]/95 to-[#0f061a]/95 shadow-2xl animate-fadeIn"
+                className="max-h-[95vh] w-[95%] max-w-lg overflow-hidden rounded-3xl border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-[#13081a] shadow-2xl animate-fadeIn"
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* Header */}
-                <div className="sticky top-0 z-10 border-b border-white/10 bg-gradient-to-r from-[#13081a]/95 to-[#1a0f2b]/95 px-6 py-4 backdrop-blur-xl">
+                <div className="sticky top-0 z-10 border-b border-mauve-light-6 dark:border-white/10 bg-white dark:bg-[#13081a] px-6 py-4 backdrop-blur-xl">
                     <div className="flex items-center justify-between">
                         <div>
-                            <h2 className="text-2xl font-bold text-white">Ajuste Manual</h2>
-                            <p className="text-sm text-white/60">
+                            <h2 className="text-2xl font-bold text-text-primary-light dark:text-white">Ajuste Manual</h2>
+                            <p className="text-sm text-text-secondary-light dark:text-white/60">
                                 Registre uma correção no saldo
                             </p>
                         </div>
@@ -91,7 +91,7 @@ export default function AjusteManualModal({
                             type="button"
                             onClick={onClose}
                             disabled={isLoading}
-                            className="rounded-lg border border-white/10 bg-white/5 p-2 text-white/70 transition-all hover:bg-white/10 hover:text-white disabled:opacity-50"
+                            className="rounded-lg border border-mauve-light-6 dark:border-white/10 bg-mauve-light-2 dark:bg-white/5 p-2 text-text-secondary-light dark:text-white/70 transition-all hover:bg-mauve-light-3 dark:hover:bg-white/10 hover:text-text-primary-light dark:hover:text-white disabled:opacity-50"
                         >
                             <X className="h-5 w-5" />
                         </button>
@@ -102,7 +102,7 @@ export default function AjusteManualModal({
                 <div className="max-h-[calc(95vh-140px)] overflow-y-auto p-6 space-y-4">
                     {/* Tipo */}
                     <div>
-                        <label className="mb-2 block text-sm font-medium text-white">
+                        <label className="mb-2 block text-sm font-medium text-text-primary-light dark:text-white">
                             Tipo de Ajuste
                         </label>
                         <div className="grid grid-cols-2 gap-2">
@@ -114,9 +114,9 @@ export default function AjusteManualModal({
                                     disabled={isLoading}
                                     className={`rounded-lg border-2 px-4 py-2.5 font-medium transition-all ${tipo === t
                                             ? t === "entrada"
-                                                ? "border-green-600/50 bg-green-600/20 text-green-400"
-                                                : "border-red-600/50 bg-red-600/20 text-red-400"
-                                            : "border-white/10 bg-white/5 text-white hover:border-white/20"
+                                                ? "border-green-600/50 dark:border-green-500/50 bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-400"
+                                                : "border-red-600/50 dark:border-red-500/50 bg-red-100 dark:bg-red-500/20 text-red-700 dark:text-red-400"
+                                            : "border-mauve-light-6 dark:border-white/10 bg-mauve-light-2 dark:bg-white/5 text-text-primary-light dark:text-white hover:border-mauve-light-8 dark:hover:border-white/20"
                                         } disabled:opacity-50`}
                                 >
                                     {t === "entrada" ? "➕ Entrada" : "➖ Saída"}
@@ -127,7 +127,7 @@ export default function AjusteManualModal({
 
                     {/* Descrição */}
                     <div>
-                        <label className="mb-2 block text-sm font-medium text-white">
+                        <label className="mb-2 block text-sm font-medium text-text-primary-light dark:text-white">
                             Descrição
                         </label>
                         <input
@@ -136,16 +136,16 @@ export default function AjusteManualModal({
                             onChange={(e) => setDescricao(e.target.value)}
                             disabled={isLoading}
                             placeholder="Ex: Diferença de caixa"
-                            className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder-white/50 transition-colors focus:border-primary-600 focus:bg-white/10 focus:outline-none disabled:opacity-50"
+                            className="w-full rounded-xl border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-white/5 px-4 py-3 text-text-primary-light dark:text-white placeholder:text-text-secondary-light dark:placeholder-white/50 transition-colors focus:border-primary-light-6 dark:focus:border-primary-dark-6 focus:bg-mauve-light-2 dark:focus:bg-white/10 focus:outline-none disabled:opacity-50"
                         />
                         {errors.descricao && (
-                            <p className="mt-1 text-xs text-red-400">{errors.descricao}</p>
+                            <p className="mt-1 text-xs text-red-700 dark:text-red-400">{errors.descricao}</p>
                         )}
                     </div>
 
                     {/* Valor */}
                     <div>
-                        <label className="mb-2 block text-sm font-medium text-white">
+                        <label className="mb-2 block text-sm font-medium text-text-primary-light dark:text-white">
                             Valor (R$)
                         </label>
                         <input
@@ -156,16 +156,16 @@ export default function AjusteManualModal({
                             onChange={(e) => setValor(e.target.value)}
                             disabled={isLoading}
                             placeholder="0,00"
-                            className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder-white/50 transition-colors focus:border-primary-600 focus:bg-white/10 focus:outline-none disabled:opacity-50"
+                            className="w-full rounded-xl border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-white/5 px-4 py-3 text-text-primary-light dark:text-white placeholder:text-text-secondary-light dark:placeholder-white/50 transition-colors focus:border-primary-light-6 dark:focus:border-primary-dark-6 focus:bg-mauve-light-2 dark:focus:bg-white/10 focus:outline-none disabled:opacity-50"
                         />
                         {errors.valor && (
-                            <p className="mt-1 text-xs text-red-400">{errors.valor}</p>
+                            <p className="mt-1 text-xs text-red-700 dark:text-red-400">{errors.valor}</p>
                         )}
                     </div>
 
                     {/* Data */}
                     <div>
-                        <label className="mb-2 block text-sm font-medium text-white">
+                        <label className="mb-2 block text-sm font-medium text-text-primary-light dark:text-white">
                             Data
                         </label>
                         <input
@@ -173,16 +173,16 @@ export default function AjusteManualModal({
                             value={data}
                             onChange={(e) => setData(e.target.value)}
                             disabled={isLoading}
-                            className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white transition-colors focus:border-primary-600 focus:bg-white/10 focus:outline-none disabled:opacity-50"
+                            className="w-full rounded-xl border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-white/5 px-4 py-3 text-text-primary-light dark:text-white transition-colors focus:border-primary-light-6 dark:focus:border-primary-dark-6 focus:bg-mauve-light-2 dark:focus:bg-white/10 focus:outline-none disabled:opacity-50"
                         />
                         {errors.data && (
-                            <p className="mt-1 text-xs text-red-400">{errors.data}</p>
+                            <p className="mt-1 text-xs text-red-700 dark:text-red-400">{errors.data}</p>
                         )}
                     </div>
 
                     {/* Motivo */}
                     <div>
-                        <label className="mb-2 block text-sm font-medium text-white">
+                        <label className="mb-2 block text-sm font-medium text-text-primary-light dark:text-white">
                             Motivo do Ajuste
                         </label>
                         <textarea
@@ -190,22 +190,22 @@ export default function AjusteManualModal({
                             onChange={(e) => setMotivo(e.target.value)}
                             disabled={isLoading}
                             placeholder="Explique o motivo do ajuste..."
-                            className="min-h-24 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder-white/50 transition-colors focus:border-primary-600 focus:bg-white/10 focus:outline-none disabled:opacity-50"
+                            className="min-h-24 w-full rounded-xl border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-white/5 px-4 py-3 text-text-primary-light dark:text-white placeholder:text-text-secondary-light dark:placeholder-white/50 transition-colors focus:border-primary-light-6 dark:focus:border-primary-dark-6 focus:bg-mauve-light-2 dark:focus:bg-white/10 focus:outline-none disabled:opacity-50"
                         />
                         {errors.motivo && (
-                            <p className="mt-1 text-xs text-red-400">{errors.motivo}</p>
+                            <p className="mt-1 text-xs text-red-700 dark:text-red-400">{errors.motivo}</p>
                         )}
                     </div>
                 </div>
 
                 {/* Footer */}
-                <div className="sticky bottom-0 border-t border-white/10 bg-gradient-to-r from-[#13081a]/95 to-[#1a0f2b]/95 px-6 py-4 backdrop-blur-xl">
+                <div className="sticky bottom-0 border-t border-mauve-light-6 dark:border-white/10 bg-white dark:bg-[#13081a] px-6 py-4 backdrop-blur-xl">
                     <div className="flex gap-3">
                         <button
                             type="button"
                             onClick={onClose}
                             disabled={isLoading}
-                            className="flex-1 rounded-xl border border-white/20 bg-white/5 px-4 py-3 font-medium text-white transition-all hover:bg-white/10 disabled:opacity-50"
+                            className="flex-1 rounded-xl border border-mauve-light-6 dark:border-white/10 bg-mauve-light-2 dark:bg-white/5 px-4 py-3 font-medium text-text-primary-light dark:text-white transition-all hover:bg-mauve-light-3 dark:hover:bg-white/10 disabled:opacity-50"
                         >
                             Cancelar
                         </button>
@@ -213,7 +213,7 @@ export default function AjusteManualModal({
                             type="button"
                             onClick={handleRegistrar}
                             disabled={isLoading}
-                            className="flex-1 rounded-xl bg-gradient-to-r from-primary-600 to-primary-700 px-4 py-3 font-medium text-white shadow-lg transition-all hover:shadow-xl hover:scale-[1.01] disabled:opacity-50 active:scale-95"
+                            className="flex-1 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 px-4 py-3 font-medium text-white shadow-lg transition-all hover:shadow-xl hover:scale-[1.01] disabled:opacity-50 active:scale-95"
                         >
                             {isLoading ? "Registrando..." : "Registrar Ajuste"}
                         </button>

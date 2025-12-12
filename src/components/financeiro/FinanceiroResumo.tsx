@@ -49,57 +49,57 @@ export default function FinanceiroResumo({
             {/* Cards Principais */}
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 {/* Saldo Atual */}
-                <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-6 backdrop-blur-sm">
+                <div className="rounded-2xl border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-white/5 p-6 backdrop-blur-sm">
                     <div className="mb-3 flex items-center justify-between">
-                        <p className="text-sm font-semibold uppercase tracking-wider text-white/60">
+                        <p className="text-sm font-semibold uppercase tracking-wider text-text-secondary-light dark:text-white/60">
                             Saldo Atual
                         </p>
-                        <Wallet className="h-5 w-5 text-primary-400" />
+                        <Wallet className="h-5 w-5 text-primary-light-11 dark:text-primary-dark-9" />
                     </div>
-                    <p className={`text-3xl font-bold ${saldoAtual >= 0 ? "text-green-400" : "text-red-400"}`}>
+                    <p className={`text-3xl font-bold ${saldoAtual >= 0 ? "text-green-700 dark:text-green-400" : "text-red-700 dark:text-red-400"}`}>
                         R$ {Math.abs(saldoAtual).toFixed(2)}
                     </p>
-                    <p className="mt-2 text-xs text-white/50">
+                    <p className="mt-2 text-xs text-text-secondary-light dark:text-white/60">
                         {saldoAtual >= 0 ? "✓ Positivo" : "✗ Negativo"}
                     </p>
                 </div>
 
                 {/* Receitas do Mês */}
-                <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-green-500/20 to-green-500/5 p-6 backdrop-blur-sm">
+                <div className="rounded-2xl border border-mauve-light-6 dark:border-white/10 bg-green-50 dark:bg-green-500/10 p-6 backdrop-blur-sm">
                     <div className="mb-3 flex items-center justify-between">
-                        <p className="text-sm font-semibold uppercase tracking-wider text-white/60">
+                        <p className="text-sm font-semibold uppercase tracking-wider text-text-secondary-light dark:text-white/60">
                             Receitas
                         </p>
-                        <TrendingUp className="h-5 w-5 text-green-400" />
+                        <TrendingUp className="h-5 w-5 text-green-700 dark:text-green-400" />
                     </div>
-                    <p className="text-3xl font-bold text-green-400">R$ {receitasMes.toFixed(2)}</p>
-                    <p className="mt-2 text-xs text-white/50">Este mês</p>
+                    <p className="text-3xl font-bold text-green-700 dark:text-green-400">R$ {receitasMes.toFixed(2)}</p>
+                    <p className="mt-2 text-xs text-text-secondary-light dark:text-white/60">Este mês</p>
                 </div>
 
                 {/* Despesas do Mês */}
-                <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-red-500/20 to-red-500/5 p-6 backdrop-blur-sm">
+                <div className="rounded-2xl border border-mauve-light-6 dark:border-white/10 bg-red-50 dark:bg-red-500/10 p-6 backdrop-blur-sm">
                     <div className="mb-3 flex items-center justify-between">
-                        <p className="text-sm font-semibold uppercase tracking-wider text-white/60">
+                        <p className="text-sm font-semibold uppercase tracking-wider text-text-secondary-light dark:text-white/60">
                             Despesas
                         </p>
-                        <TrendingDown className="h-5 w-5 text-red-400" />
+                        <TrendingDown className="h-5 w-5 text-red-700 dark:text-red-400" />
                     </div>
-                    <p className="text-3xl font-bold text-red-400">R$ {despesasMes.toFixed(2)}</p>
-                    <p className="mt-2 text-xs text-white/50">Este mês</p>
+                    <p className="text-3xl font-bold text-red-700 dark:text-red-400">R$ {despesasMes.toFixed(2)}</p>
+                    <p className="mt-2 text-xs text-text-secondary-light dark:text-white/60">Este mês</p>
                 </div>
 
                 {/* Lucro */}
-                <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-primary-500/20 to-primary-500/5 p-6 backdrop-blur-sm">
+                <div className="rounded-2xl border border-mauve-light-6 dark:border-white/10 bg-primary-light-2 dark:bg-primary-dark-2 p-6 backdrop-blur-sm">
                     <div className="mb-3 flex items-center justify-between">
-                        <p className="text-sm font-semibold uppercase tracking-wider text-white/60">
+                        <p className="text-sm font-semibold uppercase tracking-wider text-text-secondary-light dark:text-white/60">
                             Lucro
                         </p>
-                        <Wallet className="h-5 w-5 text-primary-400" />
+                        <Wallet className="h-5 w-5 text-primary-light-11 dark:text-primary-dark-9" />
                     </div>
-                    <p className={`text-3xl font-bold ${lucro >= 0 ? "text-primary-400" : "text-orange-400"}`}>
+                    <p className={`text-3xl font-bold ${lucro >= 0 ? "text-primary-light-11 dark:text-primary-dark-9" : "text-orange-700 dark:text-orange-400"}`}>
                         R$ {Math.abs(lucro).toFixed(2)}
                     </p>
-                    <p className="mt-2 text-xs text-white/50">
+                    <p className="mt-2 text-xs text-text-secondary-light dark:text-white/60">
                         {lucro >= 0 ? "Positivo" : "Negativo"}
                     </p>
                 </div>
@@ -121,8 +121,8 @@ export default function FinanceiroResumo({
             )}            {/* Gráficos */}
             <div className="grid gap-6 lg:grid-cols-2">
                 {/* Receitas x Despesas */}
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
-                    <h3 className="mb-4 text-lg font-semibold text-white">Receitas vs Despesas</h3>
+                <div className="rounded-2xl border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-white/5 p-6 backdrop-blur-sm">
+                    <h3 className="mb-4 text-lg font-semibold text-text-primary-light dark:text-white">Receitas vs Despesas</h3>
                     <ResponsiveContainer width="100%" height={300}>
                         <BarChart data={graficos.receitasVsDespesas}>
                             <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
@@ -144,8 +144,8 @@ export default function FinanceiroResumo({
                 </div>
 
                 {/* Receitas por Tipo */}
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
-                    <h3 className="mb-4 text-lg font-semibold text-white">Receitas por Tipo</h3>
+                <div className="rounded-2xl border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-white/5 p-6 backdrop-blur-sm">
+                    <h3 className="mb-4 text-lg font-semibold text-text-primary-light dark:text-white">Receitas por Tipo</h3>
                     <ResponsiveContainer width="100%" height={300}>
                         <PieChart>
                             <Pie
@@ -175,8 +175,8 @@ export default function FinanceiroResumo({
                 </div>
 
                 {/* Despesas por Tipo */}
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm md:col-span-2 lg:col-span-1">
-                    <h3 className="mb-4 text-lg font-semibold text-white">Despesas por Tipo</h3>
+                <div className="rounded-2xl border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-white/5 p-6 backdrop-blur-sm md:col-span-2 lg:col-span-1">
+                    <h3 className="mb-4 text-lg font-semibold text-text-primary-light dark:text-white">Despesas por Tipo</h3>
                     <ResponsiveContainer width="100%" height={300}>
                         <PieChart>
                             <Pie
