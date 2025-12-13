@@ -43,7 +43,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const login = async (data: LoginRequest) => {
         try {
             const res = await loginRequest(data);
-            debugger
             setUser(res.usuario);
             localStorage.setItem("usuario", JSON.stringify(res.usuario));
             localStorage.setItem("token", res.token);

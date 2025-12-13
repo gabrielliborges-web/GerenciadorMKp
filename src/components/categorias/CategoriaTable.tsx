@@ -69,9 +69,6 @@ export default function CategoriaTable({
                             Descrição
                         </th>
                         <th className="px-4 lg:px-6 py-3 lg:py-4 text-left text-xs font-semibold uppercase tracking-wider text-text-secondary-light dark:text-white/60 whitespace-nowrap">
-                            Produtos
-                        </th>
-                        <th className="px-4 lg:px-6 py-3 lg:py-4 text-left text-xs font-semibold uppercase tracking-wider text-text-secondary-light dark:text-white/60 whitespace-nowrap">
                             Status
                         </th>
                         <th className="px-4 lg:px-6 py-3 lg:py-4 text-left text-xs font-semibold uppercase tracking-wider text-text-secondary-light dark:text-white/60 whitespace-nowrap">
@@ -100,9 +97,6 @@ export default function CategoriaTable({
                                 <span className="line-clamp-1">
                                     {categoria.descricao || "-"}
                                 </span>
-                            </td>
-                            <td className="px-4 lg:px-6 py-3 lg:py-4 font-medium text-text-primary-light dark:text-white whitespace-nowrap">
-                                {categoria.produtosCount}
                             </td>
                             <td className="px-4 lg:px-6 py-3 lg:py-4">
                                 <span

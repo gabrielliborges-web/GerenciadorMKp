@@ -50,28 +50,28 @@ export default function ProdutoDetailsDrawer({
 
             {/* Drawer */}
             <div
-                className={`fixed inset-y-0 right-0 z-50 w-full max-w-md transform backdrop-blur-xl transition-transform duration-300 bg-white dark:bg-[#13081a] border-l border-mauve-light-6 dark:border-white/10 ${isOpen ? "translate-x-0" : "translate-x-full"
+                className={`fixed inset-y-0 right-0 z-50 w-full sm:max-w-md transform backdrop-blur-xl transition-transform duration-300 bg-white dark:bg-[#13081a] border-l border-mauve-light-6 dark:border-white/10 ${isOpen ? "translate-x-0" : "translate-x-full"
                     }`}
             >
                 {/* Header */}
-                <div className="sticky top-0 flex items-center justify-between px-4 sm:px-6 py-4 backdrop-blur border-b border-mauve-light-6 dark:border-white/10 bg-white dark:bg-[#13081a]">
-                    <h2 className="text-lg sm:text-xl font-bold text-text-primary-light dark:text-white">Detalhes do Produto</h2>
+                <div className="sticky top-0 z-10 flex items-center justify-between px-4 sm:px-6 py-4 backdrop-blur border-b border-mauve-light-6 dark:border-white/10 bg-white dark:bg-[#13081a]">
+                    <h2 className="text-base sm:text-lg md:text-xl font-bold text-text-primary-light dark:text-white pr-2">Detalhes do Produto</h2>
                     <button
                         onClick={onClose}
-                        className="rounded-lg p-2 transition-all duration-300 hover:bg-mauve-light-2 dark:hover:bg-white/10"
+                        className="rounded-lg p-2 transition-all duration-300 hover:bg-mauve-light-2 dark:hover:bg-white/10 flex-shrink-0"
                     >
                         <X className="h-5 w-5 text-text-secondary-light dark:text-white/60" />
                     </button>
                 </div>
 
                 {/* Content */}
-                <div className="h-[calc(100vh-80px)] overflow-y-auto scrollbar scrollbar-track-transparent scrollbar-thumb-mauve-light-8 dark:scrollbar-thumb-white/20 hover:scrollbar-thumb-mauve-light-9 dark:hover:scrollbar-thumb-white/30">
+                <div className="h-[calc(100vh-73px)] overflow-y-auto overscroll-contain scrollbar scrollbar-track-transparent scrollbar-thumb-mauve-light-8 dark:scrollbar-thumb-white/20 hover:scrollbar-thumb-mauve-light-9 dark:hover:scrollbar-thumb-white/30">
                     {/* Image */}
-                    <div className="relative h-48 w-full overflow-hidden bg-gradient-to-br from-mauve-light-2 dark:from-white/5 to-mauve-light-1 dark:to-white/2">
+                    <div className="relative w-full aspect-[4/3] sm:h-48 overflow-hidden bg-gradient-to-br from-mauve-light-2 dark:from-white/5 to-mauve-light-1 dark:to-white/2">
                         <img
                             src={produto.imagem}
                             alt={produto.nome}
-                            className="h-full w-full object-cover"
+                            className="h-full w-full object-contain sm:object-cover"
                             onError={(e) => {
                                 (e.target as HTMLImageElement).src = "https://via.placeholder.com/300x400?text=Sem+Imagem";
                             }}
@@ -79,13 +79,13 @@ export default function ProdutoDetailsDrawer({
                     </div>
 
                     {/* Details */}
-                    <div className="space-y-6 p-4 sm:p-6">
+                    <div className="space-y-4 sm:space-y-6 p-4 sm:p-6">
                         {/* Title */}
                         <div>
                             <p className="text-xs font-semibold uppercase tracking-wider text-text-secondary-light dark:text-white/60">
                                 Nome do Produto
                             </p>
-                            <p className="mt-2 text-xl sm:text-2xl font-bold text-text-primary-light dark:text-white">
+                            <p className="mt-1.5 sm:mt-2 text-lg sm:text-xl md:text-2xl font-bold text-text-primary-light dark:text-white break-words">
                                 {produto.nome}
                             </p>
                         </div>
@@ -93,7 +93,7 @@ export default function ProdutoDetailsDrawer({
                         {/* Status */}
                         <div className="flex items-center gap-3">
                             <span
-                                className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${produto.ativo
+                                className={`inline-flex rounded-full px-2.5 sm:px-3 py-1 text-xs font-semibold ${produto.ativo
                                     ? "bg-primary-light-3 dark:bg-primary-dark-3 text-primary-light-11 dark:text-primary-dark-9"
                                     : "bg-mauve-light-3 dark:bg-white/10 text-text-secondary-light dark:text-white/60"
                                     }`}
@@ -108,7 +108,7 @@ export default function ProdutoDetailsDrawer({
                                 <p className="text-xs font-semibold uppercase tracking-wider text-text-secondary-light dark:text-white/60">
                                     Descrição
                                 </p>
-                                <p className="mt-2 leading-relaxed text-text-secondary-light dark:text-white/80">
+                                <p className="mt-1.5 sm:mt-2 text-sm sm:text-base leading-relaxed text-text-secondary-light dark:text-white/80 break-words">
                                     {produto.descricao}
                                 </p>
                             </div>
@@ -120,40 +120,40 @@ export default function ProdutoDetailsDrawer({
                                 <p className="text-xs font-semibold uppercase tracking-wider text-text-secondary-light dark:text-white/60">
                                     Categoria
                                 </p>
-                                <p className="mt-2 text-sm text-text-secondary-light dark:text-white/80">
+                                <p className="mt-1.5 sm:mt-2 text-sm sm:text-base text-text-secondary-light dark:text-white/80 break-words">
                                     {produto.categoria.nome}
                                 </p>
                             </div>
                         )}
 
                         {/* Preços */}
-                        <div className="space-y-3 rounded-2xl p-4 bg-mauve-light-2 dark:bg-white/5">
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-2">
-                                    <DollarSign className="h-4 w-4 text-primary-light-11 dark:text-primary-dark-9" />
-                                    <span className="text-xs font-semibold text-text-secondary-light dark:text-white/60">Preço de Venda</span>
+                        <div className="space-y-2.5 sm:space-y-3 rounded-xl sm:rounded-2xl p-3 sm:p-4 bg-mauve-light-2 dark:bg-white/5">
+                            <div className="flex items-center justify-between gap-2">
+                                <div className="flex items-center gap-1.5 sm:gap-2 min-w-0 flex-1">
+                                    <DollarSign className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary-light-11 dark:text-primary-dark-9 flex-shrink-0" />
+                                    <span className="text-xs font-semibold text-text-secondary-light dark:text-white/60 truncate">Preço de Venda</span>
                                 </div>
-                                <p className="text-sm font-bold text-primary-light-11 dark:text-primary-dark-9">
+                                <p className="text-xs sm:text-sm font-bold text-primary-light-11 dark:text-primary-dark-9 flex-shrink-0 whitespace-nowrap">
                                     R$ {produto?.precoVenda?.toFixed(2)}
                                 </p>
                             </div>
 
                             {produto.precoCompra && (
-                                <div className="flex items-center justify-between">
-                                    <span className="text-xs font-semibold text-text-secondary-light dark:text-white/60">Preço de Compra</span>
-                                    <p className="text-sm text-text-secondary-light dark:text-white/80">
+                                <div className="flex items-center justify-between gap-2">
+                                    <span className="text-xs font-semibold text-text-secondary-light dark:text-white/60 truncate">Preço de Compra</span>
+                                    <p className="text-xs sm:text-sm text-text-secondary-light dark:text-white/80 flex-shrink-0 whitespace-nowrap">
                                         R$ {produto.precoCompra.toFixed(2)}
                                     </p>
                                 </div>
                             )}
 
                             {produto.precoPromocional && (
-                                <div className="flex items-center justify-between pt-2 border-t border-mauve-light-6 dark:border-white/10">
-                                    <span className="text-xs font-semibold text-text-secondary-light dark:text-white/60">
+                                <div className="flex items-center justify-between gap-2 pt-2 border-t border-mauve-light-6 dark:border-white/10">
+                                    <span className="text-xs font-semibold text-text-secondary-light dark:text-white/60 truncate min-w-0 flex-1">
                                         Preço Promocional
                                     </span>
-                                    <div className="text-right">
-                                        <p className="text-sm font-bold text-green-700 dark:text-green-400">
+                                    <div className="text-right flex-shrink-0">
+                                        <p className="text-xs sm:text-sm font-bold text-green-700 dark:text-green-400 whitespace-nowrap">
                                             R$ {produto.precoPromocional.toFixed(2)}
                                         </p>
                                         <p className="text-xs text-green-700/60 dark:text-green-400/60">
@@ -164,12 +164,12 @@ export default function ProdutoDetailsDrawer({
                             )}
 
                             {margemLucro !== "-" && (
-                                <div className="flex items-center justify-between pt-2 border-t border-mauve-light-6 dark:border-white/10">
-                                    <div className="flex items-center gap-2">
-                                        <TrendingUp className="h-4 w-4 text-yellow-700 dark:text-yellow-400" />
-                                        <span className="text-xs font-semibold text-text-secondary-light dark:text-white/60">Margem de Lucro</span>
+                                <div className="flex items-center justify-between gap-2 pt-2 border-t border-mauve-light-6 dark:border-white/10">
+                                    <div className="flex items-center gap-1.5 sm:gap-2 min-w-0 flex-1">
+                                        <TrendingUp className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-yellow-700 dark:text-yellow-400 flex-shrink-0" />
+                                        <span className="text-xs font-semibold text-text-secondary-light dark:text-white/60 truncate">Margem de Lucro</span>
                                     </div>
-                                    <p className="text-sm font-bold text-yellow-700 dark:text-yellow-400">
+                                    <p className="text-xs sm:text-sm font-bold text-yellow-700 dark:text-yellow-400 flex-shrink-0 whitespace-nowrap">
                                         {margemLucro}%
                                     </p>
                                 </div>
@@ -177,14 +177,14 @@ export default function ProdutoDetailsDrawer({
                         </div>
 
                         {/* Stock */}
-                        <div className="rounded-2xl p-4 bg-mauve-light-2 dark:bg-white/5">
-                            <div className="flex items-center gap-3">
-                                <Package className="h-5 w-5 text-primary-light-11 dark:text-primary-dark-9" />
-                                <div>
+                        <div className="rounded-xl sm:rounded-2xl p-3 sm:p-4 bg-mauve-light-2 dark:bg-white/5">
+                            <div className="flex items-center gap-2.5 sm:gap-3">
+                                <Package className="h-4 w-4 sm:h-5 sm:w-5 text-primary-light-11 dark:text-primary-dark-9 flex-shrink-0" />
+                                <div className="min-w-0 flex-1">
                                     <p className="text-xs font-semibold uppercase tracking-wider text-text-secondary-light dark:text-white/60">
                                         Estoque
                                     </p>
-                                    <p className="mt-1 text-lg sm:text-2xl font-bold text-text-primary-light dark:text-white">
+                                    <p className="mt-1 text-base sm:text-lg md:text-2xl font-bold text-text-primary-light dark:text-white">
                                         {produto.estoque}
                                     </p>
                                 </div>
@@ -192,26 +192,26 @@ export default function ProdutoDetailsDrawer({
                         </div>
 
                         {/* Dates */}
-                        <div className="space-y-4 border-t border-mauve-light-6 dark:border-white/10 pt-6">
-                            <div className="flex items-start gap-3">
+                        <div className="space-y-3 sm:space-y-4 border-t border-mauve-light-6 dark:border-white/10 pt-4 sm:pt-6">
+                            <div className="flex items-start gap-2.5 sm:gap-3">
                                 <Calendar className="mt-0.5 h-4 w-4 flex-shrink-0 text-text-secondary-light dark:text-white/60" />
-                                <div>
+                                <div className="min-w-0 flex-1">
                                     <p className="text-xs font-semibold uppercase tracking-wider text-text-secondary-light dark:text-white/50">
                                         Criado em
                                     </p>
-                                    <p className="mt-1 text-sm text-text-secondary-light dark:text-white/70">
+                                    <p className="mt-1 text-xs sm:text-sm text-text-secondary-light dark:text-white/70 break-words">
                                         {formatDate(produto.criadoEm)}
                                     </p>
                                 </div>
                             </div>
 
-                            <div className="flex items-start gap-3">
+                            <div className="flex items-start gap-2.5 sm:gap-3">
                                 <Calendar className="mt-0.5 h-4 w-4 flex-shrink-0 text-text-secondary-light dark:text-white/60" />
-                                <div>
+                                <div className="min-w-0 flex-1">
                                     <p className="text-xs font-semibold uppercase tracking-wider text-text-secondary-light dark:text-white/50">
                                         Atualizado em
                                     </p>
-                                    <p className="mt-1 text-sm text-text-secondary-light dark:text-white/70">
+                                    <p className="mt-1 text-xs sm:text-sm text-text-secondary-light dark:text-white/70 break-words">
                                         {formatDate(produto.atualizadoEm)}
                                     </p>
                                 </div>
