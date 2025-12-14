@@ -268,13 +268,13 @@ export default function NovaVendaForm({
                                 value={formaPagamento}
                                 onChange={(e) => setFormaPagamento(e.target.value)}
                                 disabled={isLoading}
-                                className="w-full rounded-lg border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-white/5 px-3 py-2 text-text-primary-light dark:text-white transition-all duration-300 hover:border-mauve-light-8 dark:hover:border-white/20 focus:border-green-600 dark:focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-green-600/20 dark:focus:ring-white/10 disabled:opacity-50"
+                                className="w-full rounded-lg border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-[#1a1523] px-3 py-2 text-text-primary-light dark:text-white transition-all duration-300 hover:border-mauve-light-8 dark:hover:border-white/20 focus:border-green-600 dark:focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-green-600/20 dark:focus:ring-white/10 disabled:opacity-50"
                             >
-                                <option className="text-text-primary-light dark:text-white" value="dinheiro">💵 Dinheiro</option>
-                                <option className="text-text-primary-light dark:text-white" value="pix">📱 Pix</option>
-                                <option className="text-text-primary-light dark:text-white" value="débito">🏧 Débito</option>
-                                <option className="text-text-primary-light dark:text-white" value="crédito">💳 Crédito</option>
-                                <option className="text-text-primary-light dark:text-white" value="fiado">📝 Fiado</option>
+                                <option className="bg-white dark:bg-[#1a1523] text-text-primary-light dark:text-white" value="dinheiro">💵 Dinheiro</option>
+                                <option className="bg-white dark:bg-[#1a1523] text-text-primary-light dark:text-white" value="pix">📱 Pix</option>
+                                <option className="bg-white dark:bg-[#1a1523] text-text-primary-light dark:text-white" value="débito">🏧 Débito</option>
+                                <option className="bg-white dark:bg-[#1a1523] text-text-primary-light dark:text-white" value="crédito">💳 Crédito</option>
+                                <option className="bg-white dark:bg-[#1a1523] text-text-primary-light dark:text-white" value="fiado">📝 Fiado</option>
                             </select>
                         </div>
 
@@ -292,7 +292,7 @@ export default function NovaVendaForm({
                             placeholder="Adicione uma descrição (opcional)"
                             disabled={isLoading}
                             rows={3}
-                            className="w-full rounded-lg border border-mauve-light-6 dark:border-white/10 bg-mauve-light-2 dark:bg-white/5 px-3 py-2 text-text-primary-light dark:text-white placeholder:text-text-primary-light dark:text-white/40 transition-all duration-300 hover:border-white/20 focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/10 disabled:opacity-50 resize-none"
+                            className="w-full rounded-lg border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-[#1a1523] px-3 py-2 text-text-primary-light dark:text-white placeholder:text-text-secondary-light dark:placeholder:text-white/50 transition-all duration-300 hover:border-mauve-light-8 dark:hover:border-white/20 focus:border-green-600 dark:focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-green-600/20 dark:focus:ring-white/10 disabled:opacity-50 resize-none"
                         />
                     </div>
                 </div>
@@ -329,11 +329,11 @@ export default function NovaVendaForm({
                                         <select
                                             value={item.produtoId}
                                             onChange={(e) => handleChangeProduto(item.id, Number(e.target.value))}
-                                            className="w-full rounded-lg border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-white/5 px-3 py-2 text-sm text-text-primary-light dark:text-white transition-all duration-300 hover:border-mauve-light-8 dark:hover:border-white/20 focus:border-green-600 dark:focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-green-600/20 dark:focus:ring-white/10"
+                                            className="w-full rounded-lg border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-[#1a1523] px-3 py-2 text-sm text-text-primary-light dark:text-white transition-all duration-300 hover:border-mauve-light-8 dark:hover:border-white/20 focus:border-green-600 dark:focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-green-600/20 dark:focus:ring-white/10"
                                         >
-                                            <option className="text-text-primary-light dark:text-white" value="">Selecionar...</option>
+                                            <option className="bg-white dark:bg-[#1a1523] text-text-primary-light dark:text-white" value="">Selecionar...</option>
                                             {produtos.map((prod) => (
-                                                <option className="text-text-primary-light dark:text-white" key={prod.id} value={prod.id}>
+                                                <option className="bg-white dark:bg-[#1a1523] text-text-primary-light dark:text-white" key={prod.id} value={prod.id}>
                                                     {prod.nome} (Est: {prod.estoque})
                                                 </option>
                                             ))}

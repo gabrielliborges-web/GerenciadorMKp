@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { listVendas, createVenda, cancelVenda } from "../lib/venda";
 import NovaVendaForm from "../components/vendas/NovaVendaForm";
 import VendaDetails from "../components/vendas/VendaDetails";
+import ConfirmModal from "../components/common/ConfirmModal";
 import type { Venda as VendaAPI } from "../lib/venda";
 
 type PeriodoFiltro = "hoje" | "semana" | "mes" | "todos";
@@ -52,6 +53,13 @@ export default function Vendas() {
     const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
     const [selectedVendaId, setSelectedVendaId] = useState<number | null>(null);
+    const [confirmDelete, setConfirmDelete] = useState<{
+        isOpen: boolean;
+        vendaId: number | null;
+    }>({
+        isOpen: false,
+        vendaId: null,
+    });
 
     // Filters
     const [searchTerm, setSearchTerm] = useState("");
@@ -130,21 +138,26 @@ export default function Vendas() {
         toast.success("Vendas recarregadas!");
     }, [loadVendas]);
 
-    const handleCancelVenda = useCallback(
-        async (id: number) => {
+    const handleCancelVenda = useCallback((id: number) => {
+        setConfirmDelete({ isOpen: true, vendaId: id });
+    }, []);
+
+    // Handle confirm cancel
+    const handleConfirmCancel = useCallback(async () => {
+        if (confirmDelete.vendaId !== null) {
             setIsSaving(true);
             try {
-                await cancelVenda(id);
-                toast.success("Venda cancelada com sucesso!");
+                await cancelVenda(confirmDelete.vendaId);
+                toast.success("Venda removida com sucesso!");
+                setConfirmDelete({ isOpen: false, vendaId: null });
                 await loadVendas();
             } catch (error: any) {
-                toast.error(error.message || "Erro ao cancelar venda");
+                toast.error(error.message || "Erro ao remover venda");
             } finally {
                 setIsSaving(false);
             }
-        },
-        [loadVendas]
-    );
+        }
+    }, [confirmDelete.vendaId, loadVendas]);
 
     const handleNovaVenda = useCallback(
         async (data: {
@@ -365,7 +378,7 @@ export default function Vendas() {
                                         disabled={isSaving}
                                         className="flex-1 rounded-lg bg-red-100 dark:bg-red-500/20 py-2 text-sm font-semibold text-red-600 dark:text-red-400 transition-all duration-300 hover:bg-red-200 dark:hover:bg-red-500/30 disabled:opacity-50"
                                     >
-                                        Cancelar
+                                        Remover
                                     </button>
                                 </div>
                             </div>
@@ -434,7 +447,7 @@ export default function Vendas() {
                                                     disabled={isSaving}
                                                     className="rounded px-3 py-1 text-xs font-semibold text-red-600 dark:text-red-400 hover:bg-red-100 dark:bg-red-500/20 disabled:opacity-50"
                                                 >
-                                                    Cancelar
+                                                    Remover
                                                 </button>
                                             </div>
                                         </td>
@@ -445,6 +458,19 @@ export default function Vendas() {
                     </div>
                 </>
             )}
+
+            {/* Modal Confirmação Delete */}
+            <ConfirmModal
+                isOpen={confirmDelete.isOpen}
+                title="Remover Venda"
+                message="Tem certeza que deseja remover esta venda? Esta ação não pode ser desfeita."
+                confirmText="Remover"
+                cancelText="Cancelar"
+                isDangerous={true}
+                isLoading={isSaving}
+                onConfirm={handleConfirmCancel}
+                onCancel={() => setConfirmDelete({ isOpen: false, vendaId: null })}
+            />
         </div>
     );
 }
