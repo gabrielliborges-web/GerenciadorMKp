@@ -1,5 +1,5 @@
 import { X } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface AjusteManualModalProps {
     isOpen: boolean;
@@ -70,12 +70,27 @@ export default function AjusteManualModal({
         setErrors({});
     };
 
+    useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "";
+        }
+        return () => {
+            document.body.style.overflow = "";
+        };
+    }, [isOpen]);
+
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 dark:bg-black/60 backdrop-blur-sm">
+        <>
             <div
-                className="max-h-[95vh] w-[95%] max-w-lg overflow-hidden rounded-3xl border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-[#13081a] shadow-2xl animate-fadeIn"
+                className="fixed inset-0 z-[9998] bg-black/20 dark:bg-black/60 backdrop-blur-sm"
+                onClick={onClose}
+            />
+            <div
+                className="fixed left-1/2 top-1/2 z-[9999] max-h-[90vh] w-[95%] max-w-lg -translate-x-1/2 -translate-y-1/2 transform overflow-hidden rounded-3xl border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-[#13081a] shadow-2xl animate-fadeIn"
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* Header */}
@@ -220,6 +235,6 @@ export default function AjusteManualModal({
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }

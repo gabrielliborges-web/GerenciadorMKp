@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 
 interface TipoItem {
@@ -80,18 +80,29 @@ export default function FinanceiroDespesaModal({
         onClose();
     };
 
+    useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "";
+        }
+        return () => {
+            document.body.style.overflow = "";
+        };
+    }, [isOpen]);
+
     if (!isOpen) return null;
 
     return (
         <>
             {/* Overlay */}
             <div
-                className="fixed inset-0 z-40 bg-black/20 dark:bg-black/60 backdrop-blur-sm"
+                className="fixed inset-0 z-[9998] bg-black/20 dark:bg-black/60 backdrop-blur-sm"
                 onClick={handleFechar}
             />
 
             {/* Modal */}
-            <div className="fixed left-1/2 top-1/2 z-50 w-full max-w-lg -translate-x-1/2 -translate-y-1/2 transform rounded-2xl border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-[#13081a] p-6 shadow-2xl">
+            <div className="fixed left-1/2 top-1/2 z-[9999] w-full max-w-lg -translate-x-1/2 -translate-y-1/2 transform rounded-2xl border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-[#13081a] p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
                 {/* Header */}
                 <div className="mb-6 flex items-center justify-between">
                     <div>
