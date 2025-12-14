@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { updateUserTheme } from "../lib/users";
 import { useAuth } from "../context/AuthContext";
+import type { User } from "../types/user";
 
 export function useTheme() {
   const { user, setUser } = useAuth();
@@ -46,7 +47,7 @@ export function useTheme() {
 
       setUser((prev) => {
         if (!prev) return prev;
-        const updated = { ...prev, theme: newTheme };
+        const updated: User = { ...prev, theme: newTheme };
         localStorage.setItem("usuario", JSON.stringify(updated));
         return updated;
       });
