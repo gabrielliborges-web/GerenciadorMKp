@@ -3,7 +3,7 @@ import { Plus, RefreshCw, ShoppingCart, Loader, Package } from "lucide-react";
 import toast from "react-hot-toast";
 import ComprasFilters from "../components/compras/ComprasFilters";
 import ComprasTable from "../components/compras/ComprasTable";
-import CompraDetailsDrawer from "../components/compras/CompraDetailsDrawer";
+import CompraDetails from "../components/compras/CompraDetails";
 import NovaCompraForm from "../components/compras/NovaCompraForm";
 import ConfirmModal from "../components/common/ConfirmModal";
 import { listCompras, deleteCompra, createCompra } from "../lib/compra";
@@ -63,7 +63,6 @@ export default function Compras() {
     const [isSaving, setIsSaving] = useState(false);
 
     const [isFormOpen, setIsFormOpen] = useState(false);
-    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [selectedCompraId, setSelectedCompraId] = useState<number | null>(null);
     const [confirmDelete, setConfirmDelete] = useState<{
         isOpen: boolean;
@@ -143,9 +142,12 @@ export default function Compras() {
 
     // Handle detalhes
     const handleDetalhes = useCallback((id: number) => {
-        setSelectedCompraId(id);
-        setIsDrawerOpen(true);
-    }, []);
+        if (selectedCompraId === id) {
+            setSelectedCompraId(null);
+        } else {
+            setSelectedCompraId(id);
+        }
+    }, [selectedCompraId]);
 
     // Handle delete
     const handleDelete = useCallback((id: number) => {
@@ -253,7 +255,7 @@ export default function Compras() {
                     <p className="mt-2 text-xs text-text-secondary-light dark:text-white/50">neste período</p>
                 </div>
 
-                <div className="rounded-2xl border border-primary-light-8 dark:border-primary-600/30 bg-gradient-to-br from-primary-light-3 dark:from-primary-600/10 to-primary-light-2 dark:to-primary-700/5 p-4 backdrop-blur-sm">
+                <div className="rounded-2xl border border-primary-light-8 dark:border-primary-600/30 bg-gradient-to-br from-primary-light-3 dark:from-[#1a1523] to-primary-light-2 dark:to-[#0f0a15] p-4 backdrop-blur-sm">
                     <p className="text-sm font-medium text-text-secondary-light dark:text-white/70">Total Investido</p>
                     <p className="text-3xl font-bold text-primary-light-9 dark:text-primary-400">
                         R$ {totalValor.toFixed(2)}
@@ -274,6 +276,14 @@ export default function Compras() {
                     onLimparFiltros={handleLimparFiltros}
                 />
             </div>
+
+            {/* Detalhes da Compra */}
+            {selectedCompraId && selectedCompra && (
+                <CompraDetails
+                    compra={selectedCompra}
+                    onClose={() => setSelectedCompraId(null)}
+                />
+            )}
 
             {/* Conteúdo */}
             {filteredCompras.length === 0 ? (
@@ -351,13 +361,6 @@ export default function Compras() {
                     />
                 </>
             )}
-
-            {/* Drawer Detalhes */}
-            <CompraDetailsDrawer
-                isOpen={isDrawerOpen}
-                onClose={() => setIsDrawerOpen(false)}
-                compra={selectedCompra}
-            />
 
             {/* Modal Confirmação Delete */}
             <ConfirmModal

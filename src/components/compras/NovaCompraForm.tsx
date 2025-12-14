@@ -266,7 +266,7 @@ export default function NovaCompraForm({
                             placeholder="Adicione uma descrição (opcional)"
                             disabled={isLoading}
                             rows={3}
-                            className="w-full rounded-lg border border-mauve-light-6 dark:border-white/10 bg-mauve-light-2 dark:bg-white/5 px-3 py-2 text-text-primary-light dark:text-white placeholder:text-text-primary-light dark:text-white/40 transition-all duration-300 hover:border-white/20 focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/10 disabled:opacity-50 resize-none"
+                            className="w-full rounded-lg border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-[#1a1523] px-3 py-2 text-text-primary-light dark:text-white placeholder:text-text-secondary-light dark:placeholder:text-white/50 transition-all duration-300 hover:border-mauve-light-8 dark:hover:border-white/20 focus:border-primary-light-9 dark:focus:border-white/30 focus:outline-none focus:ring-2 focus:ring-primary-light-9/20 dark:focus:ring-white/10 disabled:opacity-50 resize-none"
                         />
                     </div>
                 </div>
@@ -280,7 +280,7 @@ export default function NovaCompraForm({
                         <button
                             onClick={handleAddItem}
                             disabled={isLoading}
-                            className="flex items-center gap-2 rounded-lg bg-primary-light-3 dark:bg-primary-600/20 px-3 py-2 text-sm font-semibold text-primary-light-9 dark:text-primary-400 transition-all duration-300 hover:bg-primary-light-4 dark:hover:bg-primary-600/30 disabled:opacity-50"
+                            className="flex items-center gap-2 rounded-lg bg-primary-light-3 dark:bg-[#1a1523] dark:border dark:border-primary-600/30 px-3 py-2 text-sm font-semibold text-primary-light-9 dark:text-primary-400 transition-all duration-300 hover:bg-primary-light-4 dark:hover:bg-[#0f0a15] disabled:opacity-50"
                         >
                             <Plus className="h-4 w-4" />
                             <span>Adicionar Item</span>
@@ -310,20 +310,20 @@ export default function NovaCompraForm({
 
                 {/* Seção 3 - Resumo */}
                 {itens.length > 0 && (
-                    <div className="rounded-xl border border-mauve-light-6 dark:border-white/10 bg-gradient-to-br from-primary-light-3 dark:from-primary-600/20 to-primary-light-2 dark:to-primary-500/10 p-4 backdrop-blur-sm">
+                    <div className="rounded-xl border border-mauve-light-6 dark:border-white/10 bg-gradient-to-br from-primary-light-3 dark:from-[#1a1523] to-primary-light-2 dark:to-[#0f0a15] p-4 backdrop-blur-sm">
                         <div className="grid gap-4 md:grid-cols-3">
                             <div>
-                                <p className="text-sm text-text-primary-light dark:text-text-secondary-light dark:text-white/60">Qtd. Total de Itens</p>
+                                <p className="text-sm text-text-secondary-light dark:text-white/70">Qtd. Total de Itens</p>
                                 <p className="text-2xl font-bold text-primary-light-9 dark:text-primary-400">{totalItens}</p>
                             </div>
                             <div>
-                                <p className="text-sm text-text-primary-light dark:text-text-secondary-light dark:text-white/60">Total da Compra</p>
+                                <p className="text-sm text-text-secondary-light dark:text-white/70">Total da Compra</p>
                                 <p className="text-2xl font-bold text-primary-light-9 dark:text-primary-400">
                                     R$ {totalCompra.toFixed(2)}
                                 </p>
                             </div>
                             <div>
-                                <p className="text-sm text-text-primary-light dark:text-text-secondary-light dark:text-white/60">Itens Adicionados</p>
+                                <p className="text-sm text-text-secondary-light dark:text-white/70">Itens Adicionados</p>
                                 <p className="text-2xl font-bold text-text-primary-light dark:text-white">{itens.length}</p>
                             </div>
                         </div>

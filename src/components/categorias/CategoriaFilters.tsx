@@ -33,11 +33,11 @@ export default function CategoriaFilters({
                 <select
                     value={statusFilter}
                     onChange={(e) => onStatusChange(e.target.value as "todos" | "ativas" | "inativas")}
-                    className="rounded-lg border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-white/5 px-2 sm:px-3 py-2 text-xs sm:text-sm text-text-primary-light dark:text-white transition-all duration-300 focus:outline-none focus:border-primary-light-9 dark:focus:border-white/30 focus:bg-white dark:focus:bg-white/10"
+                    className="rounded-lg border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-[#1a1523] px-2 sm:px-3 py-2 text-xs sm:text-sm text-text-primary-light dark:text-white transition-all duration-300 focus:outline-none focus:border-primary-light-9 dark:focus:border-white/30 focus:bg-white dark:focus:bg-[#1a1523]"
                 >
-                    <option value="todos" className="text-text-primary-light dark:text-white">Todas</option>
-                    <option value="ativas" className="text-text-primary-light dark:text-white">Ativas</option>
-                    <option value="inativas" className="text-text-primary-light dark:text-white">Inativas</option>
+                    <option value="todos" className="bg-white dark:bg-[#1a1523] text-text-primary-light dark:text-white">Todas</option>
+                    <option value="ativas" className="bg-white dark:bg-[#1a1523] text-text-primary-light dark:text-white">Ativas</option>
+                    <option value="inativas" className="bg-white dark:bg-[#1a1523] text-text-primary-light dark:text-white">Inativas</option>
                 </select>
             </div>
         </div>

@@ -43,11 +43,11 @@ export default function ProdutoFilters({
                 <select
                     value={statusFilter}
                     onChange={(e) => onStatusChange(e.target.value as "todos" | "ativos" | "inativos")}
-                    className="rounded-lg border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-white/5 text-text-primary-light dark:text-white py-2 px-3 text-sm transition-all duration-300 focus:outline-none focus:border-primary-light-6 dark:focus:border-primary-dark-6"
+                    className="rounded-lg border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-[#1a1523] text-text-primary-light dark:text-white py-2 px-3 text-sm transition-all duration-300 focus:outline-none focus:border-primary-light-6 dark:focus:border-primary-dark-6"
                 >
-                    <option value="todos">Todos</option>
-                    <option value="ativos">Ativos</option>
-                    <option value="inativos">Inativos</option>
+                    <option value="todos" className="bg-white dark:bg-[#1a1523] text-text-primary-light dark:text-white">Todos</option>
+                    <option value="ativos" className="bg-white dark:bg-[#1a1523] text-text-primary-light dark:text-white">Ativos</option>
+                    <option value="inativos" className="bg-white dark:bg-[#1a1523] text-text-primary-light dark:text-white">Inativos</option>
                 </select>
             </div>
 
@@ -56,11 +56,11 @@ export default function ProdutoFilters({
                 <select
                     value={categoriaFilter || ""}
                     onChange={(e) => onCategoriaChange(e.target.value ? Number(e.target.value) : null)}
-                    className="rounded-lg border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-white/5 text-text-primary-light dark:text-white py-2 px-3 text-sm transition-all duration-300 focus:outline-none focus:border-primary-light-6 dark:focus:border-primary-dark-6"
+                    className="rounded-lg border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-[#1a1523] text-text-primary-light dark:text-white py-2 px-3 text-sm transition-all duration-300 focus:outline-none focus:border-primary-light-6 dark:focus:border-primary-dark-6"
                 >
-                    <option value="">Todas as categorias</option>
+                    <option value="" className="bg-white dark:bg-[#1a1523] text-text-primary-light dark:text-white">Todas as categorias</option>
                     {categorias.map((cat) => (
-                        <option key={cat.id} value={cat.id}>
+                        <option key={cat.id} value={cat.id} className="bg-white dark:bg-[#1a1523] text-text-primary-light dark:text-white">
                             {cat.nome}
                         </option>
                     ))}
@@ -73,11 +73,11 @@ export default function ProdutoFilters({
                 <select
                     value={ordenacao}
                     onChange={(e) => onOrdenacaoChange(e.target.value as "nome" | "preco" | "estoque")}
-                    className="rounded-lg border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-white/5 text-text-primary-light dark:text-white py-2 px-3 text-sm transition-all duration-300 focus:outline-none focus:border-primary-light-6 dark:focus:border-primary-dark-6"
+                    className="rounded-lg border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-[#1a1523] text-text-primary-light dark:text-white py-2 px-3 text-sm transition-all duration-300 focus:outline-none focus:border-primary-light-6 dark:focus:border-primary-dark-6"
                 >
-                    <option value="nome">Nome</option>
-                    <option value="preco">Preço</option>
-                    <option value="estoque">Estoque</option>
+                    <option value="nome" className="bg-white dark:bg-[#1a1523] text-text-primary-light dark:text-white">Nome</option>
+                    <option value="preco" className="bg-white dark:bg-[#1a1523] text-text-primary-light dark:text-white">Preço</option>
+                    <option value="estoque" className="bg-white dark:bg-[#1a1523] text-text-primary-light dark:text-white">Estoque</option>
                 </select>
             </div>
         </div>

@@ -321,11 +321,11 @@ export default function ProdutoForm({
                             })
                         }
                         disabled={isLoading}
-                        className="w-full rounded-lg border border-blue-300 dark:border-blue-500/20 bg-white dark:bg-blue-500/10 text-gray-900 dark:text-gray/90 py-2 px-3 text-sm transition-all duration-300 focus:border-blue-500 dark:focus:border-blue-500/40 focus:outline-none"
+                        className="w-full rounded-lg border border-blue-300 dark:border-blue-500/20 bg-white dark:bg-[#1a1523] text-gray-900 dark:text-white py-2 px-3 text-sm transition-all duration-300 focus:border-blue-500 dark:focus:border-blue-500/40 focus:outline-none"
                     >
-                        <option value="">Selecione uma categoria</option>
+                        <option value="" className="bg-white dark:bg-[#1a1523] text-gray-900 dark:text-white">Selecione uma categoria</option>
                         {categorias.map((cat) => (
-                            <option key={cat.id} value={cat.id}>
+                            <option key={cat.id} value={cat.id} className="bg-white dark:bg-[#1a1523] text-gray-900 dark:text-white">
                                 {cat.nome}
                             </option>
                         ))}

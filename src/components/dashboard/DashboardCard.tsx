@@ -33,13 +33,13 @@ export default function DashboardCard({
                         <div className="rounded-xl bg-gradient-to-br from-primary-light-9/30 dark:from-primary-dark-9/30 to-primary-light-8/20 dark:to-primary-dark-8/20 p-2.5 text-primary-light-9 dark:text-primary-dark-9 transition-transform duration-300 group-hover:scale-110">
                             <Icon className="h-5 w-5" />
                         </div>
-                        <span className="text-xs font-semibold uppercase tracking-wider text-text-secondary-light dark:text-text-secondary-dark">
+                        <span className="text-xs font-semibold uppercase tracking-wider text-text-secondary-light dark:text-white/70">
                             {title}
                         </span>
                     </div>
 
                     <div className="flex flex-col gap-2">
-                        <h3 className="text-2xl font-bold text-text-primary-light dark:text-text-primary-dark">{formattedValue}</h3>
+                        <h3 className="text-2xl font-bold text-text-primary-light dark:text-white">{formattedValue}</h3>
 
                         <div
                             className={`inline-flex items-center gap-1 text-sm font-semibold ${isPositive ? "text-green-500 dark:text-green-400" : "text-red-500 dark:text-red-400"

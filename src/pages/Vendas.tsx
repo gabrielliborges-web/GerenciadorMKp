@@ -3,7 +3,7 @@ import { TrendingUp, Plus, RefreshCw, Calendar, Loader } from "lucide-react";
 import toast from "react-hot-toast";
 import { listVendas, createVenda, cancelVenda } from "../lib/venda";
 import NovaVendaForm from "../components/vendas/NovaVendaForm";
-import VendaDetailsDrawer from "../components/vendas/VendaDetailsDrawer";
+import VendaDetails from "../components/vendas/VendaDetails";
 import type { Venda as VendaAPI } from "../lib/venda";
 
 type PeriodoFiltro = "hoje" | "semana" | "mes" | "todos";
@@ -52,7 +52,6 @@ export default function Vendas() {
     const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
     const [selectedVendaId, setSelectedVendaId] = useState<number | null>(null);
-    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
     // Filters
     const [searchTerm, setSearchTerm] = useState("");
@@ -267,29 +266,37 @@ export default function Vendas() {
                     <select
                         value={filtroFormaPagamento}
                         onChange={(e) => setFiltroFormaPagamento(e.target.value)}
-                        className="rounded-xl border border-mauve-light-6 dark:border-white/10 bg-mauve-light-2 dark:bg-white/5 px-4 py-2.5 text-text-primary-light dark:text-white transition-colors focus:border-green-600 focus:bg-mauve-light-3 dark:bg-white/10 focus:outline-none"
+                        className="rounded-xl border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-[#1a1523] px-4 py-2.5 text-text-primary-light dark:text-white transition-colors focus:border-green-600 dark:focus:border-green-600 focus:bg-white dark:focus:bg-[#1a1523] focus:outline-none"
                     >
-                        <option className="text-text-primary-light dark:text-white" value="">Todas as formas</option>
-                        <option className="text-text-primary-light dark:text-white" value="dinheiro">💵 Dinheiro</option>
-                        <option className="text-text-primary-light dark:text-white" value="pix">📱 Pix</option>
-                        <option className="text-text-primary-light dark:text-white" value="débito">🏧 Débito</option>
-                        <option className="text-text-primary-light dark:text-white" value="crédito">💳 Crédito</option>
-                        <option className="text-text-primary-light dark:text-white" value="fiado">📝 Fiado</option>
+                        <option className="bg-white dark:bg-[#1a1523] text-text-primary-light dark:text-white" value="">Todas as formas</option>
+                        <option className="bg-white dark:bg-[#1a1523] text-text-primary-light dark:text-white" value="dinheiro">💵 Dinheiro</option>
+                        <option className="bg-white dark:bg-[#1a1523] text-text-primary-light dark:text-white" value="pix">📱 Pix</option>
+                        <option className="bg-white dark:bg-[#1a1523] text-text-primary-light dark:text-white" value="débito">🏧 Débito</option>
+                        <option className="bg-white dark:bg-[#1a1523] text-text-primary-light dark:text-white" value="crédito">💳 Crédito</option>
+                        <option className="bg-white dark:bg-[#1a1523] text-text-primary-light dark:text-white" value="fiado">📝 Fiado</option>
                     </select>
 
                     {/* Period Filter */}
                     <select
                         value={filtroPeriodo}
                         onChange={(e) => setFiltroPeriodo(e.target.value as PeriodoFiltro)}
-                        className="rounded-xl border border-mauve-light-6 dark:border-white/10 bg-mauve-light-2 dark:bg-white/5 px-4 py-2.5 text-text-primary-light dark:text-white transition-colors focus:border-green-600 focus:bg-mauve-light-3 dark:bg-white/10 focus:outline-none"
+                        className="rounded-xl border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-[#1a1523] px-4 py-2.5 text-text-primary-light dark:text-white transition-colors focus:border-green-600 dark:focus:border-green-600 focus:bg-white dark:focus:bg-[#1a1523] focus:outline-none"
                     >
-                        <option className="text-text-primary-light dark:text-white" value="todos">📅 Todos os períodos</option>
-                        <option className="text-text-primary-light dark:text-white" value="hoje">Hoje</option>
-                        <option className="text-text-primary-light dark:text-white" value="semana">Última semana</option>
-                        <option className="text-text-primary-light dark:text-white" value="mes">Último mês</option>
+                        <option className="bg-white dark:bg-[#1a1523] text-text-primary-light dark:text-white" value="todos">📅 Todos os períodos</option>
+                        <option className="bg-white dark:bg-[#1a1523] text-text-primary-light dark:text-white" value="hoje">Hoje</option>
+                        <option className="bg-white dark:bg-[#1a1523] text-text-primary-light dark:text-white" value="semana">Última semana</option>
+                        <option className="bg-white dark:bg-[#1a1523] text-text-primary-light dark:text-white" value="mes">Último mês</option>
                     </select>
                 </div>
             </div>
+
+            {/* Detalhes Inline */}
+            {selectedVendaId && (
+                <VendaDetails
+                    vendaId={selectedVendaId}
+                    onClose={() => setSelectedVendaId(null)}
+                />
+            )}
 
             {/* Content */}
             {filteredVendas.length === 0 ? (
@@ -347,8 +354,7 @@ export default function Vendas() {
                                 <div className="flex gap-2">
                                     <button
                                         onClick={() => {
-                                            setSelectedVendaId(venda.id);
-                                            setIsDrawerOpen(true);
+                                            setSelectedVendaId(selectedVendaId === venda.id ? null : venda.id);
                                         }}
                                         className="flex-1 rounded-lg bg-green-100 dark:bg-green-600/20 py-2 text-sm font-semibold text-green-600 dark:text-green-400 transition-all duration-300 hover:bg-green-200 dark:hover:bg-green-600/30"
                                     >
@@ -417,8 +423,7 @@ export default function Vendas() {
                                             <div className="flex justify-center gap-2">
                                                 <button
                                                     onClick={() => {
-                                                        setSelectedVendaId(venda.id);
-                                                        setIsDrawerOpen(true);
+                                                        setSelectedVendaId(selectedVendaId === venda.id ? null : venda.id);
                                                     }}
                                                     className="rounded px-3 py-1 text-xs font-semibold text-green-600 dark:text-green-400 hover:bg-green-100 dark:bg-green-600/20"
                                                 >
@@ -440,13 +445,6 @@ export default function Vendas() {
                     </div>
                 </>
             )}
-
-            {/* Drawer Detalhes */}
-            <VendaDetailsDrawer
-                isOpen={isDrawerOpen}
-                onClose={() => setIsDrawerOpen(false)}
-                vendaId={selectedVendaId}
-            />
         </div>
     );
 }
