@@ -6,7 +6,7 @@ import type { Produto } from "../../lib/produto";
 
 interface ProdutoFormProps {
     onClose: () => void;
-    onSave: (data: Omit<Produto, "id" | "criadoEm" | "atualizadoEm">) => void;
+    onSave: (data: Omit<Produto, "id" | "criadoEm" | "atualizadoEm">) => Promise<void>;
     initialData?: Produto;
     isLoading?: boolean;
     categorias: Array<{ id: number; nome: string }>;
@@ -105,38 +105,77 @@ export default function ProdutoForm({
         fileInputRef.current?.click();
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         if (!validateForm()) return;
 
-        onSave({
-            nome: formData.nome,
-            descricao: formData.descricao || undefined,
-            categoriaId: formData.categoriaId ?? undefined,
-            precoVenda: parseFloat(formData.precoVenda),
-            precoCompra: formData.precoCompra ? parseFloat(formData.precoCompra) : undefined,
-            precoPromocional: formData.precoPromocional ? parseFloat(formData.precoPromocional) : undefined,
-            estoque: parseFloat(formData.estoque),
-            imagem: imagePreview || undefined,
-            ativo: formData.ativo,
-            file: imagemFile,
-        } as any);
+        try {
+            await onSave({
+                nome: formData.nome,
+                descricao: formData.descricao || undefined,
+                categoriaId: formData.categoriaId ?? undefined,
+                precoVenda: parseFloat(formData.precoVenda),
+                precoCompra: formData.precoCompra ? parseFloat(formData.precoCompra) : undefined,
+                precoPromocional: formData.precoPromocional ? parseFloat(formData.precoPromocional) : undefined,
+                estoque: parseFloat(formData.estoque),
+                imagem: imagePreview || undefined,
+                ativo: formData.ativo,
+                file: imagemFile,
+            } as any);
 
-        setFormData({
-            nome: "",
-            descricao: "",
-            categoriaId: null,
-            precoVenda: "",
-            precoCompra: "",
-            precoPromocional: "",
-            estoque: "",
-            imagem: "",
-            ativo: true,
-        });
-        setImagemFile(null);
-        setImagePreview("");
-        setErrors({});
+            setFormData({
+                nome: "",
+                descricao: "",
+                categoriaId: null,
+                precoVenda: "",
+                precoCompra: "",
+                precoPromocional: "",
+                estoque: "",
+                imagem: "",
+                ativo: true,
+            });
+            setImagemFile(null);
+            setImagePreview("");
+            setErrors({});
+        } catch (error: any) {
+            const apiError = error.apiError || error.response?.data || error;
+            
+            if (apiError.errors && Array.isArray(apiError.errors)) {
+                const newErrors: FormErrors = {};
+                apiError.errors.forEach((err: any) => {
+                    const field = err.field || err.path || err.code;
+                    if (field) {
+                        newErrors[field] = err.message || err.msg || "Erro de validação";
+                    }
+                });
+                setErrors(newErrors);
+            } else if (apiError.message) {
+                const newErrors: FormErrors = {};
+                const message = apiError.message.toLowerCase();
+                
+                if (message.includes("nome")) {
+                    newErrors.nome = apiError.message;
+                } else if (message.includes("preço") || message.includes("preco")) {
+                    if (message.includes("venda")) {
+                        newErrors.precoVenda = apiError.message;
+                    } else if (message.includes("compra")) {
+                        newErrors.precoCompra = apiError.message;
+                    } else if (message.includes("promocional")) {
+                        newErrors.precoPromocional = apiError.message;
+                    } else {
+                        newErrors.precoVenda = apiError.message;
+                    }
+                } else if (message.includes("estoque")) {
+                    newErrors.estoque = apiError.message;
+                } else {
+                    newErrors.general = apiError.message;
+                }
+                setErrors(newErrors);
+            } else {
+                setErrors({ general: "Erro ao salvar produto. Tente novamente." });
+            }
+        }
     };
 
     const handleClose = () => {
@@ -180,6 +219,11 @@ export default function ProdutoForm({
 
             {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-6">
+                {errors.general && (
+                    <div className="rounded-lg border border-red-500 bg-red-50 dark:bg-red-500/10 p-4">
+                        <p className="text-sm font-semibold text-red-600 dark:text-red-400">{errors.general}</p>
+                    </div>
+                )}
                 {/* Image Upload */}
                 <div>
                     <label className="mb-2 block text-sm font-semibold text-text-primary-light dark:text-white">

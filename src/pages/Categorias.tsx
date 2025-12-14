@@ -6,7 +6,7 @@ import CategoriaFilters from "../components/categorias/CategoriaFilters";
 import CategoriaCard from "../components/categorias/CategoriaCard";
 import CategoriaTable from "../components/categorias/CategoriaTable";
 import CategoriaForm from "../components/categorias/CategoriaForm";
-import CategoriaDrawer from "../components/categorias/CategoriaDrawer";
+import CategoriaDetails from "../components/categorias/CategoriaDetails";
 import CategoriaEmptyState from "../components/categorias/CategoriaEmptyState";
 import ConfirmModal from "../components/common/ConfirmModal";
 import { listCategorias, createCategoria, updateCategoria, deleteCategoria, type Categoria } from "../lib/categoria";
@@ -16,7 +16,6 @@ export default function Categorias() {
     const [searchTerm, setSearchTerm] = useState("");
     const [statusFilter, setStatusFilter] = useState<"todos" | "ativas" | "inativas">("todos");
     const [isFormOpen, setIsFormOpen] = useState(false);
-    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [selectedCategoriaId, setSelectedCategoriaId] = useState<number | null>(null);
     const [editingCategoria, setEditingCategoria] = useState<Categoria | null>(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -125,8 +124,11 @@ export default function Categorias() {
 
 
     const handleDetailsCategoria = (id: number) => {
-        setSelectedCategoriaId(id);
-        setIsDrawerOpen(true);
+        if (selectedCategoriaId === id) {
+            setSelectedCategoriaId(null);
+        } else {
+            setSelectedCategoriaId(id);
+        }
     };
 
     const handleRefresh = async () => {
@@ -291,6 +293,19 @@ export default function Categorias() {
                 />
             </div>
 
+            {/* Detalhes da Categoria */}
+            {selectedCategoriaId && selectedCategoria && (
+                <CategoriaDetails
+                    categoria={{
+                        ...selectedCategoria,
+                        produtosCount: selectedCategoria.produtosCount || 0,
+                        dataCriacao: selectedCategoria.criadoEm,
+                        dataAtualizacao: selectedCategoria.atualizadoEm
+                    } as any}
+                    onClose={() => setSelectedCategoriaId(null)}
+                />
+            )}
+
             {/* Content */}
             {filteredCategorias.length === 0 ? (
                 <CategoriaEmptyState onCreateClick={handleCreateCategoria} />
@@ -329,16 +344,6 @@ export default function Categorias() {
                     </div>
                 </>
             )}
-
-            {/* Drawer */}
-            <CategoriaDrawer
-                isOpen={isDrawerOpen}
-                onClose={() => setIsDrawerOpen(false)}
-                categoria={selectedCategoria ? {
-                    ...selectedCategoria,
-                    produtosCount: 0
-                } as any : null}
-            />
 
             {/* Confirm Delete Modal */}
             <ConfirmModal

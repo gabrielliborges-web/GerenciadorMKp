@@ -8,6 +8,7 @@ export interface Categoria {
   ativo: boolean;
   criadoEm: string;
   atualizadoEm: string;
+  produtosCount?: number;
 }
 
 export interface CreateCategoriaRequest {

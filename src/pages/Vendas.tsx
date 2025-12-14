@@ -36,7 +36,7 @@ function transformVendaAPIToMock(venda: VendaAPI): Venda {
         itens: (venda.itens || []).map((item) => ({
             id: item.id,
             produtoId: item.produtoId,
-            produtoNome: item.produto.nome,
+            produtoNome: item.produto?.nome || `Produto #${item.produtoId}`,
             quantidade: item.quantidade,
             precoUnit: typeof item.precoUnit === "string" ? parseFloat(item.precoUnit) : item.precoUnit,
             total:
@@ -329,9 +329,20 @@ export default function Vendas() {
                                     <p className="text-text-primary-light dark:text-text-secondary-light dark:text-white/80">
                                         <span className="text-text-primary-light dark:text-text-secondary-light dark:text-white/60">Usuário:</span> {venda.usuarioNome}
                                     </p>
-                                    <p className="text-text-primary-light dark:text-text-secondary-light dark:text-white/80">
-                                        <span className="text-text-primary-light dark:text-text-secondary-light dark:text-white/60">Itens:</span> {venda.itens.length}
-                                    </p>
+                                    <div>
+                                        <p className="text-text-primary-light dark:text-text-secondary-light dark:text-white/60 mb-1">Itens:</p>
+                                        {venda.itens.length > 0 ? (
+                                            <div className="space-y-0.5">
+                                                {venda.itens.map((item) => (
+                                                    <p key={item.id} className="text-xs text-text-primary-light dark:text-white/80">
+                                                        • {item.produtoNome} {item.quantidade > 1 && `(x${item.quantidade})`}
+                                                    </p>
+                                                ))}
+                                            </div>
+                                        ) : (
+                                            <p className="text-xs text-text-primary-light dark:text-text-secondary-light dark:text-white/60">Sem itens</p>
+                                        )}
+                                    </div>
                                 </div>
                                 <div className="flex gap-2">
                                     <button
@@ -386,7 +397,21 @@ export default function Vendas() {
                                         <td className="px-6 py-4 text-sm font-semibold text-green-600 dark:text-green-400">
                                             R$ {venda.total.toFixed(2)}
                                         </td>
-                                        <td className="px-6 py-4 text-sm text-text-primary-light dark:text-white">{venda.itens.length}</td>
+                                        <td className="px-6 py-4 text-sm text-text-primary-light dark:text-white">
+                                            <div className="max-w-xs">
+                                                {venda.itens.length > 0 ? (
+                                                    <div className="space-y-1">
+                                                        {venda.itens.map((item) => (
+                                                            <div key={item.id} className="text-xs">
+                                                                {item.produtoNome} {item.quantidade > 1 && `(x${item.quantidade})`}
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                ) : (
+                                                    <span className="text-text-secondary-light dark:text-white/60">Sem itens</span>
+                                                )}
+                                            </div>
+                                        </td>
                                         <td className="px-6 py-4 text-sm text-text-primary-light dark:text-white">{venda.usuarioNome}</td>
                                         <td className="px-6 py-4 text-center">
                                             <div className="flex justify-center gap-2">

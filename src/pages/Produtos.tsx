@@ -6,7 +6,7 @@ import ProdutoFilters from "../components/produtos/ProdutoFilters";
 import ProdutoCard from "../components/produtos/ProdutoCard";
 import ProdutoList from "../components/produtos/ProdutoList";
 import ProdutoForm from "../components/produtos/ProdutoForm";
-import ProdutoDetailsDrawer from "../components/produtos/ProdutoDetailsDrawer";
+import ProdutoDetails from "../components/produtos/ProdutoDetails";
 import ProdutoEmpty from "../components/produtos/ProdutoEmpty";
 import ConfirmModal from "../components/common/ConfirmModal";
 import ResumoEstoqueDashboard from "../components/produtos/ResumoEstoqueDashboard";
@@ -22,7 +22,6 @@ export default function ProdutosPage() {
     const [ordenacao, setOrdenacao] = useState<"nome" | "preco" | "estoque">("nome");
 
     const [isFormOpen, setIsFormOpen] = useState(false);
-    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [selectedProdutoId, setSelectedProdutoId] = useState<number | null>(null);
     const [editingProduto, setEditingProduto] = useState<Produto | null>(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -132,6 +131,7 @@ export default function ProdutosPage() {
                         precoPromocional: data.precoPromocional,
                         estoque: data.estoque,
                         categoriaId: data.categoriaId,
+                        ativo: data.ativo,
                     }, data.file);
 
                     setProdutos((prev) =>
@@ -140,6 +140,8 @@ export default function ProdutosPage() {
 
                     toast.success("✅ Produto atualizado com sucesso!");
                     console.log("✅ Produto atualizado:", editingProduto.id);
+                    setIsFormOpen(false);
+                    setEditingProduto(null);
                 } else {
                     // Create new
                     const newProduto = await createProduto(
@@ -159,13 +161,23 @@ export default function ProdutosPage() {
                     setProdutos((prev) => [...prev, newProduto]);
                     toast.success("✅ Produto criado com sucesso!");
                     console.log("✅ Produto criado:", newProduto.id);
+                    setIsFormOpen(false);
+                    setEditingProduto(null);
+                }
+            } catch (error: any) {
+                const apiError = error.apiError || error.response?.data || error;
+
+                if (apiError.errors && Array.isArray(apiError.errors)) {
+                    const errorMessages = apiError.errors.map((err: any) => err.message || err.msg).filter(Boolean);
+                    if (errorMessages.length > 0) {
+                        toast.error(errorMessages.join(", "));
+                    }
+                } else {
+                    toast.error(apiError.message || error.message || "Erro ao salvar produto");
                 }
 
-                setIsFormOpen(false);
-                setEditingProduto(null);
-            } catch (error: any) {
-                toast.error(error.message || "Erro ao salvar produto");
                 console.error("❌ Erro ao salvar produto:", error);
+                throw error;
             } finally {
                 setIsLoading(false);
             }
@@ -235,9 +247,12 @@ export default function ProdutosPage() {
 
     // Handle details
     const handleDetailsProduto = useCallback((id: number) => {
-        setSelectedProdutoId(id);
-        setIsDrawerOpen(true);
-    }, []);
+        if (selectedProdutoId === id) {
+            setSelectedProdutoId(null);
+        } else {
+            setSelectedProdutoId(id);
+        }
+    }, [selectedProdutoId]);
 
     // Selection handlers for bulk actions
     const handleSelectAll = useCallback(() => {
@@ -363,6 +378,14 @@ export default function ProdutosPage() {
             {/* Resumo do estoque (dashboard) */}
             <ResumoEstoqueDashboard produtos={filteredProdutos} />
 
+            {/* Detalhes do Produto */}
+            {selectedProdutoId && selectedProduto && (
+                <ProdutoDetails
+                    produto={selectedProduto as any}
+                    onClose={() => setSelectedProdutoId(null)}
+                />
+            )}
+
             {/* Content */}
             {filteredProdutos.length === 0 ? (
                 <ProdutoEmpty onCreateClick={handleCreateProduto} />
@@ -395,13 +418,6 @@ export default function ProdutosPage() {
                     />
                 </>
             )}
-
-            {/* Drawer */}
-            <ProdutoDetailsDrawer
-                isOpen={isDrawerOpen}
-                onClose={() => setIsDrawerOpen(false)}
-                produto={selectedProduto as any}
-            />
 
             {/* Confirm Delete Modal */}
             <ConfirmModal

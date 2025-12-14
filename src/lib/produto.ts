@@ -135,11 +135,10 @@ export const createProduto = async (
     return normalizeProduto(response.data);
   } catch (error: any) {
     const apiError = error.response?.data;
-    if (apiError?.errors) {
-      throw new Error(apiError.errors.join(", "));
-    }
-    const message = apiError?.message || "Erro ao criar produto.";
-    throw new Error(message);
+    const customError: any = new Error(apiError?.message || "Erro ao criar produto.");
+    customError.response = error.response;
+    customError.apiError = apiError;
+    throw customError;
   }
 };
 
@@ -171,11 +170,10 @@ export const updateProduto = async (
     return normalizeProduto(response.data);
   } catch (error: any) {
     const apiError = error.response?.data;
-    if (apiError?.errors) {
-      throw new Error(apiError.errors.join(", "));
-    }
-    const message = apiError?.message || "Erro ao atualizar produto.";
-    throw new Error(message);
+    const customError: any = new Error(apiError?.message || "Erro ao atualizar produto.");
+    customError.response = error.response;
+    customError.apiError = apiError;
+    throw customError;
   }
 };
 
