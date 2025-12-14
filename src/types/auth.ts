@@ -12,11 +12,14 @@ export interface LoginRequest {
 
 export interface AuthResponse {
   usuario: {
-    id: string;
+    id: number;
     nome: string;
     email: string;
-    theme: string;
-    createdAt: string;
+    role: "USER" | "ADMIN" | "SUPERADMIN";
+    theme?: "DARK" | "LIGHT" | null;
+    ativo: boolean;
+    criadoEm: string;
+    atualizadoEm: string;
   };
   token: string;
 }

@@ -26,7 +26,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const storedToken = localStorage.getItem("token");
 
         if (storedUser && storedToken) {
-            setUser(JSON.parse(storedUser));
+            const parsedUser = JSON.parse(storedUser);
+            const usuario: User = {
+                ...parsedUser,
+                criadoEm: new Date(parsedUser.criadoEm),
+                atualizadoEm: new Date(parsedUser.atualizadoEm),
+            };
+            setUser(usuario);
         }
         setLoading(false)
     }, []);
@@ -43,8 +49,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const login = async (data: LoginRequest) => {
         try {
             const res = await loginRequest(data);
-            setUser(res.usuario);
-            localStorage.setItem("usuario", JSON.stringify(res.usuario));
+            const usuario: User = {
+                ...res.usuario,
+                criadoEm: new Date(res.usuario.criadoEm),
+                atualizadoEm: new Date(res.usuario.atualizadoEm),
+            };
+            setUser(usuario);
+            localStorage.setItem("usuario", JSON.stringify(usuario));
             localStorage.setItem("token", res.token);
             toast.success("Login realizado com sucesso!");
             goTo("home");
@@ -57,8 +68,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const signup = async (data: SignupRequest) => {
         try {
             const res = await signupRequest(data);
-            setUser(res.usuario);
-            localStorage.setItem("usuario", JSON.stringify(res.usuario));
+            const usuario: User = {
+                ...res.usuario,
+                criadoEm: new Date(res.usuario.criadoEm),
+                atualizadoEm: new Date(res.usuario.atualizadoEm),
+            };
+            setUser(usuario);
+            localStorage.setItem("usuario", JSON.stringify(usuario));
             localStorage.setItem("token", res.token);
             toast.success("Conta criada com sucesso!");
             goTo("home");
