@@ -207,11 +207,11 @@ export default function ExtratoTable({
                     <select
                         value={itemsPerPage}
                         onChange={(e) => onItemsPerPageChange(parseInt(e.target.value))}
-                        className="rounded-lg border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-white/5 px-3 py-1.5 text-sm text-text-primary-light dark:text-white transition-colors focus:border-primary-light-6 dark:focus:border-primary-dark-6 focus:bg-mauve-light-2 dark:focus:bg-white/10 focus:outline-none"
+                        className="rounded-lg border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-[#1a1523] px-3 py-1.5 text-sm text-text-primary-light dark:text-white transition-colors focus:border-primary-light-6 dark:focus:border-primary-dark-6 focus:bg-mauve-light-2 dark:focus:bg-[#1a1523] focus:outline-none"
                     >
-                        <option value="10">10</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
+                        <option className="bg-white dark:bg-[#1a1523] text-text-primary-light dark:text-white" value="10">10</option>
+                        <option className="bg-white dark:bg-[#1a1523] text-text-primary-light dark:text-white" value="25">25</option>
+                        <option className="bg-white dark:bg-[#1a1523] text-text-primary-light dark:text-white" value="50">50</option>
                     </select>
                 </div>
 

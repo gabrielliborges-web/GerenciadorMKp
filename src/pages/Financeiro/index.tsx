@@ -24,7 +24,7 @@ import AjusteManualModal from "../../components/financeiro/AjusteManualModal";
 type TabAtiva = "resumo" | "extrato" | "entradas" | "despesas" | "dre";
 
 export default function FinanceiroPage() {
-    const [activeTab, setActiveTab] = useState<TabAtiva>("resumo");
+    const [activeTab, setActiveTab] = useState<TabAtiva>("extrato");
     const [isEntradaModalOpen, setIsEntradaModalOpen] = useState(false);
     const [isDespesaModalOpen, setIsDespesaModalOpen] = useState(false);
     const [isAjusteModalOpen, setIsAjusteModalOpen] = useState(false);
@@ -103,8 +103,33 @@ export default function FinanceiroPage() {
 
     const fetchEntradas = useCallback(async () => {
         try {
-            const data = await listEntradas();
-            setEntradas((data || []).map((e: any) => ({ ...e, valor: typeof e.valor === "number" ? e.valor : Number(e.valor || 0) })));
+            const [entradasData, movimentacoesData] = await Promise.all([
+                listEntradas(),
+                listMovimentacoes()
+            ]);
+            
+            // Mapear entradas normais
+            const entradasNormais = (entradasData || []).map((e: any) => ({ 
+                ...e, 
+                valor: typeof e.valor === "number" ? e.valor : Number(e.valor || 0) 
+            }));
+            
+            // Mapear ajustes do tipo entrada
+            const ajustesEntrada = (movimentacoesData || [])
+                .filter((m: any) => m.tipo === "ajuste" && m.entrada === true)
+                .map((m: any) => ({
+                    id: m.id,
+                    tipo: "Ajuste Manual",
+                    descricao: m.descricao || "Ajuste manual",
+                    valor: typeof m.valor === "number" ? m.valor : Number(m.valor || 0),
+                    data: m.data,
+                    usuarioId: m.usuarioId,
+                    criadoEm: m.criadoEm,
+                    atualizadoEm: m.atualizadoEm,
+                }));
+            
+            // Combinar entradas normais com ajustes
+            setEntradas([...entradasNormais, ...ajustesEntrada]);
         } catch (err) {
             console.error(err);
         }
@@ -112,8 +137,34 @@ export default function FinanceiroPage() {
 
     const fetchDespesas = useCallback(async () => {
         try {
-            const data = await listDespesas();
-            setDespesas((data || []).map((d: any) => ({ ...d, valor: typeof d.valor === "number" ? d.valor : Number(d.valor || 0) })));
+            const [despesasData, movimentacoesData] = await Promise.all([
+                listDespesas(),
+                listMovimentacoes()
+            ]);
+            
+            // Mapear despesas normais
+            const despesasNormais = (despesasData || []).map((d: any) => ({ 
+                ...d, 
+                valor: typeof d.valor === "number" ? d.valor : Number(d.valor || 0) 
+            }));
+            
+            // Mapear ajustes do tipo saída
+            const ajustesSaida = (movimentacoesData || [])
+                .filter((m: any) => m.tipo === "ajuste" && m.entrada === false)
+                .map((m: any) => ({
+                    id: m.id.toString(),
+                    tipo: "Ajuste Manual",
+                    descricao: m.descricao || "Ajuste manual",
+                    valor: typeof m.valor === "number" ? m.valor : Number(m.valor || 0),
+                    data: m.data,
+                    usuarioId: m.usuarioId.toString(),
+                    observacao: m.descricao || "Ajuste manual",
+                    criadoEm: m.criadoEm,
+                    atualizadoEm: m.atualizadoEm,
+                }));
+            
+            // Combinar despesas normais com ajustes
+            setDespesas([...despesasNormais, ...ajustesSaida]);
         } catch (err) {
             console.error(err);
         }
@@ -170,6 +221,9 @@ export default function FinanceiroPage() {
                 await registrarAjuste({ tipo: data.tipo, valor: data.valor, data: data.data, descricao: data.descricao, entrada: data.tipo === "entrada" });
                 await fetchMovimentacoes();
                 await fetchResumo();
+                // Atualizar também as listas de entradas e despesas para incluir o ajuste
+                await fetchEntradas();
+                await fetchDespesas();
                 setIsAjusteModalOpen(false);
             } catch (err) {
                 console.error(err);
@@ -177,7 +231,7 @@ export default function FinanceiroPage() {
                 setIsLoading(false);
             }
         },
-        [fetchMovimentacoes, fetchResumo]
+        [fetchMovimentacoes, fetchResumo, fetchEntradas, fetchDespesas]
     );
 
     return (
@@ -294,7 +348,10 @@ export default function FinanceiroPage() {
             </div>
 
             {/* Alerts */}
-            {totalDespesas > totalEntradas && (
+            {(() => {
+                const lucro = resumo?.lucro !== undefined ? resumo.lucro : (totalEntradas - totalDespesas);
+                return lucro < 0;
+            })() && (
                 <div className="flex items-start gap-3 rounded-xl border border-yellow-600/30 dark:border-yellow-500/30 bg-yellow-50 dark:bg-yellow-500/10 p-4">
                     <AlertCircle className="h-5 w-5 flex-shrink-0 text-yellow-700 dark:text-yellow-400 mt-0.5" />
                     <div className="text-sm">
@@ -308,7 +365,7 @@ export default function FinanceiroPage() {
 
             {/* Tabs */}
             <div className="flex gap-2 overflow-x-auto border-b border-mauve-light-6 dark:border-white/10 pb-px">
-                {(["resumo", "extrato", "entradas", "despesas", "dre"] as const).map(
+                {(["extrato", "entradas", "despesas", "dre", "resumo"] as const).map(
                     (tab) => (
                         <button
                             key={tab}
@@ -322,11 +379,11 @@ export default function FinanceiroPage() {
                                 : "text-text-secondary-light dark:text-white/70 hover:text-text-primary-light dark:hover:text-white"
                                 }`}
                         >
-                            {tab === "resumo" && "📊 Resumo"}
                             {tab === "extrato" && "📝 Extrato"}
                             {tab === "entradas" && "📈 Entradas"}
                             {tab === "despesas" && "📉 Despesas"}
                             {tab === "dre" && "📋 DRE"}
+                            {tab === "resumo" && "📊 Resumo"}
                         </button>
                     )
                 )}
@@ -362,11 +419,11 @@ export default function FinanceiroPage() {
                                             setFiltroExtratoTipo(e.target.value);
                                             setCurrentPage(1);
                                         }}
-                                        className="w-full rounded-lg border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-white/5 px-3 py-2 text-text-primary-light dark:text-white transition-colors focus:border-primary-light-6 dark:focus:border-primary-dark-6 focus:bg-mauve-light-2 dark:focus:bg-white/10 focus:outline-none"
+                                        className="w-full rounded-lg border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-[#1a1523] px-3 py-2 text-text-primary-light dark:text-white transition-colors focus:border-primary-light-6 dark:focus:border-primary-dark-6 focus:bg-mauve-light-2 dark:focus:bg-[#1a1523] focus:outline-none"
                                     >
-                                        <option value="">Todos</option>
-                                        <option value="entrada">Entradas</option>
-                                        <option value="saida">Saídas</option>
+                                        <option className="bg-white dark:bg-[#1a1523] text-text-primary-light dark:text-white" value="">Todos</option>
+                                        <option className="bg-white dark:bg-[#1a1523] text-text-primary-light dark:text-white" value="entrada">Entradas</option>
+                                        <option className="bg-white dark:bg-[#1a1523] text-text-primary-light dark:text-white" value="saida">Saídas</option>
                                     </select>
                                 </div>
 

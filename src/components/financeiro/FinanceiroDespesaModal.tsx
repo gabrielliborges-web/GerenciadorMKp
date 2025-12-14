@@ -129,11 +129,11 @@ export default function FinanceiroDespesaModal({
                             value={formData.tipo}
                             onChange={(e) => setFormData({ ...formData, tipo: e.target.value })}
                             disabled={isLoading}
-                            className="w-full rounded-lg border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-white/5 px-3 py-2 text-text-primary-light dark:text-white transition-all duration-300 hover:border-mauve-light-8 dark:hover:border-white/20 focus:border-primary-light-6 dark:focus:border-primary-dark-6 focus:outline-none focus:ring-2 focus:ring-primary-light-7/20 disabled:opacity-50"
+                            className="w-full rounded-lg border border-mauve-light-6 dark:border-white/10 bg-white dark:bg-[#1a1523] px-3 py-2 text-text-primary-light dark:text-white transition-all duration-300 hover:border-mauve-light-8 dark:hover:border-white/20 focus:border-primary-light-6 dark:focus:border-primary-dark-6 focus:outline-none focus:ring-2 focus:ring-primary-light-7/20 disabled:opacity-50"
                         >
-                            <option value="">Selecionar...</option>
+                            <option className="bg-white dark:bg-[#1a1523] text-text-primary-light dark:text-white" value="">Selecionar...</option>
                             {tipos.map((tipo) => (
-                                <option key={tipo.id} value={tipo.nome}>
+                                <option className="bg-white dark:bg-[#1a1523] text-text-primary-light dark:text-white" key={tipo.id} value={tipo.nome}>
                                     {tipo.nome}
                                 </option>
                             ))}
